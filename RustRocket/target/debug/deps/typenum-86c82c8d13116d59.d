@@ -1,0 +1,17 @@
+C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\deps\typenum-86c82c8d13116d59.rmeta: C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\lib.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\bit.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\int.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\marker_traits.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\operator_aliases.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\private.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\type_operators.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\uint.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\array.rs C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/op.rs C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/consts.rs
+
+C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\deps\typenum-86c82c8d13116d59.d: C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\lib.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\bit.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\int.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\marker_traits.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\operator_aliases.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\private.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\type_operators.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\uint.rs C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\array.rs C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/op.rs C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/consts.rs
+
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\lib.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\bit.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\int.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\marker_traits.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\operator_aliases.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\private.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\type_operators.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\uint.rs:
+C:\Users\boris\.cargo\registry\src\github.com-1ecc6299db9ec823\typenum-1.17.0\src\array.rs:
+C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/op.rs:
+C:\Users\boris\OneDrive\Desktop\React-Rocket\RustRocket\target\debug\build\typenum-e0f8dc642e6987fe\out/consts.rs:
+
+# env-dep:OUT_DIR=C:\\Users\\boris\\OneDrive\\Desktop\\React-Rocket\\RustRocket\\target\\debug\\build\\typenum-e0f8dc642e6987fe\\out

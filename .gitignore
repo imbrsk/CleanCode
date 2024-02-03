@@ -1,0 +1,52 @@
+# Ignore npm logs
+npm-debug.log*
+
+# Ignore environment files
+.env*
+
+# Ignore dependencies
+node_modules/
+
+# Ignore build output
+/build
+
+# Ignore IDE and editor files
+.vscode/
+*.code-workspace
+*.idea/
+
+# Ignore macOS file system metadata
+.DS_Store
+
+# Ignore editor backup files
+*~
+
+# Ignore any local configuration files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore yarn lockfile
+yarn.lock
+
+# Ignore npm lockfile
+package-lock.json
+
+# Ignore coverage directory
+coverage/
+
+# Ignore production build
+dist/
+
+# Ignore any local database files
+*.sqlite
+
+# Ignore logs
+logs/
+
+# Ignore yarn error log
+yarn-error.log
+
+# Ignore .eslintcache
+.eslintcache
