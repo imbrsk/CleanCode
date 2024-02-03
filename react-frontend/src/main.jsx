@@ -5,5 +5,6 @@ import RocketPostRequest from './App.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RocketPostRequest />
+    <RocketPostRequest />
   </React.StrictMode>,
 )
