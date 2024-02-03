@@ -1,6 +1,5 @@
 use rocket::{post, serde::json::Json};
 use rocket::{launch, routes};
-use rocket_cors::{AllowedOrigins, CorsOptions};
 
 #[derive(serde::Deserialize)]
 struct RequestData {
