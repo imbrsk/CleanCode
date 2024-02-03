@@ -1,5 +1,5 @@
-RustRocket/target
-RustRocket/cargo.log
+/RustRocket/target
+/RustRocket/cargo.log
 # Ignore npm logs
 npm-debug.log*
 
