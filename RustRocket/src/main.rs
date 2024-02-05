@@ -11,7 +11,7 @@ struct RequestData {
 struct ResponseData {
     message: String,
 }
-
+//hi
 #[post("/process_json", data = "<data>")]
 fn process_json(data: Json<RequestData>) -> Json<ResponseData> {
     let field1_value = &data.field1;
