@@ -1,6 +1,6 @@
 use rocket::{post, serde::json::Json};
 use rocket::{launch, routes};
-
+//hii
 #[derive(serde::Deserialize)]
 struct RequestData {
     field1: String,
@@ -11,7 +11,7 @@ struct RequestData {
 struct ResponseData {
     message: String,
 }
-
+//hi
 #[post("/process_json", data = "<data>")]
 fn process_json(data: Json<RequestData>) -> Json<ResponseData> {
     let field1_value = &data.field1;
