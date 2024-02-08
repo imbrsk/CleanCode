@@ -1,6 +1,7 @@
 use rocket::{post, serde::json::Json};
 use rocket::{launch, routes};
-//hii
+mod runcode;
+
 #[derive(serde::Deserialize)]
 struct RequestData {
     field1: String,
@@ -24,6 +25,9 @@ fn process_json(data: Json<RequestData>) -> Json<ResponseData> {
 
 #[launch]
 fn rocket() -> _ {
+    print!("{}","hi");
+   runcode::make_request();
+   
     rocket::build()
         .attach(rocket_cors::CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
         .mount("/", routes![process_json])
