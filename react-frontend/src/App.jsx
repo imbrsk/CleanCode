@@ -1,45 +1,22 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Navbar from './Navbar';
+import Hero from './Hero';
 
-function RocketPostRequest() {
-    const [responseData, setResponseData] = useState(null);
+function App(){
 
-    const handleButtonClick = async () => {
-        const requestData = {
-            field1: 'YourStringData',
-            field2: 42, // Your integer data
-        };
-
-        try {
-            const response = await fetch('http://localhost:8000/process_json', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const jsonResponse = await response.json();
-            setResponseData(jsonResponse);
-        } catch (error) {
-            console.error('Error during the fetch operation:', error);
-        }
-    };
-
-    return (
-        <div>
-            <button onClick={handleButtonClick}>Send POST Request</button>
-
-            {responseData && (
-                <div>
-                    <p>Response Message: {responseData.message}</p>
-                </div>
-            )}
-        </div>
-    );
+    return(
+    <>
+    <React.Fragment>
+      <CssBaseline />
+      <Navbar></Navbar>
+      <Container maxWidth='lg'>
+        <Hero></Hero>
+      </Container>
+    </React.Fragment>
+    </>);
 }
 
-export default RocketPostRequest;
+export default App;

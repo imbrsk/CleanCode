@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import RocketPostRequest from './App.jsx'
+import App from './App.jsx'
+import RocketPostRequest from './RocketPostRequest.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RocketPostRequest />
-    <RocketPostRequest />
+    <App />
   </React.StrictMode>,
 )
