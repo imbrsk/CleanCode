@@ -1,34 +1,48 @@
-use rocket::{post, serde::json::Json};
-use rocket::{launch, routes};
-mod runcode;
 
-#[derive(serde::Deserialize)]
-struct RequestData {
-    field1: String,
-    field2: i32,
-}
+//mod runcode;
+pub mod structs;
+
+use rocket::{post, serde::json::Json};
+use rocket::{get, launch, routes};
+use rocket::fairing::AdHoc;
+use sqlx::MySqlPool;
+use rocket::State;
+use serde_json::json;
+use sqlx::FromRow;
 
 #[derive(serde::Serialize)]
-struct ResponseData {
-    message: String,
+#[derive(FromRow)]
+struct User {
+    user_id: i32,
+    username: String,
+    email: String,
+    pass: String,
 }
-//hi
+#[get("/get")]
+async fn index(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let rows: Vec<User> = sqlx::query_as("SELECT * FROM users;")
+        .fetch_all(pool.inner()).await.unwrap();
+    Json(json!({ "users": rows }))
+}
+
 #[post("/process_json", data = "<data>")]
-fn process_json(data: Json<RequestData>) -> Json<ResponseData> {
-    let field1_value = &data.field1;
-    let field2_value = data.field2+1;
-    let response_data = ResponseData {
-        message: format!("Received data: {} and {}", field1_value, field2_value),
+fn process_json(data: Json<structs::RequestData>) -> Json<structs::ResponseData> {
+   let numbers: Vec<String> = (1..=10).map(|i| i.to_string()).collect();
+
+    let return_v = structs::ResponseData{
+        message: numbers
     };
-    Json(response_data)
+
+    Json(return_v)
 }
 
 #[launch]
 fn rocket() -> _ {
-    print!("{}","hi");
-   runcode::make_request();
-   
-    rocket::build()
+        rocket::build()
+        .attach(AdHoc::on_ignite("MySQL DB", |rocket| async {
+            let pool = MySqlPool::connect("mysql://root:bobo2004@localhost:3306/userdata").await.unwrap();
+            rocket.manage(pool)
+        }))
         .attach(rocket_cors::CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![process_json])
+        .mount("/", routes![process_json, index])
 }

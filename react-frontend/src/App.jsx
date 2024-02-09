@@ -5,8 +5,9 @@ function RocketPostRequest() {
 
     const handleButtonClick = async () => {
         const requestData = {
-            field1: 'YourStringData',
-            field2: 42, // Your integer data
+            code: "#include <iostream>\nusing namespace std;\nint main() {\n   int a;\n   cin>>a;\n   cout<<a;\n    return 0;\n}",
+            user: "bobo",
+            zadaca: "1" // Your integer data
         };
 
         try {
