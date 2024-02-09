@@ -1,26 +1,37 @@
-.hero-container{
-    margin-top: 100px;
-    
+.hero-container {
+  margin-top: 50px;
 }
-.hero-study{
-    display: flex;
-    align-items: center;
-    margin-top: 0px;
-    font-size: 100px;
-    color: #5B5F97;
-    line-height: 1;
+.hero-study {
+  display: flex;
+  align-items: center;
+  font-size: 68px;
+  color: #5b5f97;
+  line-height: 1;
 }
-.hero-practice{
-    display: flex;
-    align-items: center;
-    font-size: 132px;
-    color: #FF7F50;
-    line-height: 1;
+.study-svg {
+  height: 100px;
 }
-.hero-solve{
-    display: flex;
-    align-items: center;
-    font-size: 164px;
-    color: #3EB489;
-    line-height: 1;
+.practice-svg {
+  height: 90px;
+}
+.solve-svg {
+  height: 100px;
+}
+.hero-practice {
+  display: flex;
+  align-items: center;
+  font-size: 100px;
+  color: #ff7f50;
+  line-height: 1;
+}
+.hero-solve {
+  display: flex;
+  align-items: center;
+  font-size: 132px;
+  color: #3eb489;
+  line-height: 1;
+}
+.hero-text {
+  margin-top: 10px;
+  font-size: 22px;
 }

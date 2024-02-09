@@ -1,47 +1,45 @@
-.navbar{
-    height: 100%;
-    color: white;
-    font-family: roboto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.navbar {
+  height: 100%;
+  color: white;
+  font-family: roboto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.nav-right{
-    margin-top: 10px;
-    display: flex;
-    font-size: x-large;
-
+.nav-right {
+  margin-top: 10px;
+  display: flex;
+  font-size: x-large;
 }
-.nav-about{
-    margin-right: 2rem;
-    padding-top: 10px;
-    transition: 0.5s ease;
+.nav-about {
+  margin-right: 2rem;
+  padding-top: 10px;
+  transition: 0.5s ease;
 }
-.nav-about:hover{
-    color:#FF7F50;
-    cursor: pointer;
+.nav-about:hover {
+  color: #ff7f50;
+  cursor: pointer;
 }
-.nav-sign{
-    padding: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    border-radius: 50px;
-    background-color: #FFFFFF;
-    color: black;
-    transition: 0.5s ease;
+.nav-sign {
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #ffffff;
+  color: black;
+  transition: 0.5s ease;
 }
 .nav-sign:hover {
-    background-color: #FF7F50;
-    color: white;
-    cursor: pointer;
+  background-color: #ff7f50;
+  color: white;
+  cursor: pointer;
 }
 .logo {
-    color: rgb(255, 255, 255);
-    font-size: 2rem;
-    transition: 0.5s ease;
-    
+  color: rgb(255, 255, 255);
+  font-size: 2rem;
+  transition: 0.5s ease;
 }
 .logo:hover {
-    color: #3EB489;
-    cursor: pointer;
+  color: #3eb489;
+  cursor: pointer;
 }
