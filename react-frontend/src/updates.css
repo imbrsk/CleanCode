@@ -1,0 +1,28 @@
+.updates-title {
+  width: 240px;
+  margin-top: 70px;
+  margin-left: 65px;
+  margin-right: 0;
+  font-size: 20px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #111111;
+  color: rgb(255, 255, 255);
+  transition: 0.5s ease;
+}
+
+.updatecard-title{
+    font-size: 22px;
+}
+.updatecard-vertline{
+    border-left: 2px solid black;
+    height: 80px;
+}
+.updatecard-text{
+    font-size: 22px;
+}
+.updatecard-container{
+    display: flex;
+}

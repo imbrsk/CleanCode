@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import Hero from "./Hero";
 import Leaderboard from "./Leaderboard";
 import './app.css'
+import Siteupdates from "./Siteupdates";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Leaderboard></Leaderboard>
             </div>
           </div>
+          <Siteupdates></Siteupdates>
         </Container>
       </React.Fragment>
     </>
