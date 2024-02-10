@@ -1,6 +1,6 @@
 .updates-title {
   width: 240px;
-  margin-top: 70px;
+  margin-top: 50px;
   margin-left: 65px;
   margin-right: 0;
   font-size: 20px;
@@ -15,14 +15,23 @@
 
 .updatecard-title{
     font-size: 22px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 300px;
 }
 .updatecard-vertline{
-    border-left: 2px solid black;
-    height: 80px;
+    margin-top: 30px;
+    border-left: 2px solid gray;
+    height: 60px;
 }
 .updatecard-text{
+    padding: 10px;
+    margin-left: 40px;
     font-size: 22px;
 }
 .updatecard-container{
+    margin-left: 85px;
+    margin-top: 20px;
     display: flex;
 }

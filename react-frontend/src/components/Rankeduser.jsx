@@ -1,4 +1,4 @@
-import "./rankeduser.css";
+import "../css/rankeduser.css";
 
 function Rankeduser(props) {
   let name = props.name;

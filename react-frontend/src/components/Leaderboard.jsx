@@ -1,8 +1,26 @@
-import "./leaderboard.css";
+import "../css/leaderboard.css";
 import Rankeduser from "./Rankeduser";
 function Leaderboard() {
   let name = "CodeMaster";
   let soltask = 454;
+  const rankedusers = [
+    {
+        rank: "1",
+        name: "Stefan",
+        tasks: "123"
+    },
+    {
+        rank: "2",
+        name: "Boris",
+        tasks: "12"
+    },
+    {
+        rank: "3",
+        name: "Petar",
+        tasks: "423"
+    }
+  ]
+
   return (
     <>
     <div className="leaderboard-container">

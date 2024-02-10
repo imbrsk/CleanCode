@@ -2,7 +2,8 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, ThemeProvider } from "@mui/system";
 import Container from "@mui/material/Container";
-import "./index.css";
+import "../css/index.css";
+import { Outlet, Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -18,9 +19,10 @@ function Navbar() {
             <div className="logo">Clean Code</div>
             <div className="nav-right">
               <div className="nav-about">About</div>
-              <div className="nav-sign" onClick={{}}>
+              {/* <div className="nav-sign">
                 Sign In
-              </div>
+              </div> */}
+              <Link to="sign-in" className="nav-sign">Sign In</Link>
             </div>
           </div>
         </Container>

@@ -2,13 +2,14 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Navbar from "./Navbar";
-import Hero from "./Hero";
-import Leaderboard from "./Leaderboard";
-import './app.css'
-import Siteupdates from "./Siteupdates";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import Leaderboard from "../components/Leaderboard";
+import '../css/app.css'
+import Siteupdates from "../components/Siteupdates";
+import Footer from "../components/Footer";
 
-function App() {
+function Landingpage() {
   return (
     <>
       <React.Fragment>
@@ -25,9 +26,10 @@ function App() {
           </div>
           <Siteupdates></Siteupdates>
         </Container>
+        <Footer></Footer>
       </React.Fragment>
     </>
   );
 }
 
-export default App;
+export default Landingpage;
