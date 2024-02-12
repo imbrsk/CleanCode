@@ -84,3 +84,10 @@ input:focus::placeholder {
     opacity: 0.5;
     cursor: pointer;
 }
+.check-msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    color: tomato;
+}

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landingpage from "./pages/Landingpage";
 import Sign from "./pages/Sign";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
           <Route index element={<Landingpage></Landingpage>} path="/"/>
           <Route path="sign-in" element={<Sign></Sign>} />
           <Route path="register" element={<Register></Register>} />
+          <Route path="forgot-password" element={<ForgotPassword></ForgotPassword>} />
       </Routes>
     </BrowserRouter>
   );
