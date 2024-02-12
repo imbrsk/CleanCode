@@ -2,38 +2,35 @@ import NavbarSign from "../components/NavbarSign";
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Inputfield from "../components/inputfield";
-import "../css/signin.css";
+import "../css/register.css";
 import { Checkbox } from "@mui/material";
 import DarkButton from "../components/Darkbutton";
 import google from "../assets/google.svg"
 
-function Sign() {
+function Register() {
   return (
     <>
       <React.Fragment>
         <CssBaseline />
-        <NavbarSign value="Register" link="/register"></NavbarSign>
+        <NavbarSign value="Sign In" link="/sign-in"></NavbarSign>
         <div className="sign_in-container">
           <div className="sing_in-form">
             <div>
-              <Inputfield
-                placeholder="Enter your email address"
-                type="email"
-              ></Inputfield>
+              <Inputfield placeholder="Username" type="text"></Inputfield>
+            </div>
+            <div>
+              <Inputfield placeholder="Email address" type="text"></Inputfield>
             </div>
             <div>
               <Inputfield placeholder="Password" type="password"></Inputfield>
             </div>
-            <div className="sign-assist">
-              <div className="sign-remember">
-                <Checkbox defaultChecked />
-                <div>Remember me</div>
-              </div>
-              <div className="sign-forgot">Forgot Password?</div>
-            </div>
             <div>
-              <DarkButton value="SIGN IN" link="/"></DarkButton>
+              <Inputfield
+                placeholder="Confirm Password"
+                type="password"
+              ></Inputfield>
             </div>
+            <DarkButton value="REGISTER" link="/sign-in"></DarkButton>
             <div className="sign-connect">
               <div className="horz-line"></div>
               <div>Or connect with</div>
@@ -47,4 +44,4 @@ function Sign() {
   );
 }
 
-export default Sign;
+export default Register;
