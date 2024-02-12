@@ -7,6 +7,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <MyComponent>
     </MyComponent>
     <RocketPostRequest />
-    <RocketPostRequest />
   </React.StrictMode>,
 )

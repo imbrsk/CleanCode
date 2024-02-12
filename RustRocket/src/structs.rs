@@ -6,7 +6,7 @@ pub struct RequestData {
 }
 #[derive(serde::Serialize)]
 pub struct ResponseData {
-    pub message: Vec<String>
+    pub message: String
 }
 pub struct ResponseGot {
     test0: String, 

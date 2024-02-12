@@ -5,13 +5,12 @@ function RocketPostRequest() {
 
     const handleButtonClick = async () => {
         const requestData = {
-            code: "#include <iostream>\nusing namespace std;\nint main() {\n   int a;\n   cin>>a;\n   cout<<a;\n    return 0;\n}",
-            user: "bobo",
-            zadaca: "1" // Your integer data
+            user: "borisgjorgjievskiii@gmail.com",
+            password: "eba368dc741e17a59d0a1101f772a0f7"
         };
 
         try {
-            const response = await fetch('http://localhost:8000/process_json', {
+            const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,6 +23,7 @@ function RocketPostRequest() {
             }
 
             const jsonResponse = await response.json();
+            console.log(jsonResponse);
             setResponseData(jsonResponse);
         } catch (error) {
             console.error('Error during the fetch operation:', error);

@@ -1,4 +1,3 @@
-
 -- @block
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,7 +9,9 @@ CREATE TABLE users (
 -- @block
 INSERT INTO users (username, email, pass)
 VALUES
-    ('bobo211', 'borisgjorgjievskii@gmail.com', MD5('bobo2004'))
+    ('bobo2151', 'borisgjorgjievskiii@gmail.com', MD5('bobo2004'))
     
 -- @block
-SELECT * FROM users;
+SELECT * FROM Users
+-- @block
+SELECT COUNT(*) FROM users WHERE username = 'bobo2151';
