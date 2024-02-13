@@ -1,11 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import RocketPostRequest from './App.jsx'
-import MyComponent from './get.jsx'
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <MyComponent>
-    </MyComponent>
-    <RocketPostRequest />
-  </React.StrictMode>,
-)
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landingpage from "./pages/Landingpage";
+import Sign from "./pages/Sign";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+          <Route index element={<Landingpage></Landingpage>} path="/"/>
+          <Route path="sign-in" element={<Sign></Sign>} />
+          <Route path="register" element={<Register></Register>} />
+          <Route path="forgot-password" element={<ForgotPassword></ForgotPassword>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);

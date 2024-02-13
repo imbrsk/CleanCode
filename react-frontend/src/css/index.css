@@ -1,0 +1,60 @@
+.navbar {
+  height: 100%;
+  color: white;
+  font-family: roboto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-right {
+  margin-top: 10px;
+  display: flex;
+  font-size: x-large;
+}
+.nav-about {
+  margin-right: 2rem;
+  padding-top: 10px;
+  transition: 0.5s ease;
+}
+.nav-about:hover {
+  color: #ff7f50;
+  cursor: pointer;
+}
+.nav-sign {
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #ffffff;
+  color: black;
+  text-decoration: none;
+  transition: 0.5s ease;
+}
+.nav-sign:hover {
+  background-color: #ff7f50;
+  color: white;
+  cursor: pointer;
+}
+.logo {
+  color: rgb(255, 255, 255);
+  font-size: 2rem;
+  transition: 0.5s ease;
+}
+.logo:hover {
+  color: #3eb489;
+  cursor: pointer;
+}
+.nav-register{
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #ff7f50;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  transition: 0.5s ease;
+}
+.nav-register:hover{
+  background-color: #ffffff;
+  color: black;
+}

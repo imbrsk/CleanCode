@@ -1,0 +1,16 @@
+.reg-btn{
+    font-family: Karla, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 0.5rem 7rem 0.5rem 7rem;
+    border-radius: 10px;
+    background-color: #282828;
+    color: rgb(255, 255, 255);
+    transition: 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    text-decoration: none;
+}
+.reg-btn:hover{ background-color: #FF7F50; }
