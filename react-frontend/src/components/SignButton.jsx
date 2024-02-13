@@ -2,6 +2,7 @@ import '../css/updates.css'
 import '../css/btn.css'
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 
 
 function SignButton(props){
@@ -17,6 +18,11 @@ function SignButton(props){
     };
     const handleButtonClick = async () => {
         console.log(requestData);
+        if (checked) {
+            Cookies.set('user', user);
+            const userCookie = Cookies.get('user');
+            console.log(userCookie);
+        }
         try {
             const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
@@ -29,7 +35,6 @@ function SignButton(props){
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
             const jsonResponse = await response.json();
             setResponseData(jsonResponse);
         } catch (error) {
