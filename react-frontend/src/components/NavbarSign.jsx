@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import "../css/index.css";
 import { Outlet, Link } from "react-router-dom";
 
-function Navbar() {
+function NavbarSign(props) {
   return (
     <>
       <div
@@ -19,7 +19,7 @@ function Navbar() {
             <div className="logo">Clean Code</div>
             <div className="nav-right">
               <div className="nav-about">About</div>
-              <Link to="sign-in" className="nav-sign">Sign In</Link>
+              <Link to={props.link} className="nav-register" >{props.value}</Link>
             </div>
           </div>
         </Container>
@@ -28,4 +28,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavbarSign;

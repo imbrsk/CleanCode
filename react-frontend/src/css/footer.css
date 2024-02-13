@@ -11,6 +11,10 @@
     display: flex;
     margin-right: 200px;
 }
+.footer-tabs > *:hover{
+    color: #FF7F50;
+    cursor: pointer;
+}
 
 .footer-copyright{
     margin-left: 200px;

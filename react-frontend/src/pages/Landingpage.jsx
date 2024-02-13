@@ -1,6 +1,4 @@
-import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
@@ -8,8 +6,20 @@ import Leaderboard from "../components/Leaderboard";
 import '../css/app.css'
 import Siteupdates from "../components/Siteupdates";
 import Footer from "../components/Footer";
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 function Landingpage() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+      const userCookie = Cookies.get('user');
+      if (userCookie) {
+          setUser(userCookie);
+      }
+  }, []);
+  console.log(user);
   return (
     <>
       <React.Fragment>

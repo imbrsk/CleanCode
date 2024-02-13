@@ -44,3 +44,17 @@
   color: #3eb489;
   cursor: pointer;
 }
+.nav-register{
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #ff7f50;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  transition: 0.5s ease;
+}
+.nav-register:hover{
+  background-color: #ffffff;
+  color: black;
+}
