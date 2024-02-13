@@ -1,19 +1,17 @@
-pub mod structs;
 use rocket::{post, serde::json::Json};
 use rocket::{get, launch, routes};
 use rocket::fairing::AdHoc;
 use sqlx::MySqlPool;
 use rocket::State;
 use serde_json::json;
-use rocket::http::{Cookie, CookieJar};
 
 #[get("/get")]
 fn index(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-    Json(json!({ "users": "da" }))
+    Json(json!({ "users": "da".to_string() }))
 }
 
 #[post("/login", data = "<data>")]
-async fn login(pool: &State<sqlx::MySqlPool>, cookies: &CookieJar<'_>, data: Json<serde_json::Value>) -> Json<serde_json::Value> {
+async fn login(pool: &State<sqlx::MySqlPool>, data: Json<serde_json::Value>) -> Json<serde_json::Value> {
     let taken: (i8, )= sqlx::query_as("SELECT COUNT(*) FROM users WHERE email = ?")
             .bind(data["user"].clone().to_string().trim_matches('"'))
             .fetch_one(&**pool)
@@ -28,27 +26,19 @@ async fn login(pool: &State<sqlx::MySqlPool>, cookies: &CookieJar<'_>, data: Jso
             .fetch_one(&**pool)
             .await
             .unwrap();
-    print!("{}",cor.0);
-    
-/*     if let Some(remember_value) = data.get("remember") {
-        if remember_value == "true" {
-            let user = data.get("user").as_str().unwrap_or_default().into();
-            let cookie = Cookie::new(data.get("user"), "true");
-            cookies.add(cookie);
-        }
-    }*/
-    return Json(json!({ "users": "logged".to_string() })) ;
+    print!("{}",data["password"].clone().to_string());
+    if cor.0 == data["password"].clone().to_string().trim_matches('"'){
+        return Json(json!({ "users": "logged".to_string() })) ;
+    }
+    Json(json!({ "users": "wrong".to_string() })) 
 }
 
 #[post("/register", data = "<data>")]
 async fn register(pool: &State<sqlx::MySqlPool>, data: Json<serde_json::Value>) -> Json<serde_json::Value> {
-    let username = "bsobo21515";
-    let password = "BORI";
-    let email = "bobo3335";
 
     let mut taken: (i64,);
     taken = sqlx::query_as("SELECT COUNT(*) FROM users WHERE username = ?")
-            .bind(username)
+            .bind(data["user"].clone().to_string().trim_matches('"'))
             .fetch_one(&**pool)
             .await
             .unwrap();
@@ -56,7 +46,7 @@ async fn register(pool: &State<sqlx::MySqlPool>, data: Json<serde_json::Value>) 
         return Json(json!({ "response": "utaken".to_string() })) ;
     }
     taken = sqlx::query_as("SELECT COUNT(*) FROM users WHERE email = ?")
-            .bind(email)
+            .bind(data["email"].clone().to_string().trim_matches('"'))
             .fetch_one(&**pool)
             .await
             .unwrap();
@@ -65,9 +55,9 @@ async fn register(pool: &State<sqlx::MySqlPool>, data: Json<serde_json::Value>) 
     }
     
     sqlx::query("INSERT INTO users (username, email, pass) VALUES (?,?, MD5(?))")
-        .bind(username)
-        .bind(email)
-        .bind(password)
+        .bind(data["user"].clone().to_string().trim_matches('"'))
+        .bind(data["email"].clone().to_string().trim_matches('"'))
+        .bind(data["password"].clone().to_string().trim_matches('"'))
         .execute(pool.inner())
         .await
         .unwrap();
