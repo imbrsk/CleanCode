@@ -16,7 +16,7 @@ function Navbar() {
       >
         <Container maxWidth="lg" style={{ height: 100 }}>
           <div className="navbar">
-            <div className="logo">Clean Code</div>
+            <div className="logo"><img src="\public\cleanCode.svg" alt="CleanCode" />Clean Code</div>
             <div className="nav-right">
               <div className="nav-about">About</div>
               <Link to="sign-in" className="nav-sign">Sign In</Link>

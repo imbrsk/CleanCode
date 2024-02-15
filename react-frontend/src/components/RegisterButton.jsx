@@ -2,7 +2,7 @@ import '../css/updates.css'
 import '../css/btn.css'
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from 'react';
-
+import { md5 } from 'js-md5';
 
 function RegisterButton(props){
 
@@ -17,7 +17,7 @@ function RegisterButton(props){
     const requestData = {
         user: user,
         email: email,
-        password: password,
+        password: md5(password),
     };
 
     const isValidEmail = (email) => {
