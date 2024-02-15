@@ -9,7 +9,7 @@ CREATE TABLE users (
 -- @block
 INSERT INTO users (username, email, pass)
 VALUES
-    ('bobo2151', 'borisgjorgjievskiii@gmail.com', MD5('bobo2004'))
+    ('bobo215h1', 'borisgjorgjievskiii@gmhail.com', MD5('bobo2004'))
     
 -- @block
 SELECT * FROM Users

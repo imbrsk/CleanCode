@@ -12,8 +12,6 @@ serde = { version = "1.0", features = ["derive"] }
 rocket_cors = "0.6.0"
 serde_json = "1.0"
 sqlx = { version = "0.7.3", features = ["mysql", "runtime-tokio-rustls"] }
-md5 = "0.7.0"
-cookie = "0.18.0"
 [default.databases]
 mysql_db = { url = "mysql://root:bobo2004@localhost:3306/userdata" }
 

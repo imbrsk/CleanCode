@@ -3,7 +3,6 @@ use rocket::serde::json::Json;
 use serde_json::json;
 
 fn make_request(code: String, test_case: String) -> Json<> {
-    //gets test cases from database and puts them in a var 
 
     let url = "http://localhost:2358/submissions";
     let payload = json!({

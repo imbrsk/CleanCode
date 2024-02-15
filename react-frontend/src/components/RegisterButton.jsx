@@ -2,7 +2,7 @@ import '../css/updates.css'
 import '../css/btn.css'
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from 'react';
-
+import { md5 } from 'js-md5';
 
 function RegisterButton(props){
 
@@ -15,9 +15,9 @@ function RegisterButton(props){
     let link = props.link;
     let check;
     const requestData = {
-        user: user,
+        username: user,
         email: email,
-        password: password,
+        password: md5(password),
     };
 
     const isValidEmail = (email) => {
@@ -56,9 +56,7 @@ function RegisterButton(props){
             }
         }
         if(flag){
-            handleButtonClick();
-            window.location.href = link;
-        }
+            handleButtonClick();        }
         else{
             
         }
@@ -80,6 +78,7 @@ function RegisterButton(props){
             }
 
             const jsonResponse = await response.json();
+            console.log(jsonResponse);
             setResponseData(jsonResponse);
         } catch (error) {
             console.error('Error during the fetch operation:', error);
