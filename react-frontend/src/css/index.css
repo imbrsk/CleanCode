@@ -25,14 +25,15 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 50px;
-  background-color: #ffffff;
-  color: black;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
   text-decoration: none;
   transition: 0.5s ease;
 }
 .nav-sign:hover {
-  background-color: #ff7f50;
-  color: white;
+  background-color: #ffffff;
+  color: black;
   cursor: pointer;
 }
 .logo {
@@ -49,7 +50,8 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 50px;
-  background-color: #ff7f50;
+  border: 1px solid white;
+  background-color: transparent;
   color: rgb(255, 255, 255);
   text-decoration: none;
   transition: 0.5s ease;

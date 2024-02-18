@@ -21,3 +21,6 @@
     transition: 0.3s ease;
     color: black;
 }
+.subject-link{
+    text-decoration: none;
+}

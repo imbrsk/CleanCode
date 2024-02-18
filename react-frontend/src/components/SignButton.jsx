@@ -14,7 +14,6 @@ function SignButton(props){
     const requestData = {
         user: user,
         password: md5(password),
-        checked: checked
     };
     const handleButtonClick = async () => {
         console.log(requestData);
