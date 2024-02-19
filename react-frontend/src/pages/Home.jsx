@@ -12,11 +12,7 @@ import "../css/home.css";
 function Home() {
   const userCookie = Cookies.get('user');
   console.log(userCookie);
-  if (!userCookie) {
-    // Assuming you're using React Router for navigation
-    // Replace '/redirect-path' with the path you want to redirect to
-    window.location.href = "/";
-  }
+
   const subjects = ["Структурно Програмирање", "Напредно Програмирање", "Објектно-Ориентирано Програмирање", "Алгоритми и Податочни стриктури", "Визуелно Програмирање"];
   const subjectsJSON = [
     {
@@ -48,17 +44,22 @@ function Home() {
   const subjectItems = subjectsJSON.map((subject) => (
     <Subject key={subject.number} link={subject.link} name={subject.name} />
   ));
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <NavbarSign value="Sign Out" link="/"></NavbarSign>
-      <Container maxWidth="lg" className="container-home">
-        <Account user="Stefan19" tasks="70"></Account>
-        {subjectItems}
-      </Container>
-      <Footer></Footer>
-    </React.Fragment>
-  );
+  if (!userCookie) {
+    window.location.href = "/";
+  }
+  else{
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <NavbarSign value="Sign Out" link="/"></NavbarSign>
+        <Container maxWidth="lg" className="container-home">
+          <Account user="Stefan19" tasks="70"></Account>
+          {subjectItems}
+        </Container>
+        <Footer></Footer>
+      </React.Fragment>
+    );
+  }
 }
 
 export default Home;

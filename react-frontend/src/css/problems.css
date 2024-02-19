@@ -1,0 +1,58 @@
+.accordion {
+  background-color: #282828;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 22px;
+  transition: 0.4s;
+}
+
+.active{
+    border-radius: 15px 15px 0px 0px;
+    color: #FF7F50;
+}
+.accordion:hover {
+  color: #FF7F50;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: rgb(255, 255, 255);
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.2s ease-out;
+}
+
+.problems-2024 > * {
+  padding: 0.5rem;
+}
+.problems-2023 > * {
+    padding: 0.5rem;
+  }
+
+.year {
+  font-size: 32px;
+  padding: 1rem;
+  color: #ff7f50;
+}
+
+.problem-years{
+    display: flex;
+}

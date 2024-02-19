@@ -4,6 +4,8 @@ function Account(props){
 
     let user = props.user;
     let tasks = props.tasks;
+    user = "Stefan19";
+    tasks = "70";
     return(<>
     <div className="account">
         <div className="account-info">Account</div>
