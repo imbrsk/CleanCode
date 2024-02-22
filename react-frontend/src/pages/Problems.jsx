@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import Subject from "../components/subject";
 import Account from "../components/Account";
 import Accordion from "../components/Accordion";
+import Footer from "../components/Footer";
+
 
 function Problems() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -14,164 +16,45 @@ function Problems() {
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-
+  // Dobivame za koj predmet sakame da gi prikazeme zadacite pa go passame kako prop na accordionot
+  // Ili tuka go dobivame payloadot so jsonot za site zadaci i prakjame kako prop na accordion
   return (
     <>
       <CssBaseline />
       <NavbarSign value="Sign Out" link="/" />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className="container-problems">
         <Account></Account>
         <Subject name="Структурно Програмирање" link=""></Subject>
         <div className="problem-years">
-          <div className="problems-2024">
-            <div className="year">Year 2024</div>
-            <div className="ispitjan-2024">
-              <button
-                className={`accordion ${activeIndex === 0 ? "active" : ""}`}
-                onClick={() => toggleAccordion(0)}
-              >
-                Испит Јануари
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 0 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
-
-            <div className="prvkol-2024">
-              <button
-                className={`accordion ${activeIndex === 3 ? "active" : ""}`}
-                onClick={() => toggleAccordion(3)}
-              >
-                Прв Колоквиум
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 3 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
-            <div className="vtorkol-2024">
-              <button
-                className={`accordion ${activeIndex === 4 ? "active" : ""}`}
-                onClick={() => toggleAccordion(4)}
-              >
-                Втор Колоквиум
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 4 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
+          <div className="problems">
+            <div className="year"><div className="bracket-year">[</div>2024<div className="bracket-year">]</div></div>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="1" year="2024" type="ispiti"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="2" year="2024" type="prvkol"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="3" year="2024" type="vtorkol"></Accordion>
           </div>
-          <div className="problems-2023">
-            <div className="year">Year 2023</div>
-            <div className="ispitjan-2023">
-              <button
-                className={`accordion ${activeIndex === 5 ? "active" : ""}`}
-                onClick={() => toggleAccordion(5)}
-              >
-                Испит Јануари
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 5 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
-
-            <div className="prvkol-2023">
-              <button
-                className={`accordion ${activeIndex === 6 ? "active" : ""}`}
-                onClick={() => toggleAccordion(6)}
-              >
-                Прв Колоквиум
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 6 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
-            <div className="vtorkol-2023">
-              <button
-                className={`accordion ${activeIndex === 7 ? "active" : ""}`}
-                onClick={() => toggleAccordion(7)}
-              >
-                Втор Колоквиум
-              </button>
-              <div
-                className="panel"
-                style={{
-                  maxHeight: activeIndex === 7 ? "1000px" : "0",
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                }}
-              >
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </div>
+          <div className="problems">
+            <div className="year"><div className="bracket-year">[</div>2023<div className="bracket-year">]</div></div>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="4" year="2023" type="ispiti"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="5" year="2023" type="prvkol"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="6" year="2023" type="vtorkol"></Accordion>
           </div>
-        <Accordion toggle={toggleAccordion} active={activeIndex} index="8"></Accordion>
+        </div>
+        <div className="problem-years">
+          <div className="problems">
+            <div className="year"><div className="bracket-year">[</div>2022<div className="bracket-year">]</div></div>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="7" year="2022" type="ispiti"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="8" year="2022" type="prvkol"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="9" year="2022" type="vtorkol"></Accordion>
+          </div>
+          <div className="problems">
+            <div className="year"><div className="bracket-year">[</div>2021<div className="bracket-year">]</div></div>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="10" year="2021" type="ispiti"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="11" year="2021" type="prvkol"></Accordion>
+            <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="12" year="2021" type="vtorkol"></Accordion>
+          </div>
         </div>
       </Container>
+      <Footer></Footer>
     </>
   );
 }

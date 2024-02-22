@@ -6,8 +6,10 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Problems from "./pages/Problems";
+import CodeTesting from "./pages/CodeTesting";
 
 export default function App() {
+  // get request da mi daes site predmeti i zadaci i da generiram strani za site predmeti so templatete sto gi napraiv
   return (
     <BrowserRouter>
       <Routes>
@@ -17,6 +19,7 @@ export default function App() {
           <Route path="forgot-password" element={<ForgotPassword></ForgotPassword>} />
           <Route path="home" element={<Home></Home>} />
           <Route path="problems" element={<Problems></Problems>} />
+          <Route path="code-testing" element={<CodeTesting></CodeTesting>}></Route>
       </Routes>
     </BrowserRouter>
   );
