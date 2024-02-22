@@ -3,8 +3,7 @@ import "../css/problems.css";
 
 
 function Accordion(props) {
-  const [activeIndex, setActiveIndex] = useState(null);
-
+  const activeIndex = props.active;
   return (
     <>
       <div className="ispitjan-2024">

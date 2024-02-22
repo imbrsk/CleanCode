@@ -169,7 +169,7 @@ function Problems() {
               </div>
             </div>
           </div>
-        <Accordion toggle={toggleAccordion} index="8"></Accordion>
+        <Accordion toggle={toggleAccordion} active={activeIndex} index="8"></Accordion>
         </div>
       </Container>
     </>
