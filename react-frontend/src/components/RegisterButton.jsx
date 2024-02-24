@@ -17,7 +17,7 @@ function RegisterButton(props){
     const requestData = {
         username: user,
         email: email,
-        password: md5(password),
+        password: password,
     };
 
     const isValidEmail = (email) => {
