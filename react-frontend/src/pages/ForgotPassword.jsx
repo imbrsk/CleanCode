@@ -6,6 +6,8 @@ import "../css/signin.css";
 import { Checkbox } from "@mui/material";
 import SignButton from "../components/SignButton";
 import google from "../assets/google.svg"
+import { md5 } from 'js-md5';
+
 
 function ForgotPassword() {
   const [email, setEmail] = React.useState(""); // State for email input
@@ -28,9 +30,7 @@ function ForgotPassword() {
             </div>
             
             <div>
-              <SignButton value="RESET" link="/"
-                          user={email} // Pass email state as prop
-              ></SignButton>
+              
             </div>
           </div>
         </div>

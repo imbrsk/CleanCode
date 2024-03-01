@@ -4,7 +4,6 @@ import { Outlet, Link } from "react-router-dom";
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 
-
 function SignButton(props){
 
     const [responseData, setResponseData] = useState(null);
@@ -14,7 +13,7 @@ function SignButton(props){
     const requestData = {
         user: user,
         password: password,
-        checked: checked
+        remember_me: checked
     };
     const handleButtonClick = async () => {
         console.log(requestData);

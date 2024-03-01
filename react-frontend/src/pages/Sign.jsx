@@ -57,7 +57,7 @@ function Sign() {
             <div>
               <SignButton
                 value="SIGN IN"
-                link="/"
+                link="/home"
                 user={email} // Pass email state as prop
                 password={password} // Pass password state as prop
                 checked={isChecked}
