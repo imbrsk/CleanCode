@@ -1,0 +1,87 @@
+
+.accordion {
+  background-color: #282828;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 28px;
+  transition: 0.4s;
+}
+
+.active{
+    border-radius: 15px 15px 0px 0px;
+    color: #FF7F50;
+}
+.accordion:hover {
+  color: #FF7F50;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: #ffffff;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: rgb(255, 255, 255);
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.2s ease-out;
+}
+
+.problems{
+  width: 100%;
+}
+.problems > * {
+  padding: 0.5rem;
+}
+
+
+.year {
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 0rem;
+  color: #ff7f50;
+}
+
+.problem-years{
+    display: flex;
+}
+
+.bracket-year{
+  font-size: 2rem;
+  color: #3EB489;
+  margin-bottom: 0.3rem;
+  padding: 0.5rem;
+}
+
+.expanded-problems{
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  background-color: lightgray;
+  color: black;
+  border-radius: 10px;
+  font-size: 22px;
+  transition: 0.2s ease;
+  
+}
+
+.expanded-problems:hover{
+  color: black;
+  cursor: pointer;
+  background-color: #25ce90;
+}

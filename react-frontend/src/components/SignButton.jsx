@@ -3,7 +3,6 @@ import '../css/btn.css'
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
-import { md5 } from 'js-md5';
 
 function SignButton(props){
 
@@ -15,6 +14,7 @@ function SignButton(props){
         username: "",
         email: user,
         password: password,
+        remember_me: checked
     };
     const handleButtonClick = async () => {
         console.log(requestData);

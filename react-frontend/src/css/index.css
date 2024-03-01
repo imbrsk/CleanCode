@@ -25,14 +25,15 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 50px;
-  background-color: #ffffff;
-  color: black;
+  border: 2px solid white;
+  background-color: transparent;
+  color: white;
   text-decoration: none;
   transition: 0.5s ease;
 }
 .nav-sign:hover {
-  background-color: #ff7f50;
-  color: white;
+  background-color: #ffffff;
+  color: black;
   cursor: pointer;
 }
 .logo {
@@ -41,7 +42,7 @@
   transition: 0.5s ease;
 }
 .logo:hover {
-  color: #3eb489;
+  color: #ff7f50;
   cursor: pointer;
 }
 .nav-register{
@@ -49,7 +50,8 @@
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 50px;
-  background-color: #ff7f50;
+  border: 2px solid white;
+  background-color: transparent;
   color: rgb(255, 255, 255);
   text-decoration: none;
   transition: 0.5s ease;
@@ -57,4 +59,14 @@
 .nav-register:hover{
   background-color: #ffffff;
   color: black;
+}
+
+.logo{
+  display: flex;
+}
+
+.logo img{
+  width: 3rem;
+  height: 3rem;
+  margin-right: 1rem;
 }

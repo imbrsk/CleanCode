@@ -16,7 +16,7 @@ function NavbarSign(props) {
       >
         <Container maxWidth="lg" style={{ height: 100 }}>
           <div className="navbar">
-            <div className="logo">Clean Code</div>
+            <div className="logo"><img src="\public\CleanCodeLogo.svg" alt="CleanCode" />Clean Code</div>
             <div className="nav-right">
               <div className="nav-about">About</div>
               <Link to={props.link} className="nav-register" >{props.value}</Link>

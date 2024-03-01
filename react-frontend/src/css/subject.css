@@ -1,0 +1,27 @@
+.subject{
+    display: flex;
+    align-items: center;
+
+}
+.subject-text:hover{
+    font-size: 2.7rem;
+    color: #FF7F50;
+    cursor: pointer;
+}
+
+.bracket{
+    font-size: 3rem;
+    color: #3EB489;
+    padding: 0.5rem;
+}
+.subject-text{
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    transition: 0.3s ease;
+    color: black;
+}
+.subject-link{
+    text-decoration: none;
+}
