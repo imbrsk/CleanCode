@@ -44,7 +44,7 @@ impl ProblemData{
         }
     }
     async fn get_input_expected(&self, field : String , pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
-        let sent_data = format!("SELECT {} FROM {} WHERE problem_name = ?", field, self.subject.clone());
+        let sent_data = format!("SELECT {} FROM subjects WHERE problem_name = ?", field);
         let correct = sqlx::query_as::<_,   (serde_json::Value,)>(&sent_data)
             .bind(self.problem.clone())
             .fetch_one(&**pool)

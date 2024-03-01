@@ -3,21 +3,30 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(31) NOT NULL UNIQUE,
     email VARCHAR(127) NOT NULL UNIQUE,
-    pass VARCHAR(255) NOT NULL,
-    solved INT
+    password VARCHAR(255) NOT NULL,
+    solved INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+--@block
+SELECT * FROM users; 
 -- @block
-INSERT INTO subjects (sub, link)
-VALUES
-    ('strukturno', '/strukturno')
+CREATE TABLE remember_me (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
     
 -- @block
-SELECT * FROM users
+SELECT username,solved
+FROM users
+ORDER BY solved DESC
+LIMIT 10;
 -- @block
-INSERT INTO strukturno 
-(parent_id, problem_name, problem_text,ex_input,ex_output,input,expected,starting_code,problem_location) 
-VALUES (1,'Zad1','','','','','','','')
+INSERT INTO subjects 
+(problem_name,problem_subject,problem_year, problem_text,ex_input,ex_output,input,expected,starting_code) 
+VALUES ('','',1,'','','','','','')
 
 -- @block
 CREATE TABLE subjects (
@@ -28,35 +37,32 @@ CREATE TABLE subjects (
 --@block
 CREATE TABLE ? (id INT AUTO_INCREMENT PRIMARY KEY,parent_id INT,problem VARCHAR(255),subjects VARCHAR(255),code TEXT);
 -- @block
-CREATE TABLE strukturno (
+CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    parent_id INT,
     problem_name VARCHAR(127),
+    problem_subject VARCHAR(127),
+    problem_year INT,
     problem_text TEXT,
     ex_input VARCHAR(255),
     ex_output VARCHAR(255),
     input TEXT,
     expected TEXT,
-    starting_code TEXT,
-    problem_location VARCHAR(255),
-    FOREIGN KEY (parent_id) REFERENCES subjects(id)
+    starting_code TEXT
 );
 
 -- @block
-CREATE TABLE zimski2023 (
-    child_id INT AUTO_INCREMENT PRIMARY KEY,
-    parent_id INT,
-    problem_name VARCHAR(63),
-    problem_text TEXT,
-    problem_expected VARCHAR(255),
-    problem_input VARCHAR(255),
-    input TEXT,
-    outputt TEXT,
-    starting_code TEXT,
-    FOREIGN KEY (parent_id) REFERENCES strukturno(id)
+CREATE TABLE user_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    code TEXT,
+    problem_name VARCHAR(127),
+    problem_subject VARCHAR(127),
+    
+
+
 );
 --@block
-DROP TABLE strukturno;
+DROP TABLE users;
 
 --@block
 SELECT input FROM strukturno WHERE problem_name = 'Zad1';
@@ -64,7 +70,7 @@ SELECT input FROM strukturno WHERE problem_name = 'Zad1';
 
 
 --@block
-UPDATE strukturno SET expected = '{
+UPDATE subjects SET input = '{
     "test0": "1 2 4 5 5 6 7 9",
     "test1": "1 3 4 5 7 8 12 42 53 56",
     "test2": "1 2 2 5 6 7 8 9",
@@ -77,8 +83,7 @@ UPDATE strukturno SET expected = '{
     "test9": "-1"
 }';
 --@block
-UPDATE strukturno SET expected = '{
-    "test0": "5 3\n1 2 3 4 5\n9 5 3 6 7"}';
+UPDATE subjects SET problem_name = 'Zad1';
 --@block
 CREATE TABLE bobo1(
     id INT AUTO_INCREMENT PRIMARY KEY,

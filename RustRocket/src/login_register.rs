@@ -15,8 +15,9 @@ pub enum AccountStatusRegister {
 #[derive(Debug, FromForm, Deserialize)]
 pub struct User{
     username: String,
-    email: String,
+    pub email: String,
     password: String,
+    pub remember_me: Option<bool>,
 }
 impl User{
     async fn is_user(data: String, type_data: String,login_register: bool, pool: &State<sqlx::MySqlPool>) -> bool {
@@ -35,7 +36,7 @@ impl User{
         taken.0 == 1
     }
     async fn password_match(email: String, pass: String, pool: &State<sqlx::MySqlPool>) -> bool{
-        let hashed_password = sqlx::query_as::<_, (String,)>("SELECT pass FROM users WHERE email = ?;")
+        let hashed_password = sqlx::query_as::<_, (String,)>("SELECT password FROM users WHERE email = ?;")
             .bind(email.trim_matches('"'))
             .fetch_one(&**pool)
             .await
@@ -43,15 +44,10 @@ impl User{
         !verify(pass, &hashed_password.0).unwrap()
     }
     async fn create_account(&self, pool: &State<sqlx::MySqlPool>){
-        sqlx::query("INSERT INTO users (username, email, pass, solved) VALUES (?,?,?,0)")
+        sqlx::query("INSERT INTO users (username, email, password, solved) VALUES (?,?,?,0)")
         .bind(self.username.clone())
         .bind(self.email.clone())
         .bind(hash(self.password.clone(), 10).unwrap())
-        .execute(pool.inner())
-        .await
-        .unwrap();
-        sqlx::query("CREATE TABLE ? (id INT AUTO_INCREMENT PRIMARY KEY, problem VARCHAR(255), subjects VARCHAR(255), code TEXT);")
-        .bind(self.username.clone())
         .execute(pool.inner())
         .await
         .unwrap();
