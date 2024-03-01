@@ -1,17 +1,93 @@
 -- @block
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    pass VARCHAR(255) NOT NULL
+    username VARCHAR(31) NOT NULL UNIQUE,
+    email VARCHAR(127) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    solved INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+--@block
+SELECT * FROM users; 
+-- @block
+CREATE TABLE remember_me (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+    
+-- @block
+SELECT username,solved
+FROM users
+ORDER BY solved DESC
+LIMIT 10;
+-- @block
+INSERT INTO subjects 
+(problem_name,problem_subject,problem_year, problem_text,ex_input,ex_output,input,expected,starting_code) 
+VALUES ('','',1,'','','','','','')
+
+-- @block
+CREATE TABLE subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sub VARCHAR(63) NOT NULL UNIQUE,
+    link VARCHAR(63) NOT NULL UNIQUE
+);
+--@block
+CREATE TABLE ? (id INT AUTO_INCREMENT PRIMARY KEY,parent_id INT,problem VARCHAR(255),subjects VARCHAR(255),code TEXT);
+-- @block
+CREATE TABLE subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    problem_name VARCHAR(127),
+    problem_subject VARCHAR(127),
+    problem_year INT,
+    problem_text TEXT,
+    ex_input VARCHAR(255),
+    ex_output VARCHAR(255),
+    input TEXT,
+    expected TEXT,
+    starting_code TEXT
 );
 
 -- @block
-INSERT INTO users (username, email, pass)
-VALUES
-    ('bobo2151', 'borisgjorgjievskiii@gmail.com', MD5('bobo2004'))
+CREATE TABLE user_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    code TEXT,
+    problem_name VARCHAR(127),
+    problem_subject VARCHAR(127),
     
--- @block
-SELECT * FROM Users
--- @block
-SELECT COUNT(*) FROM users WHERE username = 'bobo2151';
+
+
+);
+--@block
+DROP TABLE users;
+
+--@block
+SELECT input FROM strukturno WHERE problem_name = 'Zad1';
+
+
+
+--@block
+UPDATE subjects SET input = '{
+    "test0": "1 2 4 5 5 6 7 9",
+    "test1": "1 3 4 5 7 8 12 42 53 56",
+    "test2": "1 2 2 5 6 7 8 9",
+    "test3": "2 2 3 4 4 5 5 6 7 7 8 9",
+    "test4": "2 2 3 4 4 5 5 6 7 7 8 9",
+    "test5": "20 30 40 50 60 70",
+    "test6": "12 16 18 24 24 32 36 40",
+    "test7": "10 20 30 40",
+    "test8": "-1",
+    "test9": "-1"
+}';
+--@block
+UPDATE subjects SET problem_name = 'Zad1';
+--@block
+CREATE TABLE bobo1(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    problem VARCHAR(255),
+    subjects VARCHAR(255),
+    code TEXT
+)

@@ -11,7 +11,8 @@ function SignButton(props){
     let password = props.password;
     let checked = props.checked;
     const requestData = {
-        user: user,
+        username: "",
+        email: user,
         password: password,
         remember_me: checked
     };
@@ -35,16 +36,18 @@ function SignButton(props){
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonResponse = await response.json();
+            console.log(jsonResponse);
             setResponseData(jsonResponse);
         } catch (error) {
             console.error('Error during the fetch operation:', error);
         }
+    
     };
-
+    
     let value = props.value;
     let link = props.link;
     return(<>
-        <Link to={link} className="reg-btn" onClick={handleButtonClick}>{value}</Link>
+        <Link to={''} className="reg-btn" onClick={handleButtonClick}>{value}</Link>
     </>);
 }
 
