@@ -37,12 +37,14 @@ function SignButton(props){
             console.error('Error during the fetch operation:', error);
         }
 
-        if(jsonResponse["status"] == "success"){
+        if (responseData["status"] == "success"){
             Cookies.set("session", responseData["cookie"]["session"], { expires: "" });
             if (responseData["cookie"]["token"] != "none") {
                 // Set a permanent cookie
                 Cookies.set("token", responseData["cookie"]["token"], { expires: 365 }); // Expires in 365 days
-              }
+            }
+            window.location.href = props.link;
+
         }
         else{
             alert("Something is wrong");
@@ -51,7 +53,6 @@ function SignButton(props){
     };
     
     let value = props.value;
-    let link = props.link;
     return(<>
         <Link to={''} className="reg-btn" onClick={handleButtonClick}>{value}</Link>
     </>);

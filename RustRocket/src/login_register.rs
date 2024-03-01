@@ -14,7 +14,7 @@ pub enum AccountStatusRegister {
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct User{
-    username: String,
+    username: Option<String>,
     pub email: String,
     password: String,
     pub remember_me: Option<bool>,
@@ -62,12 +62,14 @@ impl User{
         AccountStatusLogin::Logged
     }
     pub async fn register(&self, pool: &State<sqlx::MySqlPool>) -> AccountStatusRegister {
-        if User::is_user(self.email.clone(), String::from("email"),false, pool).await {
+        if let Some(username) = &self.username {
+            if User::is_user(username.clone(), String::from("username"), false, pool).await {
+                return AccountStatusRegister::UsernameTaken;
+            }
+        }
+        if User::is_user(self.email.clone(), String::from("email"), false, pool).await {
             return AccountStatusRegister::EmailTaken;
-        } 
-        if User::is_user(self.username.clone(), String::from("username"),false, pool).await {
-            return AccountStatusRegister::UsernameTaken;
-        } 
+        }
         self.create_account(pool).await;
         AccountStatusRegister::Created
     }

@@ -15,7 +15,7 @@ function RegisterButton(props) {
   let check;
 
   const requestData = {
-    user: user,
+    username: user,
     email: email,
     password: password,
   };
@@ -76,7 +76,7 @@ function RegisterButton(props) {
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
-    if (responseData["status"] == "error") {
+    if (responseData["status"] === "error") {
       check = responseData["message"];
       props.passcheck(check);
     } else {
