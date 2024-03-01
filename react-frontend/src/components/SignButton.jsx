@@ -11,18 +11,13 @@ function SignButton(props){
     let password = props.password;
     let checked = props.checked;
     const requestData = {
-        username: "",
         email: user,
         password: password,
         remember_me: checked
     };
     const handleButtonClick = async () => {
         console.log(requestData);
-        if (checked) {
-            Cookies.set('user', user);
-            const userCookie = Cookies.get('user');
-            console.log(userCookie);
-        }
+
         try {
             const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
@@ -40,6 +35,17 @@ function SignButton(props){
             setResponseData(jsonResponse);
         } catch (error) {
             console.error('Error during the fetch operation:', error);
+        }
+
+        if(jsonResponse["status"] == "success"){
+            Cookies.set("session", responseData["cookie"]["session"], { expires: "" });
+            if (responseData["cookie"]["token"] != "none") {
+                // Set a permanent cookie
+                Cookies.set("token", responseData["cookie"]["token"], { expires: 365 }); // Expires in 365 days
+              }
+        }
+        else{
+            alert("Something is wrong");
         }
     
     };

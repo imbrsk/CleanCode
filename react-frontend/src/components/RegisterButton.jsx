@@ -80,13 +80,6 @@ function RegisterButton(props) {
       check = responseData["message"];
       props.passcheck(check);
     } else {
-      Cookies.set("session", responseData["cookie"]["session"], { expires: "" });
-      if (responseData["cookie"]["token"] != "none") {
-        // Set a permanent cookie
-        Cookies.set("token", responseData["cookie"]["token"], { expires: 365 }); // Expires in 365 days
-      }
-      const userCookie = Cookies.get("user");
-      console.log(userCookie);
       window.location.href = link;
     }
   };
