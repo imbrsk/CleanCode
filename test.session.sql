@@ -8,7 +8,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 --@block
-SELECT * FROM users; 
+SELECT * FROM users
 -- @block
 CREATE TABLE remember_me (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -85,9 +85,10 @@ UPDATE subjects SET input = '{
 --@block
 UPDATE subjects SET problem_name = 'Zad1';
 --@block
-CREATE TABLE bobo1(
+CREATE TABLE sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    problem VARCHAR(255),
-    subjects VARCHAR(255),
-    code TEXT
-)
+    user_id INT NOT NULL,
+    session_id VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

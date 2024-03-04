@@ -63,6 +63,10 @@ async fn register(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde
         })),
     };
 }
+#[options("/register")]
+fn reg()->String{
+    String::from("bobo")
+}
 #[post("/execute", data = "<data>")]
 async fn execute(data: Json<ProblemData>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
         let temp = data.make_code_req(pool).await;
@@ -81,5 +85,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute])
+        .mount("/", routes![login, register, execute, reg])
 }

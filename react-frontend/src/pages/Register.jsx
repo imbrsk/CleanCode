@@ -51,7 +51,8 @@ function Register() {
                 onChange={(e) => setPassword2(e.target.value)}
               ></Inputfield>
             </div>
-            <RegisterButton value="REGISTER" link="/sign-in"
+            <RegisterButton value="REGISTER" 
+                            link="/sign-in"
                             user={user}
                             password={password}
                             password2={password2}

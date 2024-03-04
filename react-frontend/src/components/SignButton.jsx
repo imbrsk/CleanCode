@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 function SignButton(props){
 
     const [responseData, setResponseData] = useState(null);
+    let jsonResponse;
     let user = props.user;
     let password = props.password;
     let checked = props.checked;
@@ -30,24 +31,23 @@ function SignButton(props){
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const jsonResponse = await response.json();
-            console.log(jsonResponse);
-            setResponseData(jsonResponse);
+            jsonResponse = await response.json();
         } catch (error) {
             console.error('Error during the fetch operation:', error);
         }
 
-        if (responseData["status"] == "success"){
-            Cookies.set("session", responseData["cookie"]["session"], { expires: "" });
-            if (responseData["cookie"]["token"] != "none") {
+        if (jsonResponse["status"] === "success"){
+            Cookies.set("session", jsonResponse["cookie"]["session"]);
+            if (jsonResponse["cookie"]["token"] !== "none") {
                 // Set a permanent cookie
-                Cookies.set("token", responseData["cookie"]["token"], { expires: 365 }); // Expires in 365 days
+                Cookies.set("token", jsonResponse["cookie"]["token"], { expires: 365 }); // Expires in 365 days
             }
             window.location.href = props.link;
 
         }
         else{
-            alert("Something is wrong");
+            let check = jsonResponse["message"];
+            props.passcheck(check);
         }
     
     };

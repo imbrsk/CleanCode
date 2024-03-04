@@ -1,9 +1,34 @@
 import '../css/account.css'
+import Cookies from "js-cookie";
+
 
 function Account(props){
 
     let user = props.user;
     let tasks = props.tasks;
+    const token = Cookies.get("token");
+
+    const getAccount = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(token),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonResponse = await response.json();
+            user = jsonResponse['user'];
+            tasks = jsonResponse['tasks'];
+        } catch (error) {
+            console.error('Error during the fetch operation:', error);
+        }
+    }
+    getAccount();
     user = "Stefan19";
     tasks = "70";
     return(<>

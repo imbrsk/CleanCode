@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 
 function RegisterButton(props) {
-  const [responseData, setResponseData] = useState(null);
   let user = props.user;
   let password = props.password;
   let email = props.email;
@@ -13,6 +12,7 @@ function RegisterButton(props) {
   let value = props.value;
   let link = props.link;
   let check;
+  let jsonResponse;
 
   const requestData = {
     username: user,
@@ -71,16 +71,16 @@ function RegisterButton(props) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const jsonResponse = await response.json();
-      setResponseData(jsonResponse);
+      jsonResponse = await response.json();
+      console.log(jsonResponse);
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
-    if (responseData["status"] === "error") {
-      check = responseData["message"];
-      props.passcheck(check);
-    } else {
+    if (jsonResponse["status"] === "success") {
       window.location.href = link;
+    } else {
+      check = jsonResponse["message"];
+      props.passcheck(check);
     }
   };
 

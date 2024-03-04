@@ -5,15 +5,34 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Account from "../components/Account";
 import Subject from "../components/subject";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { redirect } from "react-router-dom";
 import "../css/home.css";
 
 function Home() {
-  const userCookie = Cookies.get('user');
-  console.log(userCookie);
+  const userCookie = Cookies.get("session");
+  const token = Cookies.get("token");
 
-  const subjects = ["Структурно Програмирање", "Напредно Програмирање", "Објектно-Ориентирано Програмирање", "Алгоритми и Податочни стриктури", "Визуелно Програмирање"];
+  const createSession = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(token),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const jsonResponse = await response.json();
+      Cookies.set("session", jsonResponse["cookie"]["session"]);
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+  };
+
   const subjectsJSON = [
     {
       name: "Структурно Програмирање",
@@ -28,26 +47,31 @@ function Home() {
     {
       name: "Објектно-Ориентирано Програмирање",
       number: 3,
-      link: "/objektno"
+      link: "/objektno",
     },
     {
       name: "Алгоритми и Податочни структури",
       number: 4,
-      link: "/algoritmi"
+      link: "/algoritmi",
     },
     {
       name: "Визуелно Програмирање",
       number: 5,
-      link: "/vizuelno"
-    }
+      link: "/vizuelno",
+    },
   ];
   const subjectItems = subjectsJSON.map((subject) => (
     <Subject key={subject.number} link={subject.link} name={subject.name} />
   ));
   if (!userCookie) {
-    window.location.href = "/";
-  }
-  else{
+    if (!token) {
+      window.location.href = "/";
+    } 
+    else {
+      createSession();
+    }
+  } 
+  else {
     return (
       <React.Fragment>
         <CssBaseline />

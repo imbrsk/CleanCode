@@ -14,6 +14,11 @@ function Sign() {
   const [password, setPassword] = React.useState(""); // State for password input
   const [isChecked, setIsChecked] = React.useState(true); // Set the initial state to true for checked
 
+  const [check, setCheck] = React.useState("");
+
+  const handleCheck = (variable) => {
+    setCheck(variable); // Update state with the variable from child
+  };
   // Function to handle checkbox change
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked); // Update the state when checkbox value changes
@@ -61,8 +66,10 @@ function Sign() {
                 user={email} // Pass email state as prop
                 password={password} // Pass password state as prop
                 checked={isChecked}
+                passcheck={handleCheck}
               ></SignButton>
             </div>
+            <div className="check-msg">{check}</div>
             <div className="sign-connect">
               <div className="horz-line"></div>
               <div>Or connect with</div>
