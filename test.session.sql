@@ -8,7 +8,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 --@block
-SELECT * FROM users; 
+SELECT * FROM remember_me; 
 -- @block
 CREATE TABLE remember_me (
     id INT AUTO_INCREMENT PRIMARY KEY,
