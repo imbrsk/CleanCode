@@ -20,7 +20,11 @@ use crate::leaderboard::Leaderboard;
 mod create_session;
 use crate::create_session::LoginData;
 
+mod verify_session;
+use crate::verify_session::Token;
 
+mod get_username;
+use crate::get_username::Session;
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _response = match data.login(&pool).await {
@@ -72,6 +76,18 @@ async fn execute(data: Json<ProblemData>, pool: &State<sqlx::MySqlPool>) -> Json
         let temp = data.make_code_req(pool).await;
         temp
 }
+#[post("/session", data = "<data>")]
+async fn session(data: Json<Token>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+        let session = data.create_session(pool).await;
+        Json(json!({
+        "session": session
+        }))
+}
+#[post("/getuser", data = "<data>")]
+async fn getuser(data: Json<Session>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+        let user = data.get_user_id(pool).await;
+        user
+}
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let cookie = bobo.create_session(pool).await; 
@@ -85,5 +101,9 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
+<<<<<<< HEAD
         .mount("/", routes![login, register, execute, reg])
+=======
+        .mount("/", routes![login, register, execute, session, getuser])
+>>>>>>> d447372d03693fdcb211a31c4c5d615bf543e9be
 }

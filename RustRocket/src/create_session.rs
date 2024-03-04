@@ -30,6 +30,16 @@ impl LoginData {
             .unwrap();
             Ok(session_id.to_string())
         }
+    async fn if_token(user_id: String, pool: &State<sqlx::MySqlPool>) -> Result<bool, sqlx::Error> {
+        let session: Result<(i32,), sqlx::Error> = sqlx::query_as::<_, (i32,)>("SELECT COUNT(*) FROM users WHERE id = ?; ")
+            .bind(user_id)
+            .fetch_one(&**pool)
+            .await;
+        match session {
+            Ok(session_count) => Ok(session_count.0 != 1),
+            Err(e) => Err(e),
+        }
+    }
     async fn create_token(user_id: i32, pool: &State<sqlx::MySqlPool>) -> Result<String, sqlx::Error> {
         let token = Uuid::new_v4();
         sqlx::query("INSERT INTO remember_me (user_id, token) VALUES (?,?)")
@@ -45,11 +55,13 @@ impl LoginData {
         let user_id = user_id_result.unwrap().0;
         let session = Self::create_session_token(user_id, pool).await;
         if self.remember_me {
-            let token = Self::create_token(user_id, pool).await;
-            return Json(json!({
-                "session": session.unwrap(),
-                "token": token.unwrap()
-            })); 
+            if Self::if_token(user_id.to_string(), pool).await.unwrap() == true {
+                let token = Self::create_token(user_id, pool).await;
+                return Json(json!({
+                    "session": session.unwrap(),
+                    "token": token.unwrap()
+                })); 
+            }
         }
         Json(json!({
             "session": session.unwrap(),
