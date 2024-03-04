@@ -9,19 +9,17 @@ pub struct Session {
 }
 impl Session{
     pub async fn get_user_id(&self, pool: &State<sqlx::MySqlPool>) ->  Json<serde_json::Value> {
-        let user_id: (i8, )= sqlx::query_as("SELECT user_id FROM sessions WHERE token = ?")
+        let user_id: (i8, )= sqlx::query_as("SELECT user_id FROM sessions WHERE session_id = ?")
             .bind(self.session.clone())
             .fetch_one(&**pool)
             .await
             .unwrap();
-        let row = sqlx::query("SELECT username, solved FROM users WHERE id = ?")
+        let row = sqlx::query("SELECT username, solved FROM users WHERE user_id = ?")
             .bind(user_id.0)
             .fetch_all(&**pool)
             .await
             .unwrap();
-        Json(json!({
-            "username": row[0].get::<String, usize>(0),
-            "solved": row[0].get::<String, usize>(1)
-        }))
+        let username = row.get("username");
+        Json(json!({ "row": row })) 
     }
 }

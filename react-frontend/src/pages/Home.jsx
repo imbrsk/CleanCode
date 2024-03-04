@@ -11,7 +11,7 @@ import "../css/home.css";
 
 function Home() {
   const userCookie = Cookies.get("session");
-  const token = Cookies.get("token");
+  const token = {"token":Cookies.get("token")};
 
   const createSession = async () => {
     try {
@@ -27,7 +27,7 @@ function Home() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const jsonResponse = await response.json();
-      Cookies.set("session", jsonResponse["cookie"]["session"]);
+      Cookies.set("session", jsonResponse["session"]);
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
