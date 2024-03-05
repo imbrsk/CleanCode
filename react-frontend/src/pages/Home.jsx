@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Account from "../components/Account";
 import Subject from "../components/subject";
+import MakeSession from "../components/MakeSession";
 import Cookies from "js-cookie";
 import { redirect } from "react-router-dom";
 import "../css/home.css";
@@ -13,25 +14,6 @@ function Home() {
   const userCookie = Cookies.get("session");
   const token = {"token":Cookies.get("token")};
 
-  const createSession = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(token),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const jsonResponse = await response.json();
-      Cookies.set("session", jsonResponse["session"]);
-    } catch (error) {
-      console.error("Error during the fetch operation:", error);
-    }
-  };
 
   const subjectsJSON = [
     {
@@ -68,7 +50,7 @@ function Home() {
       window.location.href = "/";
     } 
     else {
-      createSession();
+      <MakeSession></MakeSession>
     }
   } 
   else {

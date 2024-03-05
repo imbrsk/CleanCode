@@ -8,7 +8,7 @@ import Subject from "../components/subject";
 import Account from "../components/Account";
 import Accordion from "../components/Accordion";
 import Footer from "../components/Footer";
-
+import MakeSession from "../components/MakeSession";
 
 function Problems() {
   const [activeIndex, setActiveIndex] = useState(null);

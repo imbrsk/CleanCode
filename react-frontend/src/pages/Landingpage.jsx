@@ -11,15 +11,6 @@ import Cookies from 'js-cookie';
 
 function Landingpage() {
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-      const userCookie = Cookies.get('user');
-      if (userCookie) {
-          setUser(userCookie);
-      }
-  }, []);
-  console.log(user);
   return (
     <>
       <React.Fragment>
