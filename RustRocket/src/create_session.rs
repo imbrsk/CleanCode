@@ -31,7 +31,7 @@ impl LoginData {
             Ok(session_id.to_string())
         }
     async fn if_token(user_id: String, pool: &State<sqlx::MySqlPool>) -> Result<bool, sqlx::Error> {
-        let session: Result<(i32,), sqlx::Error> = sqlx::query_as::<_, (i32,)>("SELECT COUNT(*) FROM users WHERE id = ?; ")
+        let session: Result<(i32,), sqlx::Error> = sqlx::query_as::<_, (i32,)>("SELECT COUNT(*) FROM users WHERE user_id = ?; ")
             .bind(user_id)
             .fetch_one(&**pool)
             .await;

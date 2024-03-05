@@ -86,8 +86,7 @@ async fn session(data: Json<Token>, pool: &State<sqlx::MySqlPool>) -> Json<serde
 #[post("/getuser", data = "<data>")]
 async fn getuser(data: Json<Session>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
         let user = data.get_user_id(pool).await;
-        print!("{:?}", user);
-        user
+        Json(json!({ "username": user.0, "solved": user.1 }))
 }
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
