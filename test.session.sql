@@ -64,7 +64,7 @@ CREATE TABLE user_data (
 
 );
 --@block
-SELECT username,solved FROM users WHERE user_id = 1
+SELECT * FROM remember_me;
 
 --@block
 SELECT input FROM strukturno WHERE problem_name = 'Zad1';
