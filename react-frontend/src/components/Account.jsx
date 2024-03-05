@@ -6,31 +6,29 @@ function Account(props){
 
     let user = props.user;
     let tasks = props.tasks;
-    const token = Cookies.get("token");
+    const session = {"session": Cookies.get("session")};
 
     const getAccount = async () => {
         try {
-            const response = await fetch('http://localhost:8000/account', {
+            const response = await fetch('http://localhost:8000/getuser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(token),
+                body: JSON.stringify(session),
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonResponse = await response.json();
-            user = jsonResponse['user'];
-            tasks = jsonResponse['tasks'];
+            user = jsonResponse['username'];
+            tasks = jsonResponse['solved'];
         } catch (error) {
             console.error('Error during the fetch operation:', error);
         }
     }
     getAccount();
-    user = "Stefan19";
-    tasks = "70";
     return(<>
     <div className="account">
         <div className="account-info">Account</div>
