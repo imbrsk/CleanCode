@@ -8,7 +8,9 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 --@block
-SELECT * FROM remember_me; 
+SELECT user_id
+FROM sessions
+WHERE session_id = 0
 -- @block
 CREATE TABLE remember_me (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,7 +64,7 @@ CREATE TABLE user_data (
 
 );
 --@block
-DROP TABLE users;
+SELECT username,solved FROM users WHERE user_id = 1
 
 --@block
 SELECT input FROM strukturno WHERE problem_name = 'Zad1';

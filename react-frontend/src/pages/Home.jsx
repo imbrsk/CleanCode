@@ -11,7 +11,7 @@ import "../css/home.css";
 
 function Home() {
   const userCookie = Cookies.get("session");
-  const token = {"token": Cookies.get("token")};
+  const token = {"token":Cookies.get("token")};
 
   const createSession = async () => {
     try {

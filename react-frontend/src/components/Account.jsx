@@ -6,7 +6,7 @@ function Account(props){
 
     let user = props.user;
     let tasks = props.tasks;
-    const session = {"session": Cookies.get("session")};
+    const token = {"session": Cookies.get("session")};
 
     const getAccount = async () => {
         try {
