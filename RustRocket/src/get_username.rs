@@ -16,10 +16,12 @@ impl Session{
             .unwrap();
         let row = sqlx::query("SELECT username, solved FROM users WHERE user_id = ?")
             .bind(user_id.0)
-            .fetch_all(&**pool)
+            .fetch_one(&**pool)
             .await
             .unwrap();
-        let username = row.get("username");
-        Json(json!({ "row": row })) 
+
+        let username: Option<String> = row.get("username");
+        let solved: Option<i32> = row.get("solved");
+        Json(json!({ "username": username, "solved": solved }))
     }
 }

@@ -64,7 +64,7 @@ CREATE TABLE user_data (
 
 );
 --@block
-DROP TABLE users;
+SELECT username,solved FROM users WHERE user_id = 1
 
 --@block
 SELECT input FROM strukturno WHERE problem_name = 'Zad1';
