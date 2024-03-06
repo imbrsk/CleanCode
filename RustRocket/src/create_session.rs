@@ -36,7 +36,7 @@ impl LoginData {
             .fetch_one(&**pool)
             .await;
         match session {
-            Ok(session_count) => Ok(session_count.0 != 1),
+            Ok(session_count) => Ok(session_count.0 == 1),
             Err(e) => Err(e),
         }
     }

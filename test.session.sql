@@ -64,7 +64,7 @@ CREATE TABLE user_data (
 
 );
 --@block
-SELECT * FROM remember_me;
+SELECT * FROM users;
 
 --@block
 SELECT input FROM strukturno WHERE problem_name = 'Zad1';
