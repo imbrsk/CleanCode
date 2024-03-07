@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 const MakeSession = () => {
-  const userCookie = Cookies.get("session");
+  console.log("asdada");
+
   const token = { "token": Cookies.get("token") };
 
   const createSession = async () => {

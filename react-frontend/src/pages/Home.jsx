@@ -5,16 +5,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Account from "../components/Account";
 import Subject from "../components/subject";
-import MakeSession from "../components/MakeSession";
 import Cookies from "js-cookie";
 import { redirect } from "react-router-dom";
 import "../css/home.css";
 
 function Home() {
+
   const userCookie = Cookies.get("session");
   const token = {"token":Cookies.get("token")};
-
-
   const subjectsJSON = [
     {
       name: "Структурно Програмирање",
@@ -45,12 +43,15 @@ function Home() {
   const subjectItems = subjectsJSON.map((subject) => (
     <Subject key={subject.number} link={subject.link} name={subject.name} />
   ));
+  
   if (!userCookie) {
     if (!token) {
       window.location.href = "/";
     } 
     else {
       <MakeSession></MakeSession>
+      console.log("test");
+
     }
   } 
   else {
