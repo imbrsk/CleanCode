@@ -1,4 +1,4 @@
-use rocket::{error, serde::json::{self, Json}, FromForm, State};
+use rocket::{serde::json::Json, FromForm, State};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use serde_json::json;
@@ -22,7 +22,7 @@ impl LoginData {
     } 
     async fn create_session_token(user_id: i32, pool: &State<sqlx::MySqlPool>) -> Result<String, sqlx::Error> {
         let session_id = Uuid::new_v4();
-        sqlx::query("INSERT INTO sessions (user_id, session_id) VALUES (?,?)")
+        sqlx::query("INSERT INTO sessions (user_id, session_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id)")
             .bind(&user_id)
             .bind(session_id.to_string())
             .execute(&**pool)

@@ -21,21 +21,23 @@ CREATE TABLE remember_me (
 );
     
 -- @block
-SELECT username,solved
-FROM users
-ORDER BY solved DESC
-LIMIT 10;
+"UPDATE users SET password = ? WHERE email = ?"
+-- @block
+SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS minutes_ago
+FROM reset_password
+WHERE email = 'bobo';
 -- @block
 INSERT INTO subjects 
 (problem_name,problem_subject,problem_year, problem_text,ex_input,ex_output,input,expected,starting_code) 
 VALUES ('','',1,'','','','','','')
 
 -- @block
-CREATE TABLE subjects (
+CREATE TABLE reset_password (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    sub VARCHAR(63) NOT NULL UNIQUE,
-    link VARCHAR(63) NOT NULL UNIQUE
-);
+    email VARCHAR(127) NOT NULL UNIQUE,
+    reset_token VARCHAR(15) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
 --@block
 CREATE TABLE ? (id INT AUTO_INCREMENT PRIMARY KEY,parent_id INT,problem VARCHAR(255),subjects VARCHAR(255),code TEXT);
 -- @block
@@ -64,13 +66,9 @@ CREATE TABLE user_data (
 
 );
 --@block
-SELECT * FROM users;
-
+INSERT INTO sessions (user_id, session_id) VALUES (1, 2) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id);
 --@block
-SELECT input FROM strukturno WHERE problem_name = 'Zad1';
-
-
-
+SELECT * FROM reset_password
 --@block
 UPDATE subjects SET input = '{
     "test0": "1 2 4 5 5 6 7 9",
@@ -94,3 +92,5 @@ CREATE TABLE sessions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+--@block
+SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS minutes_ago FROM reset_password WHERE email = 'bobo';
