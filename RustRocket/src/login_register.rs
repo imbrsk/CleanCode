@@ -52,6 +52,14 @@ impl User{
         .await
         .unwrap();
     }
+    pub async fn reset_password(&self, pool: &State<sqlx::MySqlPool>){
+        sqlx::query("UPDATE users SET password = ? WHERE email = ?")
+        .bind(hash(self.password.clone(), 10).unwrap())
+        .bind(self.email.clone())
+        .execute(pool.inner())
+        .await
+        .unwrap();
+    }
     pub async fn login(&self, pool: &State<sqlx::MySqlPool>) -> AccountStatusLogin {
         if User::is_user(self.email.clone(), String::from("email"),true, pool).await{
             return AccountStatusLogin::EmailNotValid;

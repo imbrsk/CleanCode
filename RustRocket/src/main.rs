@@ -1,11 +1,10 @@
 use reqwest::get;
-use rocket::{get, launch, options, post, response, routes, State};
+use rocket::{data, get, launch, options, post, response, routes, State};
 use rocket::fairing::AdHoc;
 use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
 use serde_json::json;
 use sqlx::MySqlPool;
-use uuid::Uuid;
 
 
 mod login_register;
@@ -25,6 +24,12 @@ use crate::verify_session::Token;
 
 mod get_username;
 use crate::get_username::Session;
+
+mod reset_password;
+use crate::reset_password::{ResetPassword, Reset, VerifyCode};
+
+
+
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _response = match data.login(&pool).await {
@@ -86,7 +91,46 @@ async fn session(data: Json<Token>, pool: &State<sqlx::MySqlPool>) -> Json<serde
 #[post("/getuser", data = "<data>")]
 async fn getuser(data: Json<Session>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
         let user = data.get_user_id(pool).await;
-        Json(json!({ "username": user.0, "solved": user.1 }))
+        Json(json!({ 
+            "username": user.0, 
+            "solved": user.1 
+        }))
+}
+#[post("/check_email", data = "<data>")]
+async fn check_email(data: Json<ResetPassword>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let _response = match data.reset_password(pool).await {
+        Reset::Send => return Json(json!({
+            "status": "success",
+            "message": "Reset code sent"
+        })),
+        Reset::EmailNotValid => return Json(json!({
+            "status": "error",
+            "message": "Email is not valid"
+        })),
+    };
+}
+#[post("/varify_code", data = "<data>")]
+async fn varify_code(data: Json<VerifyCode>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    if data.reset(pool).await{
+        return Json(json!({
+            "status": "success",
+            "message": "Code is valid"
+        }))
+    }else{
+        return Json(json!({
+            "status": "error",
+            "message": "Code is not valid"
+        }))
+    
+    }
+}
+#[post("/reset", data = "<data>")]   
+async fn reset(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    data.reset_password(pool).await;
+    Json(json!({
+        "status": "success",
+        "message": "Password reset"
+    }))
 }
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
@@ -101,5 +145,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, varify_code])
 }
