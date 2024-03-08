@@ -8,17 +8,24 @@ import SignButton from "../components/SignButton";
 import google from "../assets/google.svg";
 import { md5 } from "js-md5";
 import FgpassButton from "../components/FgpassButton";
+import SendCode from "../components/SendCode";
 
 function ForgotPassword() {
   const [email, setEmail] = React.useState(""); // State for email input
   const [clicked, setClicked] = React.useState(false); // State for password input
   const [message, setMessage] = React.useState("");
+  const [code, setCode] = React.useState("");
+  const [checkReset, setCheckReset] = React.useState(false);
+
   const handleClicked = (variable) => {
     setClicked(variable); // Update state with the variable from child
   };
   const handleMessage = (variable) => {
     setMessage(variable);
   };
+  const handleCheckReset = (variable) => {
+    setCheckReset(variable);
+  }
 
   if (clicked != true) {
     return (
@@ -48,10 +55,41 @@ function ForgotPassword() {
         </React.Fragment>
       </>
     );
-  }
-  else{
+  } else if(checkReset != true){
     return (
       <>
+        <div>
+          <Inputfield
+            placeholder="Enter the verification code"
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)} // Update email state
+          ></Inputfield>
+        </div>
+        <div>
+          <SendCode
+            value="Send" 
+            code={code}
+            handleMessage={handleMessage}
+            handleCheckReset={handleCheckReset}
+          ></SendCode>
+        </div>
+      </>
+    );
+  }
+  else{
+    return(
+      <>
+      <div>
+        <Inputfield
+          placeholder="Enter your password"
+          type="text"
+        ></Inputfield>
+        <Inputfield
+          placeholder="Enter your password again"
+          type="text"
+        ></Inputfield>
+      </div>
       </>
     )
   }
