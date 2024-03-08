@@ -58,13 +58,25 @@ impl ResetPassword{
     }
 }
 
-
+pub enum Verify{
+    CodeNotValid,
+    CodeValid,
+    TimeExceeded,
+}
 #[derive(Debug, FromForm, Deserialize)]
 pub struct VerifyCode{
     code: String,
     email: String,
 }
 impl VerifyCode {
+    async fn time(&self, pool: &State<sqlx::MySqlPool>) -> bool {
+        let time: (i32, )= sqlx::query_as("SELECT TIMESTAMPDIFF(MINUTE, time, NOW()) FROM reset_password WHERE email = ?")
+            .bind(self.email.clone())
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        time.0 > 15
+    }
     async fn verify_token(&self, pool: &State<sqlx::MySqlPool>) -> bool {
         let code: (String, )= sqlx::query_as("SELECT code FROM reset_password WHERE email = ?")
             .bind(self.email.clone())
@@ -83,11 +95,14 @@ impl VerifyCode {
             .await
             .unwrap();
     }
-    pub async fn reset(&self, pool: &State<sqlx::MySqlPool>) -> bool {
+    pub async fn reset(&self, pool: &State<sqlx::MySqlPool>) -> Verify {
+        if VerifyCode::time(self, pool).await {
+            return Verify::TimeExceeded;
+        }
         if VerifyCode::verify_token(self, pool).await{
             VerifyCode::delete_reset(self, pool).await;
-            return true;
+            return Verify::CodeValid;        
         }
-        false
+        Verify::CodeNotValid
     }
 }

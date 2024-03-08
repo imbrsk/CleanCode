@@ -26,7 +26,7 @@ mod get_username;
 use crate::get_username::Session;
 
 mod reset_password;
-use crate::reset_password::{ResetPassword, Reset, VerifyCode};
+use crate::reset_password::{ResetPassword, Reset, VerifyCode, Verify};
 
 
 
@@ -111,18 +111,19 @@ async fn check_email(data: Json<ResetPassword>, pool: &State<sqlx::MySqlPool>) -
 }
 #[post("/varify_code", data = "<data>")]
 async fn varify_code(data: Json<VerifyCode>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-    if data.reset(pool).await{
-        return Json(json!({
-            "status": "success",
-            "message": "Code is valid"
-        }))
-    }else{
-        return Json(json!({
+    let _ = match data.reset(pool).await{
+        Verify::CodeNotValid => return Json(json!({
             "status": "error",
             "message": "Code is not valid"
-        }))
-    
-    }
+        })),
+        Verify::CodeValid => return Json(json!({
+            "status": "sucsess",
+        })),
+        Verify::TimeExceeded => return Json(json!({
+            "status": "error",
+            "message": "Code is expired"
+        })),
+    };
 }
 #[post("/reset", data = "<data>")]   
 async fn reset(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {

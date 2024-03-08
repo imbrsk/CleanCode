@@ -68,7 +68,7 @@ CREATE TABLE user_data (
 --@block
 INSERT INTO sessions (user_id, session_id) VALUES (1, 2) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id);
 --@block
-DROP TABLE sessions
+SELECT * FROM reset_password
 --@block
 UPDATE subjects SET input = '{
     "test0": "1 2 4 5 5 6 7 9",
@@ -93,4 +93,4 @@ CREATE TABLE sessions (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 --@block
-DELETE FROM sessions;
+SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS minutes_ago FROM reset_password WHERE email = 'bobo';

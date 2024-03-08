@@ -22,7 +22,7 @@ impl LoginData {
     } 
     async fn create_session_token(user_id: i32, pool: &State<sqlx::MySqlPool>) -> Result<String, sqlx::Error> {
         let session_id = Uuid::new_v4();
-        sqlx::query("INSERT INTO sessions (user_id, session_id) VALUES (1, 2) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id)")
+        sqlx::query("INSERT INTO sessions (user_id, session_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id)")
             .bind(&user_id)
             .bind(session_id.to_string())
             .execute(&**pool)
