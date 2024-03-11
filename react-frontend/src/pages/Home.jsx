@@ -12,44 +12,39 @@ import "../css/home.css";
 function Home() {
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
-  const subjectsJSON = [
-    {
-      name: "Структурно Програмирање",
-      number: 1,
-      link: "/strukturno",
-    },
-    {
-      name: "Напредно Програмирање",
-      number: 2,
-      link: "/napredno",
-    },
-    {
-      name: "Објектно-Ориентирано Програмирање",
-      number: 3,
-      link: "/objektno",
-    },
-    {
-      name: "Алгоритми и Податочни структури",
-      number: 4,
-      link: "/algoritmi",
-    },
-    {
-      name: "Визуелно Програмирање",
-      number: 5,
-      link: "/vizuelno",
-    },
-  ];
-  const subjectItems = subjectsJSON.map((subject) => (
-    <Subject key={subject.number} link={subject.link} name={subject.name} />
+  const [subjects, setSubjects] = React.useState([]);
+
+  React.useEffect(() => {
+    if (!userCookie) {
+      if (!token) {
+        window.location.href = "/";
+      } else {
+        createSession();
+      }
+    }
+
+    const fetchSubjects = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/subjects");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        let data = await response.json();
+        // Sort subjects by their number
+        data.sort((a, b) => a.number - b.number);
+        setSubjects(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+
+    fetchSubjects();
+  }, [userCookie, token]);
+
+  const subjectItems = subjects.map((subject) => (
+    <Subject key={subject.number} link={subject.path} name={subject.subject} />
   ));
 
-  if (!userCookie) {
-    if (!token) {
-      window.location.href = "/";
-    } else {
-      createSession();
-    }
-  }
   return userCookie ? (
     <React.Fragment>
       <CssBaseline />

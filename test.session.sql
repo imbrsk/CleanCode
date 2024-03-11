@@ -37,9 +37,9 @@ INSERT INTO subjects (
     )
 VALUES (
         '',
-        'Објектно',
-        '/objektno',
-        2,
+        'Структурно',
+        '/strukturno',
+        1,
         '',
         '',
         '',
@@ -105,7 +105,7 @@ UPDATE subjects SET input = '{
     "test9": "-1"
 }';
 --@block
-SELECT * FROM sessions
+SELECT * FROM subjects
 --@block
 CREATE TABLE sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
