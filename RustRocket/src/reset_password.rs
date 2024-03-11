@@ -40,8 +40,12 @@ impl ResetPassword{
             .from("cleancodereset@gmail.com".parse().unwrap())
             .to(self.email.clone().parse().unwrap())
             .subject("Reset Password for CleanCode")
-            .header(ContentType::TEXT_PLAIN)
-            .body(String::from(format!("Your passowrd reset code is\n<h3>{}</h3>\nIt will be valid for 15 minutes.", random_string)))
+            .header(ContentType::TEXT_HTML)
+            .body(String::from(format!("<p style='color: black'>Dear User,</p>
+                <p style='color: black'>We have received a request to reset your password. Please enter the code in the website:</p>
+                <h3 style='color: #800080'>{}</h3>
+                <p style='color: black'>If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged</p>
+                <p style='color: black'>Thank you,<br>CleanCode</p>", random_string)))
             .unwrap();
         let creds = Credentials::new("cleancodereset@gmail.com".to_owned(), "xpey mdej ejmi ytya".to_owned());// Open a remote connection to gmail
         let mailer = SmtpTransport::relay("smtp.gmail.com")

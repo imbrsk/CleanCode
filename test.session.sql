@@ -105,7 +105,7 @@ UPDATE subjects SET input = '{
     "test9": "-1"
 }';
 --@block
-SELECT * FROM reset_password
+SELECT * FROM sessions
 --@block
 CREATE TABLE sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
