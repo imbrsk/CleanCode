@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-const MakeSession = () => {
-  const token = { "token": Cookies.get("token") };
-
-  const createSession = async () => {
+const createSession = async () => {
+    const token = { "token": Cookies.get("token") };
+    console.log("hello")
     try {
       const response = await fetch("http://localhost:8000/session", {
         method: "POST",
@@ -22,13 +20,7 @@ const MakeSession = () => {
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
+    window.location.reload();
   };
 
-  useEffect(() => {
-    createSession(); // This will execute when the component mounts
-  }, []); // Empty dependency array to ensure it only runs once
-  
-  return null;
-};
-
-export default MakeSession;
+  export { createSession }

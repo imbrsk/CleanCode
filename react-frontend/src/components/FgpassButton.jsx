@@ -22,13 +22,13 @@ function FgpassButton(props) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       jsonResponse = await response.json();
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
     if(jsonResponse['status'] == "success"){
         props.handleClicked(true);
+        window.location.reload();
     }
     else{
         msg = jsonResponse['message'];

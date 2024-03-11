@@ -9,9 +9,12 @@ import google from "../assets/google.svg";
 import { md5 } from "js-md5";
 import FgpassButton from "../components/FgpassButton";
 import SendCode from "../components/SendCode";
+import SendReset from "../components/SendReset";
 
 function ForgotPassword() {
   const [email, setEmail] = React.useState(""); // State for email input
+  const [password1, setPassword1] = React.useState(""); // State for email input
+  const [password2, setPassword2] = React.useState(""); // State for email input
   const [clicked, setClicked] = React.useState(false); // State for password input
   const [message, setMessage] = React.useState("");
   const [code, setCode] = React.useState("");
@@ -74,6 +77,7 @@ function ForgotPassword() {
             handleCheckReset={handleCheckReset}
           ></SendCode>
         </div>
+        {message}
       </>
     );
   }
@@ -84,12 +88,22 @@ function ForgotPassword() {
         <Inputfield
           placeholder="Enter your password"
           type="text"
+          onChange={(e) => setPassword2(e.target.value)} // Update email state
         ></Inputfield>
         <Inputfield
           placeholder="Enter your password again"
           type="text"
+          onChange={(e) => setPassword2(e.target.value)} // Update email state
         ></Inputfield>
+        <SendReset
+          email={email}
+          password1={password1}
+          password2={password2}
+          handleMessage={handleMessage}
+        >
+        </SendReset>
       </div>
+      {message}
       </>
     )
   }

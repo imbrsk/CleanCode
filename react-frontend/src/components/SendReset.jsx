@@ -5,10 +5,19 @@ import { Outlet, Link } from "react-router-dom";
 function SendReset(props) {
   let jsonResponse;
   let requestData = {
-    "code": props.code
+    email: props.email,
+    password: props.password2,
   };
   let value = props.value;
   let msg;
+  const handlePass = () => {
+    if (props.password1 !== props.password2) {
+      let msg = "Your password doesn't match.";
+      props.handleMessage(msg);
+    } else {
+      handleCheck();
+    }
+  };
   const handleCheck = async () => {
     try {
       const response = await fetch("http://localhost:8000/verify_code", {
@@ -27,23 +36,18 @@ function SendReset(props) {
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
-    if(jsonResponse['status'] == "success"){
-        props.handleCheckReset(true);
-    }
-    else{
-        msg = jsonResponse['message'];
-        props.handleMessage(msg);
+    if (jsonResponse["status"] == "success") {
+      window.location.href = "/sign-in";
     }
   };
 
   return (
     <>
-      <Link className="reg-btn" onClick={handleCheck}>
+      <Link className="reg-btn" onClick={handlePass}>
         {value}
       </Link>
     </>
   );
-
 }
 
 export default SendReset;

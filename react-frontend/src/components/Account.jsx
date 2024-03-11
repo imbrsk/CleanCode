@@ -1,18 +1,21 @@
-import '../css/account.css'
+import '../css/account.css';
 import Cookies from "js-cookie";
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 
 function Account(props){
-
-
     const [userState, setUserState] = useState('');
     const [tasksState, setTasksState] = useState('');
     
-    const token = {"session": Cookies.get("session")};
+    useEffect(() => {
+        const session = Cookies.get("session");
+        if(session) {
+            getAccount();
+        }
+    }, []);
 
     const getAccount = async () => {
         try {
+            const token = {"session": Cookies.get("session")};
             const response = await fetch('http://localhost:8000/getuser', {
                 method: 'POST',
                 headers: {
@@ -32,16 +35,15 @@ function Account(props){
         } catch (error) {
             console.error('Error during the fetch operation:', error);
         }
-    }
-    getAccount();
-    return(<>
-    <div className="account">
-        <div className="account-info">Account</div>
-        <div className='account-user'>User: <div className='account-userstyle'>{userState}</div></div>
-        <div className='account-tasks'>Activity: <div className='account-tasksstyle'>{tasksState} tasks solved</div></div>
+    };
 
-    </div>
-    </>);
+    return(
+        <div className="account">
+            <div className="account-info">Account</div>
+            <div className='account-user'>User: <div className='account-userstyle'>{userState}</div></div>
+            <div className='account-tasks'>Activity: <div className='account-tasksstyle'>{tasksState} tasks solved</div></div>
+        </div>
+    );
 }
 
 export default Account;
