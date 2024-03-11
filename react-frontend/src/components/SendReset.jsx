@@ -1,6 +1,7 @@
 import * as React from "react";
 import "../css/btn.css";
 import { Outlet, Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function SendReset(props) {
   let jsonResponse;
@@ -37,6 +38,8 @@ function SendReset(props) {
       console.error("Error during the fetch operation:", error);
     }
     if (jsonResponse["status"] == "success") {
+      Cookies.remove("reset");
+      Cookies.remove("email");
       window.location.href = "/sign-in";
     }
   };

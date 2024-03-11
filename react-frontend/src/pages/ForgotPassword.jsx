@@ -12,28 +12,29 @@ import SendCode from "../components/SendCode";
 import SendReset from "../components/SendReset";
 import Cookies from "js-cookie";
 
-
 function ForgotPassword() {
   const [email, setEmail] = React.useState(""); // State for email input
   const [password1, setPassword1] = React.useState(""); // State for email input
   const [password2, setPassword2] = React.useState(""); // State for email input
-  const [clicked, setClicked] = React.useState(false); // State for password input
   const [message, setMessage] = React.useState("");
   const [code, setCode] = React.useState("");
-  const [checkReset, setCheckReset] = React.useState(false);
+  const [randomCode, setRandomCode] = React.useState("");
+  const [randomHash, setRandomHash] = React.useState("");
+  const reset = Cookies.get("reset");
 
-  const reset = Cookies.get('reset');
+  const handleRandomCode = (variable) => {
+    setRandomCode(variable);
+  };
 
-  const handleClicked = (variable) => {
-    setClicked(variable); // Update state with the variable from child
+  const handleRandomHash = (variable) => {
+    setRandomHash(variable);
   };
   const handleMessage = (variable) => {
     setMessage(variable);
   };
-  const handleCheckReset = (variable) => {
-    setCheckReset(variable);
-  }
-  const getMail = Cookies.get('email');
+
+  const getMail = Cookies.get("email");
+  console.log(randomHash);
   if (reset == null) {
     return (
       <>
@@ -53,8 +54,8 @@ function ForgotPassword() {
               <FgpassButton
                 value="Reset"
                 email={email}
-                handleClicked={handleClicked}
                 handleMessage={handleMessage}
+                handleRandomCode={handleRandomCode}
               ></FgpassButton>
               {message}
             </div>
@@ -62,55 +63,58 @@ function ForgotPassword() {
         </React.Fragment>
       </>
     );
-  } else if(reset == "code"){
+  } else if (reset == randomCode) {
     return (
       <>
-        <div>
-          <Inputfield
-            placeholder="Enter the verification code"
-            type="text"
-            value={code}
-            onChange={(e) => setCode(e.target.value)} // Update email state
-          ></Inputfield>
+        <CssBaseline />
+        <div className="sign_in-container">
+          <div className="sing_in-form">
+            <Inputfield
+              placeholder="Enter the verification code"
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)} // Update email state
+            ></Inputfield>
+            <SendCode
+              value="Send"
+              code={code}
+              email={getMail}
+              handleMessage={handleMessage}
+              handleRandomHash={handleRandomHash}
+            ></SendCode>
+            {message}
+          </div>
         </div>
-        <div>
-          <SendCode
-            value="Send" 
-            code={code}
-            email={getMail}
-            handleMessage={handleMessage}
-            handleCheckReset={handleCheckReset}
-          ></SendCode>
-        </div>
-        {message}
       </>
     );
-  }
-  else if(reset == "reset"){
-    return(
+  } else if (reset == randomHash) {
+    return (
       <>
-      <div>
-        <Inputfield
-          placeholder="Enter your password"
-          type="text"
-          onChange={(e) => setPassword1(e.target.value)} // Update email state
-        ></Inputfield>
-        <Inputfield
-          placeholder="Enter your password again"
-          type="text"
-          onChange={(e) => setPassword2(e.target.value)} // Update email state
-        ></Inputfield>
-        <SendReset
-          email={getMail}
-          password1={password1}
-          password2={password2}
-          handleMessage={handleMessage}
-        >
-        </SendReset>
-      </div>
-      {message}
+        <CssBaseline></CssBaseline>
+        <div className="sign_in-container">
+          <div className="sing_in-form">
+            <Inputfield
+              placeholder="Enter your password"
+              type="text"
+              onChange={(e) => setPassword1(e.target.value)} // Update email state
+            ></Inputfield>
+            <Inputfield
+              placeholder="Enter your password again"
+              type="text"
+              onChange={(e) => setPassword2(e.target.value)} // Update email state
+            ></Inputfield>
+            <SendReset
+              email={getMail}
+              password1={password1}
+              password2={password2}
+              handleMessage={handleMessage}
+              value="Reset Password"
+            ></SendReset>
+            {message}
+          </div>
+        </div>
       </>
-    )
+    );
   }
 }
 
