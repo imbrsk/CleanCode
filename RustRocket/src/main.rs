@@ -7,6 +7,7 @@ use serde_json::json;
 use sqlx::MySqlPool;
 
 
+
 mod login_register;
 mod leaderboard;
 use crate::login_register::User;
@@ -28,7 +29,9 @@ use crate::get_username::Session;
 mod reset_password;
 use crate::reset_password::{ResetPassword, Reset, VerifyCode, Verify};
 
-
+mod subjects;
+use subjects::Subjects;
+//use crate::subjects::get_subjects;
 
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -109,8 +112,8 @@ async fn check_email(data: Json<ResetPassword>, pool: &State<sqlx::MySqlPool>) -
         })),
     };
 }
-#[post("/varify_code", data = "<data>")]
-async fn varify_code(data: Json<VerifyCode>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+#[post("/verify_code", data = "<data>")]
+async fn verify_code(data: Json<VerifyCode>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _ = match data.reset(pool).await{
         Verify::CodeNotValid => return Json(json!({
             "status": "error",
@@ -133,6 +136,11 @@ async fn reset(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_js
         "message": "Password reset"
     }))
 }
+#[get("/subjects")]
+async fn subject(pool: &State<sqlx::MySqlPool>) -> Json<Vec<Subjects>> {
+    let temp = Subjects::get_subjects(pool).await;
+    temp
+}
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let cookie = bobo.create_session(pool).await; 
@@ -146,5 +154,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, varify_code])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code])
 }

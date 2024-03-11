@@ -23,13 +23,34 @@ CREATE TABLE remember_me (
 -- @block
 "UPDATE users SET password = ? WHERE email = ?"
 -- @block
-SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS minutes_ago
-FROM reset_password
-WHERE email = 'bobo';
+INSERT INTO subjects (
+        name,
+        subject,
+        path,
+        year,
+        text,
+        ex_input,
+        ex_output,
+        input,
+        expected,
+        starting_code
+    )
+VALUES (
+        '',
+        'Објектно',
+        '/objektno',
+        2,
+        '',
+        '',
+        '',
+        '',
+        '',
+        'none'
+    );
 -- @block
 INSERT INTO subjects 
 (problem_name,problem_subject,problem_year, problem_text,ex_input,ex_output,input,expected,starting_code) 
-VALUES ('','',1,'','','','','','')
+VALUES ('','Структурно',1,'','','','','','')
 
 -- @block
 CREATE TABLE reset_password (
@@ -39,14 +60,15 @@ CREATE TABLE reset_password (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 --@block
-CREATE TABLE ? (id INT AUTO_INCREMENT PRIMARY KEY,parent_id INT,problem VARCHAR(255),subjects VARCHAR(255),code TEXT);
+SELECT * FROM subjects
 -- @block
 CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    problem_name VARCHAR(127),
-    problem_subject VARCHAR(127),
-    problem_year INT,
-    problem_text TEXT,
+    name VARCHAR(127),
+    subject VARCHAR(127),
+    path VARCHAR(127),
+    year INT,
+    text TEXT,
     ex_input VARCHAR(255),
     ex_output VARCHAR(255),
     input TEXT,
@@ -68,7 +90,7 @@ CREATE TABLE user_data (
 --@block
 INSERT INTO sessions (user_id, session_id) VALUES (1, 2) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id);
 --@block
-SELECT * FROM reset_password
+DROP TABLE subjects
 --@block
 UPDATE subjects SET input = '{
     "test0": "1 2 4 5 5 6 7 9",
@@ -83,7 +105,7 @@ UPDATE subjects SET input = '{
     "test9": "-1"
 }';
 --@block
-UPDATE subjects SET problem_name = 'Zad1';
+UPDATE subjects WHERE 
 --@block
 CREATE TABLE sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -93,4 +115,4 @@ CREATE TABLE sessions (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 --@block
-SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS minutes_ago FROM reset_password WHERE email = 'bobo';
+SELECT DISTINCT subject,path FROM subjects
