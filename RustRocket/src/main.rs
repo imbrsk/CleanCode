@@ -154,5 +154,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject])
 }
