@@ -1,11 +1,11 @@
 import "../css/updates.css";
 
 function Updatecard(props) {
-  let color = props.color;
-  let title = props.title;
-  let text1 = props.text1;
-  let text2 = props.text2;
-  let text3 = props.text3;
+  const color = props.color;
+  const title = props.title;
+  const text1 = props.text1;
+  const text2 = props.text2;
+  const text3 = props.text3;
 
   return (
     <>

@@ -8,9 +8,12 @@ import Subject from "../components/subject";
 import Account from "../components/Account";
 import Accordion from "../components/Accordion";
 import Footer from "../components/Footer";
-import MakeSession from "../components/MakeSession";
+import Cookies from "js-cookie";
+import { createSession } from "../components/MakeSession";
 
 function Problems() {
+  const userCookie = Cookies.get("session");
+  const token = Cookies.get("token");
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -18,6 +21,13 @@ function Problems() {
   };
   // Dobivame za koj predmet sakame da gi prikazeme zadacite pa go passame kako prop na accordionot
   // Ili tuka go dobivame payloadot so jsonot za site zadaci i prakjame kako prop na accordion
+  if (!userCookie) {
+    if (!token) {
+      window.location.href = "/";
+    } else {
+      createSession();
+    }
+  }
   return (
     <>
       <CssBaseline />

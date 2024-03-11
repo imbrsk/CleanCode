@@ -3,9 +3,20 @@ import Account from "../components/Account";
 import Subject from "../components/subject";
 import { CssBaseline } from "@mui/material";
 import { Container } from "@mui/material";
+import { createSession } from "../components/MakeSession";
 import "../css/code.css";
+import Cookies from "js-cookie";
 
 function CodeTesting() {
+  const userCookie = Cookies.get("session");
+  const token = Cookies.get("token");
+  if (!userCookie) {
+    if (!token) {
+      window.location.href = "/";
+    } else {
+      createSession();
+    }
+  }
   return (
     <>
       <CssBaseline></CssBaseline>
