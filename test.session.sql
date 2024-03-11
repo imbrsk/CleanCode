@@ -60,7 +60,7 @@ CREATE TABLE reset_password (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 --@block
-SELECT * FROM subjects
+INSERT INTO reset_password (email, reset_token, created_at) VALUES ("23","34",NOW()) ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), created_at = VALUES(created_at)
 -- @block
 CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,7 +105,7 @@ UPDATE subjects SET input = '{
     "test9": "-1"
 }';
 --@block
-UPDATE subjects WHERE 
+SELECT * FROM reset_password
 --@block
 CREATE TABLE sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -115,4 +115,6 @@ CREATE TABLE sessions (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 --@block
-SELECT DISTINCT subject,path FROM subjects
+UPDATE users
+SET password = "bobo1234"
+WHERE email = "boris696boris@gmail.com"

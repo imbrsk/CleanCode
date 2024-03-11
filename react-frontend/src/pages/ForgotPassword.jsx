@@ -10,6 +10,8 @@ import { md5 } from "js-md5";
 import FgpassButton from "../components/FgpassButton";
 import SendCode from "../components/SendCode";
 import SendReset from "../components/SendReset";
+import Cookies from "js-cookie";
+
 
 function ForgotPassword() {
   const [email, setEmail] = React.useState(""); // State for email input
@@ -20,6 +22,8 @@ function ForgotPassword() {
   const [code, setCode] = React.useState("");
   const [checkReset, setCheckReset] = React.useState(false);
 
+  const reset = Cookies.get('reset');
+
   const handleClicked = (variable) => {
     setClicked(variable); // Update state with the variable from child
   };
@@ -29,8 +33,8 @@ function ForgotPassword() {
   const handleCheckReset = (variable) => {
     setCheckReset(variable);
   }
-
-  if (clicked != true) {
+  const getMail = Cookies.get('email');
+  if (reset == null) {
     return (
       <>
         <React.Fragment>
@@ -58,7 +62,7 @@ function ForgotPassword() {
         </React.Fragment>
       </>
     );
-  } else if(checkReset != true){
+  } else if(reset == "code"){
     return (
       <>
         <div>
@@ -73,6 +77,7 @@ function ForgotPassword() {
           <SendCode
             value="Send" 
             code={code}
+            email={getMail}
             handleMessage={handleMessage}
             handleCheckReset={handleCheckReset}
           ></SendCode>
@@ -81,14 +86,14 @@ function ForgotPassword() {
       </>
     );
   }
-  else{
+  else if(reset == "reset"){
     return(
       <>
       <div>
         <Inputfield
           placeholder="Enter your password"
           type="text"
-          onChange={(e) => setPassword2(e.target.value)} // Update email state
+          onChange={(e) => setPassword1(e.target.value)} // Update email state
         ></Inputfield>
         <Inputfield
           placeholder="Enter your password again"
@@ -96,7 +101,7 @@ function ForgotPassword() {
           onChange={(e) => setPassword2(e.target.value)} // Update email state
         ></Inputfield>
         <SendReset
-          email={email}
+          email={getMail}
           password1={password1}
           password2={password2}
           handleMessage={handleMessage}

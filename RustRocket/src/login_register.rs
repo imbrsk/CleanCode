@@ -53,6 +53,7 @@ impl User{
         .unwrap();
     }
     pub async fn reset_password(&self, pool: &State<sqlx::MySqlPool>){
+        print!("{} {}" ,self.email.clone(),self.password.clone());
         sqlx::query("UPDATE users SET password = ? WHERE email = ?")
         .bind(hash(self.password.clone(), 10).unwrap())
         .bind(self.email.clone())

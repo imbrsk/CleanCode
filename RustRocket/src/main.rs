@@ -120,7 +120,7 @@ async fn verify_code(data: Json<VerifyCode>, pool: &State<sqlx::MySqlPool>) -> J
             "message": "Code is not valid"
         })),
         Verify::CodeValid => return Json(json!({
-            "status": "sucsess",
+            "status": "success",
         })),
         Verify::TimeExceeded => return Json(json!({
             "status": "error",

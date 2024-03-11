@@ -1,6 +1,8 @@
 import * as React from "react";
 import "../css/btn.css";
 import { Outlet, Link } from "react-router-dom";
+import Cookies from 'js-cookie';
+
 
 function FgpassButton(props) {
   let jsonResponse;
@@ -11,7 +13,7 @@ function FgpassButton(props) {
   let msg;
   const handleCheck = async () => {
     try {
-      const response = await fetch("http://localhost:8000/reset", {
+      const response = await fetch("http://localhost:8000/check_email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,13 +28,15 @@ function FgpassButton(props) {
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
-    if(jsonResponse['status'] == "success"){
-        props.handleClicked(true);
-        window.location.reload();
+    if (jsonResponse['status'] == "success") {
+      const fifteenMinutesFromNow = new Date(new Date().getTime() + 15 * 60 * 1000); // 15 minutes in milliseconds
+      Cookies.set('reset', 'code', { expires: fifteenMinutesFromNow });
+      Cookies.set('email', props.email, { expires: fifteenMinutesFromNow });
+      window.location.reload();
     }
-    else{
-        msg = jsonResponse['message'];
-        props.handleMessage(msg);
+    else {
+      msg = jsonResponse['message'];
+      props.handleMessage(msg);
     }
   };
 

@@ -11,7 +11,7 @@ function SendReset(props) {
   let value = props.value;
   let msg;
   const handlePass = () => {
-    if (props.password1 !== props.password2) {
+    if (props.password1 != props.password2) {
       let msg = "Your password doesn't match.";
       props.handleMessage(msg);
     } else {
@@ -20,7 +20,7 @@ function SendReset(props) {
   };
   const handleCheck = async () => {
     try {
-      const response = await fetch("http://localhost:8000/verify_code", {
+      const response = await fetch("http://localhost:8000/reset", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

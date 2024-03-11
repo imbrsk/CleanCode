@@ -30,8 +30,9 @@ impl ResetPassword{
             .take(6)
             .map(char::from)
             .collect();
-        sqlx::query("INSERT INTO reset_password (email, code, time) VALUES (?,?,NOW()) ON DUPLICATE KEY UPDATE code = VALUES(code), time = VALUES(time)")
+        sqlx::query("INSERT INTO reset_password (email, reset_token, created_at) VALUES (?,?,NOW()) ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), created_at = VALUES(created_at)")
             .bind(self.email.clone())
+            .bind(random_string.clone())
             .execute(&**pool)
             .await
             .unwrap();
@@ -65,12 +66,12 @@ pub enum Verify{
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct VerifyCode{
-    code: String,
     email: String,
+    code: String,
 }
 impl VerifyCode {
     async fn time(&self, pool: &State<sqlx::MySqlPool>) -> bool {
-        let time: (i32, )= sqlx::query_as("SELECT TIMESTAMPDIFF(MINUTE, time, NOW()) FROM reset_password WHERE email = ?")
+        let time: (i32, )= sqlx::query_as("SELECT TIMESTAMPDIFF(MINUTE, created_at, NOW()) FROM reset_password WHERE email = ?")
             .bind(self.email.clone())
             .fetch_one(&**pool)
             .await
@@ -78,7 +79,7 @@ impl VerifyCode {
         time.0 > 15
     }
     async fn verify_token(&self, pool: &State<sqlx::MySqlPool>) -> bool {
-        let code: (String, )= sqlx::query_as("SELECT code FROM reset_password WHERE email = ?")
+        let code: (String, )= sqlx::query_as("SELECT reset_token FROM reset_password WHERE email = ?")
             .bind(self.email.clone())
             .fetch_one(&**pool)
             .await
