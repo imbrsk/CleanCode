@@ -33,6 +33,10 @@ input:focus {
     justify-content: center;
     align-items: center;
 }
+.reset-pass{
+    display: flex;
+    flex-direction: column;
+}
 input:focus::placeholder {
     color: transparent;
 }

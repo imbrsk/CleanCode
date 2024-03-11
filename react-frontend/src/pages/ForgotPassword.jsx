@@ -67,22 +67,23 @@ function ForgotPassword() {
     return (
       <>
         <CssBaseline />
+        <NavbarSign value="Sign In" link="/sign-in"></NavbarSign>
         <div className="sign_in-container">
           <div className="sing_in-form">
-            <Inputfield
+            <div><Inputfield
               placeholder="Enter the verification code"
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)} // Update email state
-            ></Inputfield>
-            <SendCode
+            ></Inputfield></div>
+            <div><SendCode
               value="Send"
               code={code}
               email={getMail}
               handleMessage={handleMessage}
               handleRandomHash={handleRandomHash}
-            ></SendCode>
-            {message}
+            ></SendCode></div>
+            <div>{message}</div>
           </div>
         </div>
       </>
@@ -91,16 +92,17 @@ function ForgotPassword() {
     return (
       <>
         <CssBaseline></CssBaseline>
+        <NavbarSign value="Sign In" link="/sign-in"></NavbarSign>
         <div className="sign_in-container">
-          <div className="sing_in-form">
+          <div className="reset-pass">
             <Inputfield
               placeholder="Enter your password"
-              type="text"
+              type="password"
               onChange={(e) => setPassword1(e.target.value)} // Update email state
             ></Inputfield>
             <Inputfield
               placeholder="Enter your password again"
-              type="text"
+              type="password"
               onChange={(e) => setPassword2(e.target.value)} // Update email state
             ></Inputfield>
             <SendReset
