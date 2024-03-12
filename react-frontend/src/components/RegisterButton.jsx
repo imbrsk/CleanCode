@@ -26,6 +26,7 @@ function RegisterButton(props) {
   };
   const requestCode = {
     email: email,
+    code: code,
     status: "verify",
   };
   const isValidEmail = (email) => {
