@@ -62,6 +62,8 @@ function RegisterButton(props) {
     if (flag && props.code == "") {
       verifyEmail();
     }
+    if(props.code != "")
+      sendCode();
   };
   const verifyEmail = async () => {
     try {
