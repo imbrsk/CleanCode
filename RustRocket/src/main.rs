@@ -31,7 +31,11 @@ use crate::reset_password::{ResetPassword, Reset, VerifyCode, Verify};
 
 mod subjects;
 use subjects::Subjects;
-//use crate::subjects::get_subjects;
+
+
+mod verify;
+use verify::{VerifyEmail, ResetEmail, VerifyCodeEmail};
+
 
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -75,9 +79,36 @@ async fn register(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde
         })),
     };
 }
-#[options("/register")]
-fn reg()->String{
-    String::from("bobo")
+#[post("/verify_email", data = "<data>")]
+async fn verify_email(data: Json<VerifyEmail>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    if data.status == "email" {
+        let _response = match data.send_verify_code(&pool).await {
+            ResetEmail::EmailTaken => return Json(json!({
+                "status": "error",
+                "message": "Email is taken"
+            })),
+            ResetEmail::Send => return Json(json!({
+                "status": "success",
+            })),
+        };
+    }
+    else if data.status == "verify" {
+        let _response = match data.verify_code(pool).await {
+            VerifyCodeEmail::Correct => return Json(json!({
+                "status": "success",
+            })),
+            VerifyCodeEmail::NotCorrect=> return Json(json!({
+                "status": "error",
+                "message": "Code in not correct"
+            })),
+        };
+    }
+    else {
+        return Json(json!({
+            "status": "error",
+            "message": "Invalid status"
+        }))
+    }
 }
 #[post("/execute", data = "<data>")]
 async fn execute(data: Json<ProblemData>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -154,5 +185,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email])
 }

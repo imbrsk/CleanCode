@@ -115,6 +115,12 @@ CREATE TABLE sessions (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 --@block
-UPDATE users
-SET password = "bobo1234"
-WHERE email = "boris696boris@gmail.com"
+INSERT INTO verify (email, code) VALUES ("23","34") ON DUPLICATE KEY UPDATE code = VALUES(code)
+--@block
+CREATE TABLE verify (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(127) NOT NULL UNIQUE,
+    code VARCHAR(15) NOT NULL
+)
+--@block
+SELECT code FROM verify WHERE email = "23"
