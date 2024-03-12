@@ -20,6 +20,14 @@ function RegisterButton(props) {
     password: password,
   };
 
+  const requestEmail = {
+    email: email,
+    status: "email",
+  };
+  const requestCode = {
+    email: email,
+    status: "verify",
+  };
   const isValidEmail = (email) => {
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,11 +59,60 @@ function RegisterButton(props) {
         props.passcheck(check);
       }
     }
-    if (flag) {
-      handleButtonClick();
+    if (flag && props.code == "") {
+      verifyEmail();
     }
   };
+  const verifyEmail = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/verify_email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestEmail),
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      jsonResponse = await response.json();
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+    if (jsonResponse["status"] == "success") {
+      props.handleRegister("passed");
+    } else {
+      check = jsonResponse["message"];
+      props.passcheck(check);
+    }
+  };
+  const sendCode = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/verify_email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestCode),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      jsonResponse = await response.json();
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+    if (jsonResponse["status"] == "success") {
+      handleButtonClick();
+    } else {
+      check = jsonResponse["message"];
+      props.passcheck(check);
+    }
+  };
   const handleButtonClick = async () => {
     console.log(requestData);
     try {
