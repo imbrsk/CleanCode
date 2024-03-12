@@ -123,4 +123,4 @@ CREATE TABLE verify (
     code VARCHAR(15) NOT NULL
 )
 --@block
-SELECT code FROM verify WHERE email = "23"
+SELECT * FROM verify

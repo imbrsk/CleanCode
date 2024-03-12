@@ -28,7 +28,9 @@ impl VerifyEmail {
             .fetch_one(&**pool)
             .await
             .unwrap();
-        if code.0 == self.code.clone().unwrap() {
+        if let Some(code_u) = self.code.clone() {
+            
+            if code.0 == code_u {
             sqlx::query("DELETE FROM verify WHERE email = ?")
             .bind(self.email.clone())
             .execute(pool.inner())
@@ -36,6 +38,9 @@ impl VerifyEmail {
             .unwrap();
             return VerifyCodeEmail::Correct;
         }
+        return VerifyCodeEmail::NotCorrect;
+        }
+        print!("{:?}", self.code.clone());
         VerifyCodeEmail::NotCorrect
     }
     async fn send_mail(&self, pool: &State<sqlx::MySqlPool>){
@@ -69,7 +74,7 @@ impl VerifyEmail {
         mailer.send(&email).unwrap();
     }
     async fn is_user(&self, pool: &State<sqlx::MySqlPool>) -> bool {
-        let taken: (i8, )= sqlx::query_as("SELECT COUNT(*) FROM verify WHERE email = ?")
+        let taken: (i8, )= sqlx::query_as("SELECT COUNT(*) FROM users WHERE email = ?")
             .bind(self.email.clone())
             .fetch_one(&**pool)
             .await
