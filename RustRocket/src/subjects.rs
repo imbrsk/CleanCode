@@ -37,7 +37,7 @@ pub struct Subject{
 }
 #[derive(Serialize)]
 pub struct SubjectName{
-    year: i32,
+    year: String,
     ispiti: Vec<Problem>,
     prvkol: Vec<Problem>,
     vtorkol: Vec<Problem>,
@@ -73,7 +73,7 @@ impl Subject{
         for year in years {
             let number: i32 = year.get("year");
             let mut subjects = SubjectName {
-                year: number,
+                year: number.to_string(),
                 ispiti: Vec::new(),
                 prvkol: Vec::new(),
                 vtorkol: Vec::new(),
