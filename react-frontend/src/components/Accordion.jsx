@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/problems.css";
 
 function Accordion(props) {
@@ -7,30 +7,37 @@ function Accordion(props) {
   const title = props.title;
   const yearX = props.year;
   const type = props.type;
-  // post funkcija so imeto za predmetot koj se raboti i se vrakja payload json so site ovite podatoci vo jsonot podole
-  const requestData = {
-    name: window.location.pathname,
-  };
-  const getProblems = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/subject_problem", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+  const [ispiti2024, setIspiti2024] = useState([]);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/subject_problem", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: window.location.pathname }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
+      } catch (error) {
+        console.error("Error during the fetch operation:", error);
       }
-      return await response.json();
-    } catch (error) {
-      console.error("Error during the fetch operation:", error);
-    }
-  };
-  let zadaci = getProblems();
-  const ispiti2024 = zadaci.find(({ year }) => year === yearX)?.[type] || [];
+    };
+
+    fetchData();
+
+    // Cleanup function if needed
+    return () => {
+      // Any cleanup code if needed
+    };
+  }, [yearX, type]); // Dependency array to rerun effect when yearX or type changes
 
   const ispiti2024Items = ispiti2024.map((ispit, index) => (
     <div key={index}>
@@ -39,6 +46,7 @@ function Accordion(props) {
       </div>
     </div>
   ));
+
   return (
     <>
       <div className="ispitjan-2024">
