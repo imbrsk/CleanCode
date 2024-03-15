@@ -21,7 +21,7 @@ CREATE TABLE remember_me (
 );
     
 -- @block
-DROP TABLE subjects
+SELECT DISTINCT subject,path,year FROM subjects
 -- @block
 INSERT INTO subjects (
         name,

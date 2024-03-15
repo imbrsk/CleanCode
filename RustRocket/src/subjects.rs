@@ -1,15 +1,14 @@
-use std::ops::Sub;
 
-use rocket::{form::name, FromForm};
+use rocket::FromForm;
 use rocket::serde::json::Json;
 use rocket::State;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 
-#[derive(Serialize)]
+#[derive(Debug, FromForm, Deserialize, Serialize)]
 pub struct Subjects{
     subject: String,
-    number: i8,
+    number: i32,
     path: String
 }
 
@@ -32,7 +31,7 @@ impl Subjects{
     }
 }
 
-#[derive(Debug, FromForm, Deserialize)]
+#[derive(Debug, FromForm, Deserialize, Serialize)]
 pub struct Subject{
     name: String,
 }
@@ -72,8 +71,9 @@ impl Subject{
         let periods = vec!["Колкокфиум 1", "Колкокфиум 2", "Испит"];
         let mut big_j: Vec<SubjectName> = Vec::new();
         for year in years {
+            let number: i32 = year.get("year");
             let mut subjects = SubjectName {
-                year: year.get("year"),
+                year: number,
                 ispiti: Vec::new(),
                 prvkol: Vec::new(),
                 vtorkol: Vec::new(),
