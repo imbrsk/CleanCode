@@ -1,10 +1,63 @@
 use lettre::message::header::ContentType;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{Message, SmtpTransport, Transport};
-use rocket::{FromForm, State};
-use rand::Rng;
 use rand::distributions::Alphanumeric;
+use rand::Rng;
+use rocket::{FromForm, State};
 use serde::Deserialize;
+
+const HTML: &str = r#"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Reset</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .card {
+            width: 500px;
+            padding: 20px;      
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            position: relative;
+        }
+        .card a {
+            background-color: #008CBA; 
+            color: white; 
+            padding: 14px 20px; 
+            text-align: center; 
+            text-decoration: none; 
+            display: inline-block;
+        }
+        #logo {
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Hello CleanCoder,</h2>
+        <p>You recently requested to reset your password for your CleanCode account. Your reset code is:</p>
+        <a style="background-color: rgb(36, 36, 36); font-weight: bolder; ">"#;
+const HTML1: &str = r#"
+        </a>
+        <p>If you did not request a password reset, please ignore this email or reply to let us know. This password reset is only valid for the next 15 minutes.</p>
+        <p>Thanks,</p>
+        <p>CleanCode</p>
+    </div>
+</body>
+</html>"#;
 
 pub enum Reset{
     EmailNotValid,
@@ -41,11 +94,7 @@ impl ResetPassword{
             .to(self.email.clone().parse().unwrap())
             .subject("Reset Password for CleanCode")
             .header(ContentType::TEXT_HTML)
-            .body(String::from(format!("<p style='color: black'>Dear User,</p>
-                <p style='color: black'>We have received a request to reset your password. Please enter the code in the website:</p>
-                <h3 style='color: #800080'>{}</h3>
-                <p style='color: black'>If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged</p>
-                <p style='color: black'>Thank you,<br>CleanCode</p>", random_string)))
+            .body(String::from(format!("{}{}{}",HTML, random_string, HTML1)))
             .unwrap();
         let creds = Credentials::new("cleancodereset@gmail.com".to_owned(), "xpey mdej ejmi ytya".to_owned());// Open a remote connection to gmail
         let mailer = SmtpTransport::relay("smtp.gmail.com")
@@ -111,3 +160,4 @@ impl VerifyCode {
         Verify::CodeNotValid
     }
 }
+
