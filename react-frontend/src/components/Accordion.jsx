@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/problems.css";
 
 function Accordion(props) {
@@ -7,93 +7,53 @@ function Accordion(props) {
   const title = props.title;
   const yearX = props.year;
   const type = props.type;
-  // post funkcija so imeto za predmetot koj se raboti i se vrakja payload json so site ovite podatoci vo jsonot podole
-  const zadaci = [
-    {
-      year: "2024",
-      ispiti: [
-        { ime: "Испити 2024 - 1", link: "/sobiranjekvadrat" },
-        { ime: "Испити 2024 - 2", link: "/boljeneglava" },
-        { ime: "Испити 2024 - 3", link: "/kockanjerulet" },
-      ],
-      prvkol: [
-        { ime: "ПрвКол 2024 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ПрвКол 2024 - 2", link: "/boljeneglava" },
-        { ime: "ПрвКол 2024 - 3", link: "/kockanjerulet" },
-      ],
-      vtorkol: [
-        { ime: "ВторКол 2024 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ВторКол 2024 - 2", link: "/boljeneglava" },
-        { ime: "ВторКол 2024 - 3", link: "/kockanjerulet" },
-      ]
-    },
-    {
-      year: "2023",
-      ispiti: [
-        { ime: "Испити 2023 - 1", link: "/sobiranjekvadrat" },
-        { ime: "Испити 2023 - 2", link: "/boljeneglava" },
-        { ime: "Испити 2023 - 3", link: "/kockanjerulet" },
-      ],
-      prvkol: [
-        { ime: "ПрвКол 2023 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ПрвКол 2023 - 2", link: "/boljeneglava" },
-        { ime: "ПрвКол 2023 - 3", link: "/kockanjerulet" },
-      ],
-      vtorkol: [
-        { ime: "ВторКол 2023 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ВторКол 2023 - 2", link: "/boljeneglava" },
-        { ime: "ВторКол 2023 - 3", link: "/kockanjerulet" },
-      ]
-    },
-    {
-      year: "2022",
-      ispiti: [
-        { ime: "Испити 2022 - 1", link: "/sobiranjekvadrat" },
-        { ime: "Испити 2022 - 2", link: "/boljeneglava" },
-        { ime: "Испити 2022 - 3", link: "/kockanjerulet" },
-      ],
-      prvkol: [
-        { ime: "ПрвКол 2022 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ПрвКол 2022 - 2", link: "/boljeneglava" },
-        { ime: "ПрвКол 2022 - 3", link: "/kockanjerulet" },
-      ],
-      vtorkol: [
-        { ime: "ВторКол 2022 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ВторКол 2022 - 2", link: "/boljeneglava" },
-        { ime: "ВторКол 2022 - 3", link: "/kockanjerulet" },
-      ]
-    },
-    {
-      year: "2021",
-      ispiti: [
-        { ime: "Испити 2021 - 1", link: "/sobiranjekvadrat" },
-        { ime: "Испити 2021 - 2", link: "/boljeneglava" },
-        { ime: "Испити 2021 - 3", link: "/kockanjerulet" },
-      ],
-      prvkol: [
-        { ime: "ПрвКол 2021 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ПрвКол 2021 - 2", link: "/boljeneglava" },
-        { ime: "ПрвКол 2021 - 3", link: "/kockanjerulet" },
-      ],
-      vtorkol: [
-        { ime: "ВторКол 2021 - 1", link: "/sobiranjekvadrat" },
-        { ime: "ВторКол 2021 - 2", link: "/boljeneglava" },
-        { ime: "ВторКол 2021 - 3", link: "/kockanjerulet" },
-      ]
-    },
+  const [ispiti2024, setIspiti2024] = useState([]);
 
-  ];
-  const ispiti2024 = zadaci.find(({ year }) => year === yearX)?.[type] || [];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/subject_problem", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: window.location.pathname }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
+      } catch (error) {
+        console.error("Error during the fetch operation:", error);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup function if needed
+    return () => {
+      // Any cleanup code if needed
+    };
+  }, [yearX, type]); // Dependency array to rerun effect when yearX or type changes
 
   const ispiti2024Items = ispiti2024.map((ispit, index) => (
     <div key={index}>
-      <div className="expanded-problems" href={ispit.link}>{ispit.ime}</div>
+      <div className="expanded-problems" href={ispit.link}>
+        {ispit.ime}
+      </div>
     </div>
   ));
+
   return (
     <>
       <div className="ispitjan-2024">
-        <button className={`accordion ${activeIndex === index ? "active" : ""}`} onClick={() => props.toggle(index)}>
+        <button
+          className={`accordion ${activeIndex === index ? "active" : ""}`}
+          onClick={() => props.toggle(index)}
+        >
           {title}
         </button>
         <div

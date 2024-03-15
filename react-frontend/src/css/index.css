@@ -15,6 +15,8 @@
   margin-right: 2rem;
   padding-top: 10px;
   transition: 0.5s ease;
+  color: white;
+  text-decoration: none;
 }
 .nav-about:hover {
   color: #ff7f50;
@@ -40,6 +42,7 @@
   color: rgb(255, 255, 255);
   font-size: 2rem;
   transition: 0.5s ease;
+  text-decoration: none;
 }
 .logo:hover {
   color: #ff7f50;
@@ -59,6 +62,10 @@
 .nav-register:hover{
   background-color: #ffffff;
   color: black;
+}
+
+.link{
+  text-decoration: none;
 }
 
 .logo{
