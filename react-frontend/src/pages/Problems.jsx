@@ -42,7 +42,9 @@ function Problems() {
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="2" year="2024" type="prvkol"></Accordion>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="3" year="2024" type="vtorkol"></Accordion>
           </div>
-          <div className="problems">
+        </div>
+        <div className="problem-years">
+        <div className="problems">
             <div className="year"><div className="bracket-year">[</div>2023<div className="bracket-year">]</div></div>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="4" year="2023" type="ispiti"></Accordion>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="5" year="2023" type="prvkol"></Accordion>
@@ -56,7 +58,9 @@ function Problems() {
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="8" year="2022" type="prvkol"></Accordion>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Втор Колоквиум" index="9" year="2022" type="vtorkol"></Accordion>
           </div>
-          <div className="problems">
+        </div>
+        <div className="problem-years">
+        <div className="problems">
             <div className="year"><div className="bracket-year">[</div>2021<div className="bracket-year">]</div></div>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Испити" index="10" year="2021" type="ispiti"></Accordion>
             <Accordion toggle={toggleAccordion} active={activeIndex} title="Прв Колоквиум" index="11" year="2021" type="prvkol"></Accordion>
