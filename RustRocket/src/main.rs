@@ -11,6 +11,7 @@ use sqlx::MySqlPool;
 mod login_register;
 mod leaderboard;
 use crate::login_register::User;
+use crate::subjects::Subject;
 use login_register::{AccountStatusLogin, AccountStatusRegister};
 
 mod runcode;
@@ -30,7 +31,7 @@ mod reset_password;
 use crate::reset_password::{ResetPassword, Reset, VerifyCode, Verify};
 
 mod subjects;
-use subjects::Subjects;
+use subjects::{SubjectName, Subjects};
 
 
 mod verify;
@@ -70,12 +71,12 @@ async fn register(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde
             "message": "Account created"
         })),
         AccountStatusRegister::EmailTaken => return Json(json!({
-        "status": "error",
-        "message": "Email is taken"
+            "status": "error",
+            "message": "Email is taken"
         })), 
         AccountStatusRegister::UsernameTaken => return Json(json!({
-        "status": "error",
-        "message": "Username is taken"
+            "status": "error",
+            "message": "Username is taken"
         })),
     };
 }
@@ -172,6 +173,11 @@ async fn subject(pool: &State<sqlx::MySqlPool>) -> Json<Vec<Subjects>> {
     let temp = Subjects::get_subjects(pool).await;
     temp
 }
+#[post("/subject_problem", data = "<data>")]
+async fn subject_problem(data: Json<Subject>, pool: &State<sqlx::MySqlPool>) -> Json<Vec<SubjectName>>{
+    let return_t = data.get_problems(pool).await;
+    Json(return_t)
+}
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let cookie = bobo.create_session(pool).await; 
@@ -185,5 +191,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem])
 }
