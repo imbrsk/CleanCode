@@ -24,7 +24,7 @@ function Navbar() {
               to={"/about"}>
               About
               </Link>
-              <Link to="sign-in" className="nav-sign">Sign In</Link>
+              <Link to="/sign-in" className="nav-sign">Sign In</Link>
             </div>
           </div>
         </Container>
