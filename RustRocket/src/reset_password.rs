@@ -34,6 +34,7 @@ const HTML: &str = r#"
             text-align: center; 
             text-decoration: none; 
             display: inline-block;
+            font-size: 20px;
         }
         #logo {
             padding: 10px;
@@ -48,7 +49,7 @@ const HTML: &str = r#"
 <body>
     <div class="card">
         <h2>Hello CleanCoder,</h2>
-        <p>You recently requested to reset your password for your CleanCode account. Your reset code is:</p>
+        <p>You recently requested to reset your password for your CleanCode account. <br/>Your reset code is:</p>
         <a style="background-color: rgb(36, 36, 36); font-weight: bolder; ">"#;
 const HTML1: &str = r#"
         </a>

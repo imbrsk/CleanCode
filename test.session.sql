@@ -21,13 +21,15 @@ CREATE TABLE remember_me (
 );
     
 -- @block
-"UPDATE users SET password = ? WHERE email = ?"
+DROP TABLE subjects
 -- @block
 INSERT INTO subjects (
         name,
+        problem_path,
         subject,
         path,
         year,
+        period, 
         text,
         ex_input,
         ex_output,
@@ -36,11 +38,12 @@ INSERT INTO subjects (
         starting_code
     )
 VALUES (
-        '',
+        'бобо',
+        '/bobo',
         'Структурно',
         '/strukturno',
         1,
-        '',
+        'Колоквиум1',
         '',
         '',
         '',
@@ -65,9 +68,11 @@ INSERT INTO reset_password (email, reset_token, created_at) VALUES ("23","34",NO
 CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(127),
+    problem_path VARCHAR(127),
     subject VARCHAR(127),
     path VARCHAR(127),
     year INT,
+    period VARCHAR(31),
     text TEXT,
     ex_input VARCHAR(255),
     ex_output VARCHAR(255),
@@ -90,7 +95,38 @@ CREATE TABLE user_data (
 --@block
 INSERT INTO sessions (user_id, session_id) VALUES (1, 2) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), session_id = VALUES(session_id);
 --@block
-DROP TABLE subjects
+INSERT INTO subjects (
+        name,
+        problem_path,
+        subject,
+        path,
+        year,
+        period,
+        text,
+        ex_input,
+        ex_output,
+        input,
+        expected,
+        starting_code
+    )
+VALUES (
+        'zad1',
+        '/zad1',
+        'Структурно Програмирање',
+        '/strukturno',
+        2023,
+        'Испит',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    );
+--@block
+SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокфиум 1' AND path = '/strukturno' AND year = 2023
+--@block
+SELECT * FROM subjects
 --@block
 UPDATE subjects SET input = '{
     "test0": "1 2 4 5 5 6 7 9",
@@ -123,4 +159,4 @@ CREATE TABLE verify (
     code VARCHAR(15) NOT NULL
 )
 --@block
-SELECT * FROM verify
+DROP TABLE subjects

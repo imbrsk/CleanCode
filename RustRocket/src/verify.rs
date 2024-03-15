@@ -61,7 +61,7 @@ impl VerifyEmail {
             .subject("Your register verification code for CleanCode")
             .header(ContentType::TEXT_HTML)
             .body(String::from(format!("<p style='color: black'>Dear User,</p>
-                <p style='color: black'>You have registered an accound on CleanCode</p>
+                <p style='color: black'>You have registered an account on CleanCode</p>
                 <h3 style='color: #800080'>{}</h3>
                 <p style='color: black'>If you did not register ignore this email</p>
                 <p style='color: black'>Thank you,<br>CleanCode</p>", random_string)))
