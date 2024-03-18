@@ -34,7 +34,11 @@ function Problems() {
       <NavbarSign value="Sign Out" link="/" />
       <Container maxWidth="lg" className="container-problems">
         <Account></Account>
-        <Subject name="Структурно Програмирање" link=""></Subject>
+        <div className="subject">
+          <div className="bracket">[</div>
+          <div className="subject-value">Структурно Програмирање</div>
+          <div className="bracket">]</div>
+        </div>
         <div className="problem-years">
           <div className="problems">
             <div className="year"><div className="bracket-year">[</div>2024<div className="bracket-year">]</div></div>

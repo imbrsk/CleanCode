@@ -7,7 +7,7 @@
     font-size: 2rem;
     font-weight: bold;
     padding: 0.5rem;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     transition: 0.3s ease;
     color: black;
 }
@@ -38,6 +38,42 @@ p{
 .input-form{
     display: flex;
     flex-direction: column;
-
     align-items: center;
+    padding: 1rem;
+}
+.input-label{
+    font-weight: bold;
+}
+
+.submit-form{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#lang{
+    padding: 0.5rem;
+    font-weight: bold;
+    font-size: medium;
+    border: 2px solid black;
+    border-radius: 2rem;
+}
+#submit-button{
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: 2rem;
+    transition: 0.5s ease;
+
+}
+#submit-button:hover{
+    cursor: pointer;
+    background-color: #282828;
+    color: white;
+    transition: 0.5s ease;
 }
