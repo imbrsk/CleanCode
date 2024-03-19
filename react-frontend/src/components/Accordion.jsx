@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/problems.css";
+import { Link } from "react-router-dom";
 
 function Accordion(props) {
   const activeIndex = props.active;
@@ -8,6 +9,10 @@ function Accordion(props) {
   const yearX = props.year;
   const type = props.type;
   const [ispiti2024, setIspiti2024] = useState([]);
+  const requestData = {
+    name: window.location.pathname,
+    session: Cookies.get("session"),
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +22,7 @@ function Accordion(props) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name: window.location.pathname }),
+          body: JSON.stringify(requestData),
         });
 
         if (!response.ok) {
@@ -41,12 +46,12 @@ function Accordion(props) {
 
   const ispiti2024Items = ispiti2024.map((ispit, index) => (
     <div key={index}>
-      <div className="expanded-problems" href={ispit.link}>
-        {ispit.ime}
+      <div className={`expanded-problems ${ispit.solved === 1 ? "lightgreen" : ""}`}>
+        <Link to={ispit.link} id="problems-text">{ispit.ime}</Link>
       </div>
     </div>
   ));
-
+ 
   return (
     <>
       <div className="ispitjan-2024">

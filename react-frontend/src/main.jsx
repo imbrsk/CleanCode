@@ -30,6 +30,23 @@ export default function App() {
     };
     fetchSubjects();
   }, []);
+  const [problems, setProblems] = useState([]);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/get_routs");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        let data = await response.json();
+        setProblems(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchProblems();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -48,6 +65,13 @@ export default function App() {
             key={subject.subject}
             path={subject.path}
             element={<Problems/>}
+          />
+        ))}
+        {problems.map(problem => (
+          <Route
+            key={problem.subject}
+            path={problem.path}
+            element={<CodeTesting/>}
           />
         ))}
       </Routes>

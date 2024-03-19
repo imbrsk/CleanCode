@@ -19,8 +19,6 @@ function Problems() {
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-  // Dobivame za koj predmet sakame da gi prikazeme zadacite pa go passame kako prop na accordionot
-  // Ili tuka go dobivame payloadot so jsonot za site zadaci i prakjame kako prop na accordion
   if (!userCookie) {
     if (!token) {
       window.location.href = "/";
