@@ -68,13 +68,23 @@ impl ProblemData{
         user_id
     }
     async fn save_code(&self ,user_id: i32, pool: &State<sqlx::MySqlPool>){
-        sqlx::query("INSERT INTO solved (user_id, problem_id, code) VALUES (?, ?, ?)")
-            .bind(user_id.to_string())
-            .bind(self.problem_id.clone())
+        let check_row = sqlx::query("UPDATE solved SET code = ? WHERE user_id = ? AND problem_id = ?")
             .bind(self.code.clone())
+            .bind(user_id.clone())
+            .bind(self.problem_id.clone())
             .execute(&**pool)
             .await
-            .unwrap();
+            .unwrap()
+            .rows_affected();
+        if check_row == 0 {
+            sqlx::query("INSERT INTO solved (user_id, problem_id, code) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)")
+                .bind(user_id.to_string())
+                .bind(self.problem_id.clone())
+                .bind(self.code.clone())
+                .execute(&**pool)
+                .await
+                .unwrap();
+        }
     }
     pub async fn make_code_req(&self,  pool: &State<sqlx::MySqlPool>)-> Json<serde_json::Value>{
         let mut payload = json!({

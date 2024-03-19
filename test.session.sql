@@ -187,8 +187,7 @@ CREATE TABLE solved(
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (problem_id) REFERENCES subjects(id)
 )
---@block
 SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
 
 --@block
-SELECT * FROM solved
+SELECT * FROM sessions

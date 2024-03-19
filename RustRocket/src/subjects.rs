@@ -60,7 +60,7 @@ impl Subject{
         years
     }
     async fn get_problem(&self ,period: String , year: i32 ,pool: &State<sqlx::MySqlPool>) -> Vec<sqlx::mysql::MySqlRow>{
-        let problems = sqlx::query("SELECT DISTINCT name, problem_path FROM subjects WHERE period = ? AND path = ? AND year = ?")
+        let problems = sqlx::query("SELECT DISTINCT name, problem_path, id FROM subjects WHERE period = ? AND path = ? AND year = ?")
             .bind(period)
             .bind(self.name.clone())
             .bind(year)
@@ -86,9 +86,10 @@ impl Subject{
                 for problem in problems {
                     let name: String = problem.get("name");
                     let problem_path: String = problem.get("problem_path");
+                    let id: i32 = problem.get("id");
                     let problem = Problem {
                         ime: name,
-                        link: problem_path,
+                        link: format!("{}?id={}", problem_path,id.to_string()),
                     };
                     match period {
                         &"Испит" => subjects.ispiti.push(problem),
