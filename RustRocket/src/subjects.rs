@@ -172,9 +172,9 @@ impl GetProblem{
             .unwrap();
         user_id
     }
-    async fn check_if_solved(&self, pool: &State<sqlx::MySqlPool>) -> Result<sqlx::mysql::MySqlRow, String> {
+    async fn check_if_solved(&self,user_id: String, pool: &State<sqlx::MySqlPool>) -> Result<sqlx::mysql::MySqlRow, String> {
         let solved = sqlx::query("SELECT code FROM solved WHERE user_id = ? AND problem_id = ?")
-            .bind(self.path.clone())
+            .bind(user_id)
             .bind(self.session.clone())
             .fetch_one(&**pool)
             .await;
@@ -187,7 +187,8 @@ impl GetProblem{
         let problem = self.get_problem_data(pool).await;
         let (name, text, input, expected) = 
         (problem.get("name"), problem.get("text"), problem.get("ex_input"), problem.get("ex_output"));
-        let code = match self.check_if_solved(pool).await {
+        let user_id = self.get_user_id(pool).await;
+        let code = match self.check_if_solved(user_id.get("id"),pool).await {
             Ok(code) => code.get("code"),
             Err(_) => String::from("None"),
         };
