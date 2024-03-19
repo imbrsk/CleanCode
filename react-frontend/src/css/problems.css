@@ -85,3 +85,8 @@
   cursor: pointer;
   background-color: #25ce90;
 }
+
+#problems-text{
+  text-decoration: none;
+  color: black;
+}

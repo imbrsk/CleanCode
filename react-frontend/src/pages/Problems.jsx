@@ -19,8 +19,6 @@ function Problems() {
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-  // Dobivame za koj predmet sakame da gi prikazeme zadacite pa go passame kako prop na accordionot
-  // Ili tuka go dobivame payloadot so jsonot za site zadaci i prakjame kako prop na accordion
   if (!userCookie) {
     if (!token) {
       window.location.href = "/";
@@ -34,7 +32,11 @@ function Problems() {
       <NavbarSign value="Sign Out" link="/" />
       <Container maxWidth="lg" className="container-problems">
         <Account></Account>
-        <Subject name="Структурно Програмирање" link=""></Subject>
+        <div className="subject">
+          <div className="bracket">[</div>
+          <div className="subject-value">Структурно Програмирање</div>
+          <div className="bracket">]</div>
+        </div>
         <div className="problem-years">
           <div className="problems">
             <div className="year"><div className="bracket-year">[</div>2024<div className="bracket-year">]</div></div>

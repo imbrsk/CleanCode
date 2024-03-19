@@ -6,8 +6,76 @@ import { Container } from "@mui/material";
 import { createSession } from "../components/MakeSession";
 import "../css/code.css";
 import Cookies from "js-cookie";
+import Footer from "../components/Footer";
+import { useEffect, useState } from "react";
 
+const testCode = async (request) => {
+  try {
+    const response = await fetch("http://localhost:8000/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(codeData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
+  } catch (error) {
+    console.error("Error during the fetch operation:", error);
+  }
+};
+
+function parseText(text) {
+  const elements = [];
+
+  // Create a temporary div element to parse the HTML text
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = text;
+
+  // Iterate over the child nodes of the temporary div
+  tempDiv.childNodes.forEach((node, index) => {
+    if (node.nodeName === "P") {
+      // If the node is a paragraph, create a paragraph element with its text content
+      elements.push(<p key={index}>{node.textContent}</p>);
+    } else if (node.nodeName === "H3") {
+      // If the node is an h3 element, create an h3 element
+      elements.push(<h3 key={index}>{node.textContent}</h3>);
+    }
+  });
+
+  return elements;
+}
 function CodeTesting() {
+  let path = "";
+  if (typeof window !== "undefined" && window.location) {
+    path = window.location.pathname;
+  }
+  const segments = path.split("/"); // This will split the path into segments
+  const findid = path.split("=");
+  const desiredSegment = segments[1]; // This will give you 'strukturno'
+  const [code, setCode] = useState("");
+
+  const handleCodeChange = (event) => {
+    setCode(event.target.value);
+  };
+  const codeData = {
+    session: Cookies.get("session"),
+    code: code,
+    path: desiredSegment,
+    problem_id: findid[1],
+  };
+  const textData = {
+    session: Cookies.get("session"),
+    path: findid[1],
+  };
+  let text;
+  let name;
+  let exinput;
+  let exoutput;
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
   if (!userCookie) {
@@ -17,6 +85,32 @@ function CodeTesting() {
       createSession();
     }
   }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/execute", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(textData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        name = data["name"];
+        text = data["text"];
+        exinput = data["ex_input"];
+        exoutput = data["ex_expected"];
+        code = data["code"];
+        setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
+      } catch (error) {
+        console.error("Error during the fetch operation:", error);
+      }
+    };
+  }, []);
   return (
     <>
       <CssBaseline></CssBaseline>
@@ -25,61 +119,48 @@ function CodeTesting() {
         <Account></Account>
         <div className="subject">
           <div className="bracket">[</div>
-          <div className="subject-value">Структурно Програмирање</div>
+          <div className="subject-value">{name}</div>
           <div className="bracket">]</div>
         </div>
-        <p className="code-text">
-          Напишете програма која од стандарден влез ќе прочита еден природен
-          број N, и на стандарден излез ќе ја испечати факторизацијата на тој
-          број.
-          <br />
-          <br />
-          Под факторизација на природен број се подразбира неговото
-          претставување како производ од
-          <br />
-          прости фактори (прост број на степен). Прост број е природен број кој
-          има точно два делители (1 и<br />
-          самиот тој број). Првите неколку прости броеви се 2, 3, 5, 7, 11, 13,
-          17, итн...
-        </p>
-        <h3>Влез</h3>
-        <p>Од стандарден влез се чита еден цел број N (2 = N = 100000).</p>
-        <h3>Излез</h3>
-        <p>
-          На стандарден излез отпечатете ја факторизацијата на бројот N.
-          Простите фактори се печатат во загради како број на (^) степен, а се
-          одделени со знакот за множење (*).
-        </p>
-        <p>
-          Факторите треба да се подредени од оној фактор со најмала основа, кон
-          оние со поголема основа. Не смее да има знак * на крајот на излезот.
-          Видете го тест-случајот даден подолу за конкретен пример...
-        </p>
+        {parseText(text)}
         <h3>Примери</h3>
         <div className="example">
           <div>
             <p>Влез</p>
-            <p>1176</p>
+            <p>{exinput}</p>
           </div>
           <div>
             <p>Излез</p>
-            <p>(2^3)*(3^1)*(7^2)</p>
+            <p>{exoutput}</p>
           </div>
         </div>
-        <form action="/" className="input-form">
+        <form action="" className="input-form">
           <p>
-            <label for="sendcode">Input Code</label>
+            <label htmlFor="sendcode" className="input-label">
+              Input Code
+            </label>
           </p>
           <textarea
             id="code-input"
             name="sendcode"
-            rows="4"
+            rows="30"
             cols="100"
+            value={code}
+            onChange={handleCodeChange}
           ></textarea>
           <br />
-          <input type="submit" value="Submit"></input>
+          <div className="submit-form">
+            <select name="lang" id="lang">
+              <option value="54">C++</option>
+              <option value="50">C</option>
+            </select>
+            <button type="button" id="submit-button" onClick={() => testCode(codeData)}>
+              Submit
+            </button>
+          </div>
         </form>
       </Container>
+      <Footer></Footer>
     </>
   );
 }
