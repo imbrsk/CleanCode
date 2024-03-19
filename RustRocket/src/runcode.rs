@@ -9,6 +9,7 @@ use sqlx::Row;
 enum ProcessCodeResponse{
     Success,
     CompileError,
+    RuntimeError,
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct ProblemData{
@@ -41,6 +42,9 @@ impl ProblemData{
         let response = ProblemData::make_api_req(data).await.unwrap().0;
         if response["status"]["description"].to_string().trim_matches('"') == String::from("Compilation Error"){
             return ProcessCodeResponse::CompileError;
+        }else if response["status"]["description"].to_string().trim_matches('"') == String::from("Runtime Error (NZEC)"){
+            return ProcessCodeResponse::RuntimeError;
+        
         }else{
             return ProcessCodeResponse::Success;
         }
@@ -83,7 +87,11 @@ impl ProblemData{
                 ProcessCodeResponse::CompileError => 
                     return Json(json!({
                 "status": "Compilation Error",
-                })) 
+                })), 
+                ProcessCodeResponse::RuntimeError => 
+                    return Json(json!({
+                "status": "Runtime Error",
+                }))
                 ,
                 ProcessCodeResponse::Success => { 
                     let input = self.get_input_expected(String::from("input"), pool).await;

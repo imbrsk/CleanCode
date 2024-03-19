@@ -109,7 +109,7 @@ pub struct Path{
 }
 impl Path{
     async fn get_path_from_table(pool: &State<sqlx::MySqlPool>) -> Vec<sqlx::mysql::MySqlRow>{
-        let paths = sqlx::query("SELECT DISTINCT problem_path FROM subjects")
+        let paths = sqlx::query("SELECT DISTINCT problem_path,id FROM subjects")
             .fetch_all(&**pool)
             .await
             .unwrap();
@@ -119,9 +119,10 @@ impl Path{
         let paths = Path::get_path_from_table(pool).await;
         let mut paths_list: Vec<Path> = Vec::new();
         for path in &paths {
-            let path = path.get("problem_path");
+            let id: i32  = path.get("id");
+            let path: String  = path.get("problem_path");
             let path = Path {
-                path: path,
+                path: format!("{}?id={}", path, id.to_string()),
             };
             paths_list.push(path);
         }
