@@ -1,5 +1,7 @@
 
-use rocket::FromForm;
+use std::path;
+
+use rocket::{tokio::sync::broadcast::error, FromForm};
 use rocket::serde::json::Json;
 use rocket::State;
 use serde::{Deserialize, Serialize};
@@ -34,6 +36,7 @@ impl Subjects{
 #[derive(Debug, FromForm, Deserialize, Serialize)]
 pub struct Subject{
     name: String,
+    session: String,
 }
 #[derive(Serialize)]
 pub struct SubjectName{
@@ -98,5 +101,90 @@ impl Subject{
             big_j.push(subjects);
         }
         big_j   
+    }
+}
+#[derive(Serialize)]
+pub struct Path{
+    path: String,
+}
+impl Path{
+    async fn get_path_from_table(pool: &State<sqlx::MySqlPool>) -> Vec<sqlx::mysql::MySqlRow>{
+        let paths = sqlx::query("SELECT DISTINCT problem_path,id FROM subjects")
+            .fetch_all(&**pool)
+            .await
+            .unwrap();
+        paths
+    }
+    pub async fn get_paths(pool: &State<sqlx::MySqlPool>) -> Vec<Path> {
+        let paths = Path::get_path_from_table(pool).await;
+        let mut paths_list: Vec<Path> = Vec::new();
+        for path in &paths {
+            let id: i32  = path.get("id");
+            let path: String  = path.get("problem_path");
+            let path = Path {
+                path: format!("{}?id={}", path, id.to_string()),
+            };
+            paths_list.push(path);
+        }
+        paths_list
+    }
+}
+#[derive(Serialize)]
+pub struct LoadProblem{
+    name: String,
+    text: String,
+    ex_input: String,
+    ex_expected: String,
+    code: String,
+}
+#[derive(Debug, FromForm, Deserialize, Serialize)]
+pub struct GetProblem{
+    session: String,
+    path: String,
+}
+impl GetProblem{
+    async fn get_problem_data(&self, pool: &State<sqlx::MySqlPool>) -> sqlx::mysql::MySqlRow{
+        let problems = sqlx::query("SELECT name, text, ex_input, ex_output FROM subjects WHERE problem_path = ?")
+            .bind(self.path.clone())
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        problems
+    }
+    async fn get_user_id(&self, pool: &State<sqlx::MySqlPool>) -> sqlx::mysql::MySqlRow{
+        let user_id = sqlx::query("SELECT user_id FROM users WHERE session = ?")
+            .bind(self.session.clone())
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        user_id
+    }
+    async fn check_if_solved(&self, pool: &State<sqlx::MySqlPool>) -> Result<sqlx::mysql::MySqlRow, String> {
+        let solved = sqlx::query("SELECT code FROM solved WHERE user_id = ? AND problem_id = ?")
+            .bind(self.path.clone())
+            .bind(self.session.clone())
+            .fetch_one(&**pool)
+            .await;
+        match solved {
+            Ok(solved) => Ok(solved),
+            Err(_) => Err(String::from("None")),
+        }
+    }
+    pub async fn get_problem(&self, pool: &State<sqlx::MySqlPool>) -> LoadProblem{
+        let problem = self.get_problem_data(pool).await;
+        let (name, text, input, expected) = 
+        (problem.get("name"), problem.get("text"), problem.get("ex_input"), problem.get("ex_output"));
+        let code = match self.check_if_solved(pool).await {
+            Ok(code) => code.get("code"),
+            Err(_) => String::from("None"),
+        };
+        let return_json = LoadProblem {
+            name: name,
+            text: text,
+            ex_input: input,
+            ex_expected: expected,
+            code: code
+        };
+        return_json
     }
 }

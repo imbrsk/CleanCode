@@ -21,7 +21,7 @@ CREATE TABLE remember_me (
 );
     
 -- @block
-SELECT DISTINCT subject,path,year FROM subjects
+SELECT * FROM sessions
 -- @block
 INSERT INTO subjects (
         name,
@@ -110,17 +110,37 @@ INSERT INTO subjects (
         starting_code
     )
 VALUES (
-        'zad1',
-        '/zad1',
+        'STEFANN',
+        '/STEFANN',
         'Структурно Програмирање',
         '/strukturno',
         2023,
         'Испит',
-        '',
-        '',
-        '',
-        '',
-        '',
+        'ove e tekstot',
+        'ex inputot',
+        'ex outputot',
+        '{ "test0": "1",
+"test1": "1",
+"test2": "1",
+"test3": "1",
+"test4": "1",
+"test5": "1",
+"test6": "1",
+"test7": "1",
+"test8": "1",
+"test9": "1"
+}',
+        '{ "test0": "1",
+"test1": "1",
+"test2": "1",
+"test3": "1",
+"test4": "1",
+"test5": "1",
+"test6": "1",
+"test7": "1",
+"test8": "1",
+"test9": "1"
+}',
         ''
     );
 --@block
@@ -129,16 +149,16 @@ SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокф�
 SELECT * FROM subjects
 --@block
 UPDATE subjects SET input = '{
-    "test0": "1 2 4 5 5 6 7 9",
-    "test1": "1 3 4 5 7 8 12 42 53 56",
-    "test2": "1 2 2 5 6 7 8 9",
-    "test3": "2 2 3 4 4 5 5 6 7 7 8 9",
-    "test4": "2 2 3 4 4 5 5 6 7 7 8 9",
-    "test5": "20 30 40 50 60 70",
-    "test6": "12 16 18 24 24 32 36 40",
-    "test7": "10 20 30 40",
-    "test8": "-1",
-    "test9": "-1"
+    "test0": "1",
+    "test1": "1",
+    "test2": "1",
+    "test3": "1",
+    "test4": "1",
+    "test5": "1",
+    "test6": "1",
+    "test7": "1",
+    "test8": "1",
+    "test9": "1"
 }';
 --@block
 SELECT * FROM subjects
@@ -159,4 +179,16 @@ CREATE TABLE verify (
     code VARCHAR(15) NOT NULL
 )
 --@block
-DROP TABLE subjects
+CREATE TABLE solved(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    problem_id INT NOT NULL,
+    code TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (problem_id) REFERENCES subjects(id)
+)
+--@block
+SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
+
+--@block
+SELECT * FROM solved

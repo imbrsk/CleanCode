@@ -11,7 +11,7 @@ use sqlx::MySqlPool;
 mod login_register;
 mod leaderboard;
 use crate::login_register::User;
-use crate::subjects::Subject;
+use crate::subjects::{GetProblem, Subject};
 use login_register::{AccountStatusLogin, AccountStatusRegister};
 
 mod runcode;
@@ -31,7 +31,7 @@ mod reset_password;
 use crate::reset_password::{ResetPassword, Reset, VerifyCode, Verify};
 
 mod subjects;
-use subjects::{SubjectName, Subjects};
+use subjects::{LoadProblem, Path, SubjectName, Subjects};
 
 
 mod verify;
@@ -178,6 +178,16 @@ async fn subject_problem(data: Json<Subject>, pool: &State<sqlx::MySqlPool>) -> 
     let return_t = data.get_problems(pool).await;
     Json(return_t)
 }
+#[get("/get_routs")]
+async fn get_routs(pool: &State<sqlx::MySqlPool>) -> Json<Vec<Path>> {
+    let paths = Path::get_paths(pool).await;
+    Json(paths)
+}
+#[post("/load_problem", data = "<data>")]
+async fn load_problem(data: Json<GetProblem>, pool: &State<sqlx::MySqlPool>) -> Json<LoadProblem> {
+    let loaded_problem = data.get_problem(pool).await;
+    Json(loaded_problem)
+}
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let cookie = bobo.create_session(pool).await; 
@@ -191,5 +201,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem])
 }
