@@ -49,6 +49,7 @@ pub struct SubjectName{
 pub struct Problem{
     ime: String,
     link: String,
+    solved: String,
 }
 impl Subject{
     async fn get_dist_year(&self, pool: &State<sqlx::MySqlPool>) -> Vec<sqlx::mysql::MySqlRow> {
@@ -69,6 +70,15 @@ impl Subject{
             .unwrap();
         problems
     }
+    async fn check_solved(&self ,id: String , pool: &State<sqlx::MySqlPool>) -> i8{
+        let solved:(i8, ) = sqlx::query_as("SELECT COUNT(*) FROM solved WHERE user_id = ? AND problem_id = ?")
+            .bind(self.session.clone())
+            .bind(id)
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        solved.0
+    }
     pub async fn get_problems(&self, pool: &State<sqlx::MySqlPool>) -> Vec<SubjectName>{
         let years = self.get_dist_year(pool).await;
         let periods = vec!["Колкокфиум 1", "Колкокфиум 2", "Испит"];
@@ -87,9 +97,11 @@ impl Subject{
                     let name: String = problem.get("name");
                     let problem_path: String = problem.get("problem_path");
                     let id: i32 = problem.get("id");
+                    let check_solved = self.check_solved( id.to_string(), pool).await;
                     let problem = Problem {
                         ime: name,
                         link: format!("{}?id={}", problem_path,id.to_string()),
+                        solved: check_solved.to_string()
                     };
                     match period {
                         &"Испит" => subjects.ispiti.push(problem),
