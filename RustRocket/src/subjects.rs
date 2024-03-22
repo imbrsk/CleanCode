@@ -94,8 +94,9 @@ impl Subject{
             for period in &periods { 
                 let problems = self.get_problem(period.to_string(), year.get("year"), pool).await;
                 for problem in problems {
+                    let path: String = problem.get("problem_path");
                     let name: String = problem.get("name");
-                    let problem_path: String = problem.get("problem_path");
+                    let problem_path: String = path.replace("/", "");
                     let id: i32 = problem.get("id");
                     let check_solved = self.check_solved( id.to_string(), pool).await;
                     let problem = Problem {

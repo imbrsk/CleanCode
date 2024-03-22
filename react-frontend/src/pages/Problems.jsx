@@ -10,6 +10,7 @@ import Accordion from "../components/Accordion";
 import Footer from "../components/Footer";
 import Cookies from "js-cookie";
 import { createSession } from "../components/MakeSession";
+import { Link } from "react-router-dom";
 
 function Problems() {
   const userCookie = Cookies.get("session");

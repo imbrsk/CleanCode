@@ -56,7 +56,6 @@ export default function App() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="home" element={<Home />} />
         <Route path="problems" element={<Problems />} />
-        <Route path="/strukturno/STEFANN" element={<CodeTesting />} />
         {/* Dynamically generate routes for subjects */}
         {subjects.map(subject => (
           <Route

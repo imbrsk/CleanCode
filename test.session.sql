@@ -80,7 +80,8 @@ CREATE TABLE subjects (
     expected TEXT,
     starting_code TEXT
 );
-
+-- @block
+DROP TABLE subjects
 -- @block
 CREATE TABLE user_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -116,7 +117,7 @@ VALUES (
         '/strukturno',
         2023,
         'Испит',
-        'ove e tekstot',
+        '<p>Testing styling of the bitch bboyy</p>',
         'ex inputot',
         'ex outputot',
         '{ "test0": "1",
@@ -187,12 +188,8 @@ CREATE TABLE solved(
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (problem_id) REFERENCES subjects(id)
 )
+--@block
 SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
 
 --@block
-SELECT name,
-    text,
-    ex_input,
-    ex_output
-FROM subjects
-WHERE id = 8
+DROP TABLE subjects

@@ -59,6 +59,10 @@ function CodeTesting() {
   const findid = path.split("=");
   const desiredSegment = segments[1]; // This will give you 'strukturno'
   const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+  const [text, setText] = useState("");
+  const [exinput, setExinput] = useState("");
+  const [exoutput, setExoutput] = useState("");
 
   const handleCodeChange = (event) => {
     setCode(event.target.value);
@@ -77,10 +81,6 @@ function CodeTesting() {
     session: Cookies.get("session"),
     path: id,
   };
-  let text;
-  let name;
-  let exinput;
-  let exoutput;
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
   if (!userCookie) {
@@ -105,12 +105,11 @@ function CodeTesting() {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        name = data["name"];
-        text = data["text"];
-        exinput = data["ex_input"];
-        exoutput = data["ex_expected"];
-        code = data["code"];
-        setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
+        setName(data["name"]);
+        setText(parseText(data["text"]))
+        setExinput(data["ex_input"])
+        setExoutput(data["ex_expected"])
+        setCode(data["code"]);
       } catch (error) {
         console.error("Error during the fetch operation:", error);
       }
@@ -128,7 +127,7 @@ function CodeTesting() {
           <div className="subject-value">{name}</div>
           <div className="bracket">]</div>
         </div>
-        {parseText(text)}
+        {text}
         <h3>Примери</h3>
         <div className="example">
           <div>

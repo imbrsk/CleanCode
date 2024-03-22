@@ -46,13 +46,17 @@ function Accordion(props) {
   }, [yearX, type]); // Dependency array to rerun effect when yearX or type changes
 
   const ispiti2024Items = ispiti2024.map((ispit, index) => (
-    <div key={index}>
-      <div className={`expanded-problems ${ispit.solved === 1 ? "lightgreen" : ""}`}>
-        <Link to={ispit.link} id="problems-text">{ispit.ime}</Link>
+    <Link to={ispit.link} key={index} id="problem-link">
+      <div
+        className={`expanded-problems ${
+          ispit.solved === 1 ? "lightgreen" : ""
+        }`}
+      >
+        <div id="problems-text">{ispit.ime}</div>
       </div>
-    </div>
+    </Link>
   ));
- 
+
   return (
     <>
       <div className="ispitjan-2024">
