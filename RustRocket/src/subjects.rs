@@ -70,9 +70,17 @@ impl Subject{
             .unwrap();
         problems
     }
-    async fn check_solved(&self ,id: String , pool: &State<sqlx::MySqlPool>) -> i8{
-        let solved:(i8, ) = sqlx::query_as("SELECT COUNT(*) FROM solved WHERE user_id = ? AND problem_id = ?")
+    async fn get_user_id(&self, pool: &State<sqlx::MySqlPool>) -> sqlx::mysql::MySqlRow{
+        let user_id = sqlx::query("SELECT user_id FROM sessions WHERE session_id = ?")
             .bind(self.session.clone())
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        user_id
+    }
+    async fn check_solved(user_id: String ,id: String , pool: &State<sqlx::MySqlPool>) -> i8{
+        let solved:(i8, ) = sqlx::query_as("SELECT COUNT(*) FROM solved WHERE user_id = ? AND problem_id = ?")
+            .bind(user_id)
             .bind(id)
             .fetch_one(&**pool)
             .await
@@ -83,6 +91,8 @@ impl Subject{
         let years = self.get_dist_year(pool).await;
         let periods = vec!["Колкокфиум 1", "Колкокфиум 2", "Испит"];
         let mut big_j: Vec<SubjectName> = Vec::new();
+        let user_id_sql = self.get_user_id(pool).await;
+        let user_id: i32 = user_id_sql.get("user_id");
         for year in years {
             let number: i32 = year.get("year");
             let mut subjects = SubjectName {
@@ -98,7 +108,7 @@ impl Subject{
                     let name: String = problem.get("name");
                     let problem_path: String = path.replace("/", "");
                     let id: i32 = problem.get("id");
-                    let check_solved = self.check_solved( id.to_string(), pool).await;
+                    let check_solved = Self::check_solved(user_id.to_string().clone() , id.to_string(), pool).await;
                     let problem = Problem {
                         ime: name,
                         link: format!("{}?id={}", problem_path,id.to_string()),
@@ -176,7 +186,7 @@ impl GetProblem{
     async fn check_if_solved(&self,user_id: String, pool: &State<sqlx::MySqlPool>) -> Result<sqlx::mysql::MySqlRow, sqlx::Error> {
         let solved = sqlx::query("SELECT code FROM solved WHERE user_id = ? AND problem_id = ?")
             .bind(user_id.clone())
-            .bind(self.session.clone())
+            .bind(self.path.clone())
             .fetch_one(&**pool)
             .await;
         solved
@@ -187,7 +197,7 @@ impl GetProblem{
         (problem.get("name"), problem.get("text"), problem.get("ex_input"), problem.get("ex_output"));
         let user_id_sql = self.get_user_id(pool).await;
         let user_id: i32 = user_id_sql.get("user_id");
-        let code = match self.check_if_solved(user_id.to_string(),pool).await {
+        let code: String = match self.check_if_solved(user_id.to_string(),pool).await {
             Ok(code) => code.get("code"),
             Err(_) => String::from(""),
         };

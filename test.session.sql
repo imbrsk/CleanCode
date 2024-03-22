@@ -149,6 +149,8 @@ SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокф�
 --@block
 SELECT * FROM solved
 --@block
+SELECT code FROM solved WHERE user_id = 5 AND problem_id = 8
+--@block
 UPDATE subjects SET input = '{
     "test0": "1",
     "test1": "1",
