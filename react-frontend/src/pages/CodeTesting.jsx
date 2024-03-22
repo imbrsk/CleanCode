@@ -17,7 +17,7 @@ const testCode = async (request) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(codeData),
+      body: JSON.stringify(request),
     });
 
     if (!response.ok) {
@@ -55,28 +55,29 @@ function CodeTesting() {
   if (typeof window !== "undefined" && window.location) {
     path = window.location.pathname;
   }
-  const segments = path.split("/"); // This will split the path into segments
-  const findid = path.split("=");
-  const desiredSegment = segments[1]; // This will give you 'strukturno'
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [exinput, setExinput] = useState("");
   const [exoutput, setExoutput] = useState("");
+  const [language, setLanguage] = useState("54");
+  const handleLanguageChange = (event) => {
+    setLanguage(event.target.value);
+  };
 
   const handleCodeChange = (event) => {
     setCode(event.target.value);
   };
-  const codeData = {
-    session: Cookies.get("session"),
-    code: code,
-    path: desiredSegment,
-    problem_id: findid[1],
-  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
-
+  const codeData = {
+    session: Cookies.get("session"),
+    code: code,
+    problem_id: id,
+    language: language,
+  };
   const textData = {
     session: Cookies.get("session"),
     path: id,
@@ -155,7 +156,7 @@ function CodeTesting() {
           ></textarea>
           <br />
           <div className="submit-form">
-            <select name="lang" id="lang">
+            <select name="lang" id="lang" value={language} onChange={handleLanguageChange}>
               <option value="54">C++</option>
               <option value="50">C</option>
             </select>

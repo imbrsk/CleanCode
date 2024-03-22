@@ -16,7 +16,6 @@ pub struct ProblemData{
     code: String,
     language: String,
     session: String,
-    path: String,
     problem_id: String,
 }
 impl ProblemData{
@@ -50,10 +49,9 @@ impl ProblemData{
         }
     }
     async fn get_input_expected(&self, field : String , pool: &State<sqlx::MySqlPool>) -> String{
-        let sent_data = format!("SELECT {} FROM subjects WHERE id = ? AND path = ?", field);
+        let sent_data = format!("SELECT {} FROM subjects WHERE id = ?", field);
         let correct:(String, ) = sqlx::query_as(&sent_data)
-            .bind(self.problem_id.clone())
-            .bind(self.path.clone())    
+            .bind(self.problem_id.clone())    
             .fetch_one(&**pool)
             .await
             .unwrap();

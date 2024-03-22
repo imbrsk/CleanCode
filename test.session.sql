@@ -147,7 +147,7 @@ VALUES (
 --@block
 SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокфиум 1' AND path = '/strukturno' AND year = 2023
 --@block
-SELECT * FROM subjects
+SELECT * FROM solved
 --@block
 UPDATE subjects SET input = '{
     "test0": "1",
