@@ -8,8 +8,10 @@ import "../css/code.css";
 import Cookies from "js-cookie";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import ResultsTable from "../components/ResultsTable";
 
+let tableData;
 const testCode = async (request) => {
   try {
     const response = await fetch("http://localhost:8000/execute", {
@@ -23,7 +25,7 @@ const testCode = async (request) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data = await response.json();
+    tableData = await response.json();
     setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
   } catch (error) {
     console.error("Error during the fetch operation:", error);
@@ -71,7 +73,7 @@ function CodeTesting() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get('id');
+  const id = queryParams.get("id");
   const codeData = {
     session: Cookies.get("session"),
     code: code,
@@ -107,9 +109,9 @@ function CodeTesting() {
         }
         const data = await response.json();
         setName(data["name"]);
-        setText(parseText(data["text"]))
-        setExinput(data["ex_input"])
-        setExoutput(data["ex_expected"])
+        setText(parseText(data["text"]));
+        setExinput(data["ex_input"]);
+        setExoutput(data["ex_expected"]);
         setCode(data["code"]);
       } catch (error) {
         console.error("Error during the fetch operation:", error);
@@ -156,14 +158,24 @@ function CodeTesting() {
           ></textarea>
           <br />
           <div className="submit-form">
-            <select name="lang" id="lang" value={language} onChange={handleLanguageChange}>
+            <select
+              name="lang"
+              id="lang"
+              value={language}
+              onChange={handleLanguageChange}
+            >
               <option value="54">C++</option>
               <option value="50">C</option>
             </select>
-            <button type="button" id="submit-button" onClick={() => testCode(codeData)}>
+            <button
+              type="button"
+              id="submit-button"
+              onClick={() => testCode(codeData)}
+            >
               Submit
             </button>
           </div>
+          <ResultsTable data={tableData}></ResultsTable>
         </form>
       </Container>
       <Footer></Footer>
