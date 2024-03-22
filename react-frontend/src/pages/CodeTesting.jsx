@@ -11,26 +11,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ResultsTable from "../components/ResultsTable";
 
-let tableData;
-const testCode = async (request) => {
-  try {
-    const response = await fetch("http://localhost:8000/execute", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    tableData = await response.json();
-    setIspiti2024(data.find(({ year }) => year === yearX)?.[type] || []);
-  } catch (error) {
-    console.error("Error during the fetch operation:", error);
-  }
-};
+
 
 function parseText(text) {
   const elements = [];
@@ -57,6 +39,7 @@ function CodeTesting() {
   if (typeof window !== "undefined" && window.location) {
     path = window.location.pathname;
   }
+  const [tableData, setTableData] = useState([]);
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [text, setText] = useState("");
@@ -119,6 +102,29 @@ function CodeTesting() {
     };
     fetchData();
   }, []);
+  const testCode = async (request) => {
+    try {
+      const response = await fetch("http://localhost:8000/execute", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data) {
+        setTableData(data);
+      } else {
+        console.error('Data is undefined or null');
+      }
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+  };
   return (
     <>
       <CssBaseline></CssBaseline>

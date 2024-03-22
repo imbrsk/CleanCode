@@ -188,6 +188,11 @@ async fn load_problem(data: Json<GetProblem>, pool: &State<sqlx::MySqlPool>) -> 
     let loaded_problem = data.get_problem(pool).await;
     Json(loaded_problem)
 }
+/* 
+#[post("/leaderboard", data = "<data>")]
+async fn insert_into_test(data: Json<>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    
+}*/
 /*#[get("/leaderboard")]
 async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let cookie = bobo.create_session(pool).await; 
