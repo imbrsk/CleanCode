@@ -190,4 +190,9 @@ CREATE TABLE solved(
 SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
 
 --@block
-SELECT * FROM sessions
+SELECT name,
+    text,
+    ex_input,
+    ex_output
+FROM subjects
+WHERE id = 8

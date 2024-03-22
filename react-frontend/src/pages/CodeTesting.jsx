@@ -8,6 +8,7 @@ import "../css/code.css";
 import Cookies from "js-cookie";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 
 const testCode = async (request) => {
   try {
@@ -68,9 +69,13 @@ function CodeTesting() {
     path: desiredSegment,
     problem_id: findid[1],
   };
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+
   const textData = {
     session: Cookies.get("session"),
-    path: findid[1],
+    path: id,
   };
   let text;
   let name;
@@ -88,7 +93,7 @@ function CodeTesting() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/execute", {
+        const response = await fetch("http://localhost:8000/load_problem", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -110,6 +115,7 @@ function CodeTesting() {
         console.error("Error during the fetch operation:", error);
       }
     };
+    fetchData();
   }, []);
   return (
     <>

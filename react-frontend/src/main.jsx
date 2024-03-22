@@ -12,7 +12,7 @@ import CodeTesting from "./pages/CodeTesting";
 
 export default function App() {
   const [subjects, setSubjects] = useState([]);
-
+  const [problems, setProblems] = useState([]);
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -29,10 +29,7 @@ export default function App() {
       }
     };
     fetchSubjects();
-  }, []);
-  const [problems, setProblems] = useState([]);
 
-  useEffect(() => {
     const fetchProblems = async () => {
       try {
         const response = await fetch("http://localhost:8000/get_routs");
@@ -48,6 +45,7 @@ export default function App() {
     fetchProblems();
   }, []);
 
+
   return (
     <BrowserRouter>
       <Routes>
@@ -58,18 +56,18 @@ export default function App() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="home" element={<Home />} />
         <Route path="problems" element={<Problems />} />
-        <Route path="code-testing" element={<CodeTesting />} />
+        <Route path="/strukturno/STEFANN" element={<CodeTesting />} />
         {/* Dynamically generate routes for subjects */}
         {subjects.map(subject => (
           <Route
             key={subject.subject}
             path={subject.path}
-            element={<Problems/>}
+            element={<Problems />}
           />
         ))}
-        {problems.map(problem => (
+        {problems.map((problem, index) => (
           <Route
-            key={problem.subject}
+            key={index}
             path={problem.path}
             element={<CodeTesting/>}
           />
