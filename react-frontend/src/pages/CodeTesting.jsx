@@ -124,7 +124,7 @@ function CodeTesting() {
       document.getElementById("ldr").style.display = "none";
       button.disabled = false;
       if (data) {
-        setTableData(data);
+        setTableData(data);;
       } else {
         console.error('Data is undefined or null');
       }

@@ -18,3 +18,22 @@ td {
   padding: 0.5rem;
 }
 
+.error-msg{
+  color: red;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.passed-msg{
+  color: green;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+.failed-msg{
+  color: red;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}

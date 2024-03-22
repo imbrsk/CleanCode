@@ -2,10 +2,16 @@ import React from "react";
 import "../css/table.css";
 
 const ResultsTable = (props) => {
+  let msg;
+  let check;
   if (!props.data || !props.data.input) {
-    return null;
+    console.log(props.data['status']);
+    if (props.data['status'] != undefined) {
+      console.log(msg);
+      msg = props.data['status'];
+      return <div className="error-msg">{msg}</div>;
+    }
   } else {
-    let msg;
     const data = Object.keys(props.data.input).map((key) => ({
       test: key,
       input: props.data.input[key],
@@ -13,14 +19,13 @@ const ResultsTable = (props) => {
       got: props.data.got[key],
       is_cor: props.data.is_cor[key],
     }));
-    if (!props.data["status"]) {
-      if (props.data.is_cor.every((val) => val === 1)) {
-        msg = "All tests passed!";
-      } else {
-        msg = "Some tests failed!";
-      }
+    ;
+    if (props.data["track_cor"] == "10") {
+      msg = "All tests passed!";
+      check = true;
     } else {
-      msg = props.data["status"];
+      msg = "Some tests failed!";
+      check = false;
     }
 
     return (
@@ -49,7 +54,7 @@ const ResultsTable = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="exec-msg">msg</div>
+        <div className={`exec-msg ${check ? 'passed-msg' : 'failed-msg'}`}>{msg}</div>
       </>
     );
   }
