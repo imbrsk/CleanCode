@@ -104,6 +104,8 @@ function CodeTesting() {
   }, []);
   const testCode = async (request) => {
     document.getElementById("ldr").style.display = "block";
+    const button = document.getElementById('submit-button');
+    button.disabled = true;
     try {
       const response = await fetch("http://localhost:8000/execute", {
         method: "POST",
@@ -115,10 +117,12 @@ function CodeTesting() {
 
       if (!response.ok) {
         document.getElementById("ldr").style.display = "none";
+        button.disabled = false;
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
       document.getElementById("ldr").style.display = "none";
+      button.disabled = false;
       if (data) {
         setTableData(data);
       } else {
