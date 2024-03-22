@@ -103,6 +103,7 @@ function CodeTesting() {
     fetchData();
   }, []);
   const testCode = async (request) => {
+    document.getElementById("ldr").style.display = "block";
     try {
       const response = await fetch("http://localhost:8000/execute", {
         method: "POST",
@@ -113,9 +114,11 @@ function CodeTesting() {
       });
 
       if (!response.ok) {
+        document.getElementById("ldr").style.display = "none";
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
+      document.getElementById("ldr").style.display = "none";
       if (data) {
         setTableData(data);
       } else {
@@ -181,6 +184,7 @@ function CodeTesting() {
               Submit
             </button>
           </div>
+          <div className="loader" id="ldr"></div>
           <ResultsTable data={tableData}></ResultsTable>
         </form>
       </Container>
