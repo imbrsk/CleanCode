@@ -21,7 +21,7 @@ input::placeholder {
     color: black;
 }
 
-input:focus {
+.input-field:focus {
     border-color: #FF7F50; /* Change border color */
     box-shadow: 0 0 15px #FF7F50; /* Add a shadow */
     outline: #FF7F50; /* Remove default outline */
@@ -37,7 +37,7 @@ input:focus {
     display: flex;
     flex-direction: column;
 }
-input:focus::placeholder {
+.input-field:focus::placeholder {
     color: transparent;
 }
 

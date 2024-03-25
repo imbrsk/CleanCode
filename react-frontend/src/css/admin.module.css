@@ -1,0 +1,36 @@
+.adminform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminInput{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: medium;
+}
+
+.adminButton{
+    font-size: medium;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+}
+
+label{
+    font-size: large;
+}
+
+.adminProblem{
+    display: flex;
+    justify-content: center;
+
+}
+.problemLeft{
+    padding: 1rem;
+}
+.problemRight{
+    padding: 1rem;
+}
