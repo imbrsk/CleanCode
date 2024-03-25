@@ -29,6 +29,7 @@ const AdminLogin = () => {
   const [logininfo, setLogininfo] = useState([]);
 
   const handleLoginWithCredentials = () => {
+    setLogininfo({'token': username, 'password': password});
     fetch("http://localhost:8000/login_admin", {
       method: "POST",
       headers: {
@@ -39,7 +40,7 @@ const AdminLogin = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data["status"] === "success") {
-          Cookies.set("token", data["cookie"]);
+          Cookies.set("admincookie", data["cookie"]);
           window.location.href = "/adminadmin";
         }
       })
@@ -50,18 +51,21 @@ const AdminLogin = () => {
   };
 
   const handleLoginWithToken = () => {
-    fetch("http://localhost:8000/login_tokens", {
+    let data = {
+      "token" : token
+    }
+    fetch("http://localhost:8000/token_login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(token),
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data["status"] === "success") {
           Cookies.set("token", data["cookie"]);
-          window.location.href = "/adminadmin";
+          window.location.href = "/modpage  ";
         }
       })
       .catch((error) => {

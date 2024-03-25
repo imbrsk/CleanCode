@@ -4,6 +4,9 @@ use serde::{Deserialize, Serialize};
 use sqlx::{mysql::MySqlRow, Row};
 use bcrypt::verify;
 use serde_json::json;
+use chrono::{DateTime, Utc};
+
+
 
 struct AddProblem {
     name: String,
@@ -93,7 +96,7 @@ impl Create{
 #[derive(Deserialize, Serialize)]
 pub struct Token{
     pub token: String,
-    pub created_at: Option<String>,
+    pub created_at: String,
 }
 pub struct Load;
 impl Load{
@@ -108,9 +111,11 @@ impl Load{
         let mut tokens: Vec<Token>= Vec::new();
         let tokens_row = Load::get_tokens(&pool).await;
         for row in tokens_row{
+            let time:DateTime<Utc> = row.get("created_at");
+            print!("{}", time.to_string());
             let token = Token{
                 token: row.get("token"),
-                created_at: row.get("created_at"),
+                created_at: time.to_string(),
             };
             tokens.push(token);
         }
@@ -156,7 +161,7 @@ impl TokenLogin{
             .take(127)
             .map(char::from)
             .collect();
-        sqlx::query("INSERT INTO token_admin_cookie (cookie, created_at) VALUES (?,NOW())")
+        sqlx::query("INSERT INTO token_admin_cookies (session, created_at) VALUES (?,NOW())")
             .bind(random_string.clone())
             .execute(&**pool)
             .await

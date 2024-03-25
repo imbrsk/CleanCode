@@ -53,22 +53,25 @@ function AdminX() {
   const handleEditProblem = () => {
     // Edit problem logic here
   };
-  let token = Cookies.get("token");
+  let token = Cookies.get("admincookie");
   const checkToken = async () => {
+    const req = {
+      session: token,
+    }
     try {
       const response = await fetch("http://localhost:8000/verify_admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(token),
+        body: JSON.stringify(req),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       if(response['status'] !== "success"){
-        window.location.href = "/admin";
+        //window.location.href = "/admin";
       }
     } catch (error) {
       console.error("Error during the fetch operation:", error);
@@ -104,19 +107,21 @@ function AdminX() {
     }
   };
   const deleteToken = async (request) => {
+    const token = {
+      "token": request
+    }
     try {
-      const response = await fetch("http://localhost:8000/session", {
+      const response = await fetch("http://localhost:8000/delete_token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(token),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const jsonResponse = await response.json();
       fetchTokens();
     } catch (error) {
       console.error("Error during the fetch operation:", error);
@@ -233,9 +238,9 @@ function AdminX() {
             {tableData.map((item, index) => (
               <tr key={index}>
                 <td>{item.token}</td>
-                <td>{item.date}</td>
+                <td>{item.created_at}</td>
                 <td>
-                  <button onClick={deleteToken(item.token)}>Delete</button>
+                  <button onClick={() => deleteToken(item.token)}>Delete</button>
                 </td>
               </tr>
             ))}

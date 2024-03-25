@@ -207,6 +207,5 @@ CREATE TABLE token_admin_cookies(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 --@block
-INSERT INTO admin (token, password) VALUES ("8F20pRhgWJDtG1Z1zkk9euOsn5722So", "$2b$10$j427LnZB0v00gFFI.treq.2T1Z6ZpX5BP0ddLd4Wd6wMquIJn/OUK")
+INSERT INTO admin_token (token, created_at) VALUES ("bobo", NOW())
 --@block
-SELECT * FROM admin_cookies
