@@ -65,7 +65,7 @@ CREATE TABLE reset_password (
 --@block
 INSERT INTO reset_password (email, reset_token, created_at) VALUES ("23","34",NOW()) ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), created_at = VALUES(created_at)
 -- @block
-CREATE TABLE subjects (
+CREATE TABLE subjects_dev (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(127),
     problem_path VARCHAR(127),
@@ -78,7 +78,8 @@ CREATE TABLE subjects (
     ex_output VARCHAR(255),
     input TEXT,
     expected TEXT,
-    starting_code TEXT
+    starting_code TEXT,
+    test_case_number INT
 );
 -- @block
 SELECT * FROM subjects
