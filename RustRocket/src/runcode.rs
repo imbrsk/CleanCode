@@ -1,9 +1,7 @@
-use std::fmt::format;
-use reqwest::{self, dns::Resolve};
-use rocket::{response, serde::json::Json, FromForm, State};
+use reqwest::{self};
+use rocket::{serde::json::Json, FromForm, State};
 use serde::Deserialize;
-use serde_json::from_str;
-use serde_json::{json, to_value};
+use serde_json::json;
 use sqlx::Row;
 
 enum ProcessCodeResponse{
@@ -84,6 +82,18 @@ impl ProblemData{
                 .unwrap();
         }
     }
+    async fn add_solved(user_id: i32, pool: &State<sqlx::MySqlPool>){
+        let count: Result<(i32,), sqlx::Error> = sqlx::query_as::<_, (i32,)>("SELECT COUNT(user_id) FROM solved WHERE user_id = ?")
+            .bind(user_id.clone().to_string())
+            .fetch_one(&**pool)
+            .await;
+        sqlx::query("UPDATE users SET solved = ? WHERE user_id = ?")
+            .bind(count.unwrap().0.to_string())
+            .bind(user_id.to_string())
+            .execute(&**pool)
+            .await
+            .unwrap();
+    }
     pub async fn make_code_req(&self,  pool: &State<sqlx::MySqlPool>)-> Json<serde_json::Value>{
         let mut payload = json!({
             "language_id": self.language.clone(),
@@ -135,6 +145,7 @@ impl ProblemData{
                         if track_cor == 10{
                             let user_id = self.get_user_id(pool).await;
                             self.save_code(user_id.get("user_id"), pool).await;
+                            ProblemData::add_solved(user_id.get("user_id"), pool).await;
                         }
                         drop(payload);
                         return Json(json!({

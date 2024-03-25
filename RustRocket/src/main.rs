@@ -1,5 +1,4 @@
-use reqwest::get;
-use rocket::{data, get, launch, options, post, response, routes, State};
+use rocket::{get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
 use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
@@ -193,11 +192,11 @@ async fn load_problem(data: Json<GetProblem>, pool: &State<sqlx::MySqlPool>) -> 
 async fn insert_into_test(data: Json<>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     
 }*/
-/*#[get("/leaderboard")]
-async fn get_table(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
-    let cookie = bobo.create_session(pool).await; 
-    cookie
-}*/
+#[get("/leaderboard")]
+async fn leaderboard_get(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
+    let top10 = Leaderboard::get_leaderboard(pool).await; 
+    top10
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -206,5 +205,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem, leaderboard_get])
 }

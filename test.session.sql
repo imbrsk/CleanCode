@@ -81,7 +81,7 @@ CREATE TABLE subjects (
     starting_code TEXT
 );
 -- @block
-DROP TABLE subjects
+SELECT * FROM subjects
 -- @block
 CREATE TABLE user_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -194,4 +194,4 @@ CREATE TABLE solved(
 SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
 
 --@block
-DROP TABLE subjects
+UPDATE subjects SET test_case_number = 10
