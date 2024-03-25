@@ -187,11 +187,6 @@ async fn load_problem(data: Json<GetProblem>, pool: &State<sqlx::MySqlPool>) -> 
     let loaded_problem = data.get_problem(pool).await;
     Json(loaded_problem)
 }
-/* 
-#[post("/leaderboard", data = "<data>")]
-async fn insert_into_test(data: Json<>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-    
-}*/
 #[get("/leaderboard")]
 async fn leaderboard_get(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> { 
     let top10 = Leaderboard::get_leaderboard(pool).await; 
