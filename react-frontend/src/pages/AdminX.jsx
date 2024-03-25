@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../css/admin.module.css";
+import Cookies from "js-cookie";
 
 function AdminX() {
   const [subject, setSubject] = useState("");
@@ -52,9 +53,30 @@ function AdminX() {
   const handleEditProblem = () => {
     // Edit problem logic here
   };
+  let token = Cookies.get("token");
+  const checkToken = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/verify_admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(token),
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      if(response['status'] !== "success"){
+        window.location.href = "/admin";
+      }
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+  };
   const [tableData, setTableData] = React.useState([]);
   React.useEffect(() => {
+    checkToken();
     fetchTokens();
   }, []);
 
