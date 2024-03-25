@@ -191,7 +191,22 @@ CREATE TABLE solved(
     FOREIGN KEY (problem_id) REFERENCES subjects(id)
 )
 --@block
-SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'--
-
+SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'
 --@block
-UPDATE subjects SET test_case_number = 10
+UPDATE subjects SET test_case_number = 10\
+--@block
+CREATE TABLE admin_token(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(127) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+--@block
+CREATE TABLE token_admin_cookies(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    session VARCHAR(127) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+--@block
+INSERT INTO admin (token, password) VALUES ("8F20pRhgWJDtG1Z1zkk9euOsn5722So", "$2b$10$j427LnZB0v00gFFI.treq.2T1Z6ZpX5BP0ddLd4Wd6wMquIJn/OUK")
+--@block
+SELECT * FROM admin_cookies

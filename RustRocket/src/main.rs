@@ -1,3 +1,4 @@
+use admin::{Create, Load};
 use rocket::{get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
 use rocket::serde::json::Json;
@@ -9,6 +10,8 @@ use sqlx::MySqlPool;
 
 mod login_register;
 mod leaderboard;
+mod admin;
+use crate::admin::Login;
 use crate::login_register::User;
 use crate::subjects::{GetProblem, Subject};
 use login_register::{AccountStatusLogin, AccountStatusRegister};
@@ -192,6 +195,49 @@ async fn leaderboard_get(pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Valu
     let top10 = Leaderboard::get_leaderboard(pool).await; 
     top10
 }
+#[post("/login_admin", data = "<data>")]
+async fn login_admin(data: Json<Login>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let _response = match data.login_admin(&pool).await {
+        admin::AdminLoginResponse::Logged =>{
+        let cookie = data.create_cookie(&pool).await;
+            return Json(json!({
+                "status": "success",
+                "cookie": *cookie
+            }))
+        },
+        admin::AdminLoginResponse::Invalid => return Json(json!({
+        "status": "error",
+        })),
+    };
+}
+#[get("/load_tokens")]
+async fn load_tokens(pool: &State<sqlx::MySqlPool>) -> Json<Vec<admin::Token>> {
+    let tokens = Load::get_all_tokens(pool).await;
+    Json(tokens)
+}
+#[get("/create_token")]
+async fn create_token(pool: &State<sqlx::MySqlPool>){
+    Create::create_token(pool).await;
+}
+#[post("/delete_token", data = "<data>")]
+async fn delete_token(data: Json<admin::DeleteToken>, pool: &State<sqlx::MySqlPool>){
+    data.delete_token(pool).await;
+}
+#[post("/token_login", data = "<data>")]
+async fn token_login(data: Json<admin::TokenLogin>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let response = data.login_token(&pool).await;
+    response
+}
+#[post("/verify_admin", data = "<data>")]
+async fn verify_admin(data: Json<admin::VerifyAdmin>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let response = data.verify_cookie(&pool).await;
+    response
+}
+#[post("/verify_token", data = "<data>")]
+async fn verify_token(data: Json<admin::VerifyToken>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let response = data.verify_cookie(&pool).await;
+    response
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -200,6 +246,5 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem, leaderboard_get])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login, verify_admin, verify_token])
 }
-    
