@@ -10,6 +10,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Problems from "./pages/Problems";
 import CodeTesting from "./pages/CodeTesting";
+import AdminLogin from "./pages/AdminLogin";
+import AdminT from "./pages/AdminT";
+import AdminX from "./pages/AdminX";
 
 export default function App() {
   const [subjects, setSubjects] = useState([]);
@@ -58,6 +61,9 @@ export default function App() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="home" element={<Home />} />
         <Route path="problems" element={<Problems />} />
+        <Route path="admin" element={<AdminLogin />} />
+        <Route path="modpage" element={<AdminT />} />
+        <Route path="adminadmin" element={<AdminX />} />
         {/* Dynamically generate routes for subjects */}
         {subjects.map(subject => (
           <Route
