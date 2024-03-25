@@ -13,6 +13,7 @@ import CodeTesting from "./pages/CodeTesting";
 import AdminLogin from "./pages/AdminLogin";
 import AdminT from "./pages/AdminT";
 import AdminX from "./pages/AdminX";
+import AdminTokens from "./pages/AdminTokens";
 
 export default function App() {
   const [subjects, setSubjects] = useState([]);
@@ -64,6 +65,7 @@ export default function App() {
         <Route path="admin" element={<AdminLogin />} />
         <Route path="modpage" element={<AdminT />} />
         <Route path="adminadmin" element={<AdminX />} />
+        <Route path="adminadmin/tokens" element={<AdminTokens />} />
         {/* Dynamically generate routes for subjects */}
         {subjects.map(subject => (
           <Route

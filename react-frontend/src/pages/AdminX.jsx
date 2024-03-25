@@ -57,7 +57,7 @@ function AdminX() {
   const checkToken = async () => {
     const req = {
       session: token,
-    }
+    };
     try {
       const response = await fetch("http://localhost:8000/verify_admin", {
         method: "POST",
@@ -70,7 +70,7 @@ function AdminX() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      if(response['status'] !== "success"){
+      if (response["status"] !== "success") {
         //window.location.href = "/admin";
       }
     } catch (error) {
@@ -108,8 +108,8 @@ function AdminX() {
   };
   const deleteToken = async (request) => {
     const token = {
-      "token": request
-    }
+      token: request,
+    };
     try {
       const response = await fetch("http://localhost:8000/delete_token", {
         method: "POST",
@@ -200,26 +200,37 @@ function AdminX() {
             <button onClick={handleEditProblem} className={styles.adminButton}>
               Edit problem
             </button>
+            <button className={styles.adminButton}>
+              TOKENS
+            </button>
           </div>
         </div>
-        <div className={styles.problemRight}>
+        <div className={styles.problemLeft}>
           <h2>Test cases</h2>
-          <textarea
-            className={styles.adminInput}
-            type="text"
-            rows="15"
-            placeholder="Input test cases"
-            value={inputTestCases}
-            onChange={(e) => setInputTestCases(e.target.value)}
-          />
-          <textarea
-            className={styles.adminInput}
-            type="text"
-            rows="15"
-            placeholder="Expected test cases"
-            value={expectedTestCases}
-            onChange={(e) => setExpectedTestCases(e.target.value)}
-          />
+          <div className={styles.problemRight}>
+            <div>
+              <div>Input</div>
+              <textarea
+                className={styles.adminInput}
+                type="text"
+                rows="15"
+                placeholder="Input test cases"
+                value={inputTestCases}
+                onChange={(e) => setInputTestCases(e.target.value)}
+              />
+            </div>
+            <div>
+              <div>Expected</div>
+              <textarea
+                className={styles.adminInput}
+                type="text"
+                rows="15"
+                placeholder="Expected test cases"
+                value={expectedTestCases}
+                onChange={(e) => setExpectedTestCases(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.adminProblem}>
@@ -240,7 +251,9 @@ function AdminX() {
                 <td>{item.token}</td>
                 <td>{item.created_at}</td>
                 <td>
-                  <button onClick={() => deleteToken(item.token)}>Delete</button>
+                  <button onClick={() => deleteToken(item.token)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
