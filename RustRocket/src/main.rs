@@ -202,3 +202,4 @@ fn rocket() -> _ {
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem, leaderboard_get])
 }
+    
