@@ -7,13 +7,13 @@ import { Checkbox } from "@mui/material";
 import SignButton from "../components/SignButton";
 import google from "../assets/google.svg";
 import { Outlet, Link } from "react-router-dom";
-
+import Cookies from "js-cookie";
 
 function Sign() {
   const [email, setEmail] = React.useState(""); // State for email input
   const [password, setPassword] = React.useState(""); // State for password input
   const [isChecked, setIsChecked] = React.useState(true); // Set the initial state to true for checked
-
+  const token = Cookies.get("token");
   const [check, setCheck] = React.useState("");
 
   const handleCheck = (variable) => {
@@ -24,7 +24,16 @@ function Sign() {
     setIsChecked(event.target.checked); // Update the state when checkbox value changes
   };
 
-  return (
+  React.useEffect(() => {
+    if (token) {
+      window.location.href = "/home";
+    }
+    else{
+      
+    }
+  }, []);
+
+  return !token ? (
     <>
       <React.Fragment>
         <CssBaseline />
@@ -82,7 +91,7 @@ function Sign() {
         </div>
       </React.Fragment>
     </>
-  );
+  ) : null;
 }
 
 export default Sign;

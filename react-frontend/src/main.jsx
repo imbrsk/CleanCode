@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landingpage from "./pages/Landingpage";
 import Sign from "./pages/Sign";
 import About from "./pages/About";
+import Faq from "./pages/faq";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
@@ -52,6 +53,7 @@ export default function App() {
         <Route index element={<Landingpage />} path="/" />
         <Route path="sign-in" element={<Sign />} />
         <Route path="about" element={<About />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="home" element={<Home />} />
