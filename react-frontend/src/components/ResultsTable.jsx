@@ -5,9 +5,9 @@ const ResultsTable = (props) => {
   let msg;
   let check;
   if (!props.data || !props.data.input) {
-    console.log(props.data['status']);
+    //console.log(props.data['status']);
     if (props.data['status'] != undefined) {
-      console.log(msg);
+      //console.log(msg);
       msg = props.data['status'];
       return <div className="error-msg">{msg}</div>;
     }
