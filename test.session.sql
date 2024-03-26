@@ -82,7 +82,7 @@ CREATE TABLE subjects_dev (
     test_case_number INT
 );
 -- @block
-SELECT * FROM subjects
+SELECT * FROM subjects_dev
 -- @block
 CREATE TABLE user_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
