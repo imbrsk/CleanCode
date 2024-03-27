@@ -1,5 +1,5 @@
 use rand::{distributions::Alphanumeric, Rng};
-use rocket::{serde::json::{self, Json}, FromForm, State};
+use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use sqlx::{mysql::MySqlRow, Row};
 use bcrypt::verify;

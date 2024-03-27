@@ -131,12 +131,13 @@ function PreviewProblem() {
     const codeData = {
       name: document.getElementById("selector").value,
       code: code,
+      language: language
     };
     document.getElementById("ldr").style.display = "block";
     const button = document.getElementById("submit-button");
     button.disabled = true;
     try {
-      const response = await fetch("http://localhost:8000/execute", {
+      const response = await fetch("http://localhost:8000/execute_dev", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
