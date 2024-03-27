@@ -12,7 +12,7 @@ enum ProcessCodeResponse{
 pub struct ProblemDataDev{
     code: String,
     language: String,
-    problem_id: String,
+    name: String,
 }
 impl ProblemDataDev{
     async fn make_api_req(payload: serde_json::Value)->Result<Json<serde_json::Value>, reqwest::Error> {
@@ -45,18 +45,18 @@ impl ProblemDataDev{
         }
     }
     async fn get_input_expected(&self, field : String , pool: &State<sqlx::MySqlPool>) -> String{
-        let sent_data = format!("SELECT {} FROM subjects WHERE id = ?", field);
+        let sent_data = format!("SELECT {} FROM subjects WHERE name = ?", field);
         let correct:(String, ) = sqlx::query_as(&sent_data)
-            .bind(self.problem_id.clone())    
+            .bind(self.name.clone())    
             .fetch_one(&**pool)
             .await
             .unwrap();
         correct.0
     }
     async fn get_test_case_num(&self, pool: &State<sqlx::MySqlPool>) -> i8{
-        let sent_data = "SELECT test_case_number FROM subjects WHERE id = ?";
+        let sent_data = "SELECT test_case_number FROM subjects WHERE name = ?";
         let correct:(i8, ) = sqlx::query_as(&sent_data)
-            .bind(self.problem_id.clone())    
+            .bind(self.name.clone())    
             .fetch_one(&**pool)
             .await
             .unwrap();
