@@ -3,17 +3,20 @@ import styles from "../css/admin.module.css";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
-function AdminX() {
+function AdminEdit() {
   const [problemName, setProblemName] = useState("");
   const [subjectPath, setSubjectPath] = useState([]);
   const [problemPath, setProblemPath] = useState("");
   const [problemText, setProblemText] = useState("");
+  const [problem, setProblem] = useState("");
   const [problemOptions, setProblemOptions] = useState([]);
   const [problemYear, setProblemYear] = useState("");
   const [testcaseNumber, setTestcaseNumber] = useState("");
   const [exampleInput, setExampleInput] = useState("");
   const [exampleOutput, setExampleOutput] = useState("");
-  const [subjectOptions, setSubjectOptions] = useState([]);
+  const [subjectOptions, setSubjectOptions] = useState("");
+  const [problemId, setProblemId] = useState("");
+  const [period, setPeriod] = useState("");
 
   const [inputTestCases, setInputTestCases] = useState(
     JSON.stringify(
@@ -71,38 +74,13 @@ function AdminX() {
     )
   );
   const [startingCode, setStartingCode] = useState("");
-  const handleMoveMain = () => {
-    const req = {
-      id: document.querySelector("#problemselector").value,
-    };
-    fetch("http://localhost:8000/move_to_main", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(req),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        // Handle the response data here
-      })
-      .catch((error) => {
-        console.error("Error during the fetch operation:", error);
-      });
-  };
   const handleAddProblem = () => {
     const problemData = {
       name: problemName,
       problem_path: problemPath,
-      subject: document.querySelector("select").value,
-      path: document.querySelectorAll("select")[1].value,
-      period: document.querySelectorAll("select")[2].value,
+      subject: subjectOptions,
+      path: subjectPath,
+      period: period,
       text: problemText,
       year: problemYear,
       ex_input: exampleInput,
@@ -111,6 +89,7 @@ function AdminX() {
       expected: expectedTestCases,
       starting_code: startingCode,
       test_case_number: testcaseNumber,
+      id: problemId,
     };
 
     // Check if any of the fields is empty
@@ -131,7 +110,7 @@ function AdminX() {
       alert("Please fill in all fields");
       return;
     } else {
-      fetch("http://localhost:8000/add_to_dev", {
+      fetch("http://localhost:8000/edit_problem_test", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -154,9 +133,6 @@ function AdminX() {
     }
   };
 
-  const handleEditProblem = () => {
-    // Edit problem logic here
-  };
   let token = Cookies.get("admincookie");
   const checkToken = async () => {
     if (!token) {
@@ -185,67 +161,106 @@ function AdminX() {
       console.error("Error during the fetch operation:", error);
     }
   };
-  React.useEffect(() => {
-    checkToken();
-    fetchSubjects();
-  }, []);
-
-  const fetchSubjects = async () => {
+  const fetchData = async () => {
+    const reqdata = { name: document.getElementById("problemselector").value };
     try {
-      const response = await fetch("http://localhost:8000/subjects");
+      const response = await fetch("http://localhost:8000/load_problem_test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqdata),
+      });
+
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      let data = await response.json();
-      let subjectMap = data.map((subject) => (
-        <option key={subject.path} value={subject.path}>
-          {subject.path}
-        </option>
-      ));
-      setSubjectPath(subjectMap);
-      subjectMap = data.map((subject) => (
-        <option key={subject.subject} value={subject.subject}>
-          {subject.subject}
-        </option>
-      ));
-      setSubjectOptions(subjectMap);
+      const data = await response.json();
+      handleTestCases(data['problem']['test_case_number'])
+      setProblemName(data["problem"]['name']);
+      setProblemPath(data['problem']['problem_path'])
+      setExampleInput(data['problem']['ex_input'])
+      setExampleOutput(data['problem']['ex_output'])
+      setProblemYear(data['problem']['year']);
+      setProblemText(data['problem']['text']);
+      setSubjectOptions(data['problem']['subject'])
+      setInputTestCases(data['problem']['input']);
+      setExpectedTestCases(data['problem']['expected']);
+      setStartingCode(data['problem']['starting_code']);
+      setSubjectPath(data['problem']['path'])
+      setPeriod(data['problem']['period']);
+      setProblemId(data['id'])
+
+      
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      console.error("Error during the fetch operation:", error);
     }
   };
+  React.useEffect(() => {
+    checkToken();
+    getProblems();
+    fetchData();
+  }, [problem]);
+  const getProblems = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/load_problem_names_dev",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      let problemOptionsMap = data.map((item) => (
+        <option key={item.id} value={item.id}>
+          {item.problem}
+        </option>
+      ));
+      setProblemOptions(problemOptionsMap);
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+  };
   return (
     <>
       <div className={styles.adminProblem}>
+        <select
+          className={styles.adminButton}
+          id="problemselector"
+          onChange={(event) => setProblem(event.target.value)}
+        >
+          <option value="">Select a problem to edit</option>
+          {problemOptions}
+        </select>
+      </div>
+      <div className={styles.adminProblem}>
         <div className={styles.leftButtons}>
           <button onClick={handleAddProblem} className={styles.adminButton}>
-            Add problem to Test DB
-          </button>
-          <button onClick={handleEditProblem} className={styles.adminButton}>
-            Edit a problem
+            Save Problem
           </button>
           <Link to={"preview"}>
-            <button className={styles.adminButton}>PREVIEW PROBLEMS</button>
+            <button className={styles.adminButton}>Preview Problems</button>
           </Link>
         </div>
         <div className={styles.problemLeft}>
-          <h2>Add Problem</h2>
+          <h2>Edit Problem</h2>
           <div>
-            <input className={styles.adminButton} list="subjects" />
+            <input className={styles.adminButton} list="subjects"  value={subjectOptions} onChange={(e) => setSubjectOptions(e.target.value)}/>
             <datalist className={styles.adminButton} id="subjects">
-              <option value="">Pick a subject</option>
-              {subjectOptions}
+              <option value={subjectOptions}>{subjectOptions}</option>
             </datalist>
-            <input className={styles.adminButton} list="subjectPaths" />
+            <input className={styles.adminButton} list="subjectPaths" value={subjectPath} onChange={(e) => setSubjectPath(e.target.value)}/>
             <datalist className={styles.adminButton} id="subjectPaths">
-              <option value="">Pick a subject path</option>
-              {subjectPath}
+              <option value={subjectPath}>{subjectPath}</option>
             </datalist>
-            <select className={styles.adminButton}>
-              <option value="">Pick a period</option>
-              <option value="Колоквиум 1">Прв Кол</option>
-              <option value="Колоквиум 2">Втор Кол</option>
-              <option value="Испит">Испит</option>
+            <select className={styles.adminButton} onChange={(e) => setPeriod(e.target.value)}>
+              <option value={period}>{period}</option>
             </select>
           </div>
           <div>
@@ -346,4 +361,4 @@ function AdminX() {
   );
 }
 
-export default AdminX;
+export default AdminEdit;

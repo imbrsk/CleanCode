@@ -131,6 +131,7 @@ function PreviewProblem() {
     const codeData = {
       name: document.getElementById("selector").value,
       code: code,
+      language: language
     };
     document.getElementById("ldr").style.display = "block";
     const button = document.getElementById("submit-button");
