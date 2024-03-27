@@ -213,46 +213,6 @@ impl LoadPrblemMain{
         (prooblem, id.to_string())
     }
 }
-
-#[derive(Deserialize, Serialize)]
-pub struct ChangeProblemMain{
-    name: String,
-    problem_path: String,
-    subject: String,
-    path: String,
-    year: String,
-    period: String,
-    text: String,
-    ex_input: String,
-    ex_output: String,
-    input: String,
-    output: String,
-    starting_code: String,
-    test_case_numer: String,
-    id: String
-}
-impl ChangeProblemMain{
-    pub async fn change_problem(&self, pool: &State<sqlx::MySqlPool>){
-        sqlx::query("UPDATE subjects SET name = ?, problem_path = ?, subject = ?, path = ?, year = ?, period = ?, text = ?, ex_input = ?, ex_output = ?, input = ?, output = ?, starting_code = ?, test_case_numer = ? WHERE id = ?")
-            .bind(&self.name)
-            .bind(&self.problem_path)
-            .bind(&self.subject)
-            .bind(&self.path)
-            .bind(&self.year)
-            .bind(&self.period)
-            .bind(&self.text)
-            .bind(&self.ex_input)
-            .bind(&self.ex_output)
-            .bind(&self.input)
-            .bind(&self.output)
-            .bind(&self.starting_code)
-            .bind(&self.test_case_numer)
-            .bind(&self.id)
-            .execute(&**pool)
-            .await
-            .unwrap();
-    }
-}
 #[derive(Deserialize, Serialize)]
 pub struct LoadProblemDB{
     name: String,

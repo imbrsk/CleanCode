@@ -210,4 +210,4 @@ CREATE TABLE token_admin_cookies(
 --@block
 INSERT INTO admin_token (token, created_at) VALUES ("bobo", NOW())
 --@block
-SELECT * FROM subjects
+INSERT INTO admin (token, password) VALUES ("y5_Lq,G@!YL+WmFuT$+wk=]u[6b9[?/tGvX83GMxMLX8ZC47ui5F{wf&{*iLR&y]}HF=[rJQ", "$2b$10$jQaorLNOPKS3VkLvA8739.RCLmWo1UDchKNzYWYBe0nrobM.xTCgO")

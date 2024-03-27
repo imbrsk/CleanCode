@@ -1,7 +1,7 @@
 use admin::{Create, Load};
 use rocket::{get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
-use rocket::serde::json::{self, Json};
+use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
 use serde_json::json;
 use sqlx::MySqlPool;
@@ -43,6 +43,8 @@ use verify::{VerifyEmail, ResetEmail, VerifyCodeEmail};
 mod add_problem;
 use add_problem::{AddProblemIntoTest, LoadMainDB, LoadProblemDB, LoadTestDB};
 
+mod runcode_dev;
+use runcode_dev::ProblemDataDev;
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _response = match data.login(&pool).await {
@@ -288,6 +290,11 @@ async fn load_problem_dev(data: Json<LoadDB>, pool: &State<sqlx::MySqlPool>) -> 
     let loaded_problem = data.get_problem(pool).await;
     Json(loaded_problem)
 }
+#[post("/execute_dev", data = "<data>")]
+async fn execute_dev(data: Json<ProblemDataDev>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+        let temp = data.make_code_req(pool).await;
+        temp
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -299,5 +306,5 @@ fn rocket() -> _ {
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
         subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
-        load_main_db_problem, edit_problem_main, load_problem_dev])
+        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev])
 }
