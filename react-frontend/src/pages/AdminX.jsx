@@ -47,11 +47,10 @@ function AdminX() {
     }
     setExpectedTestCases(JSON.stringify(expectedCases, null, 2));
   }
-  function handleTestCases(num){
+  function handleTestCases(num) {
     setTestcaseNumber(num);
     setInputCases(num);
     setExpectedCase(num);
-
   }
   const [expectedTestCases, setExpectedTestCases] = useState(
     JSON.stringify(
@@ -75,7 +74,7 @@ function AdminX() {
   const handleMoveMain = () => {
     const req = {
       id: document.querySelector("#problemselector").value,
-    }
+    };
     fetch("http://localhost:8000/move_to_main", {
       method: "POST",
       headers: {
@@ -101,9 +100,9 @@ function AdminX() {
     const problemData = {
       name: problemName,
       problem_path: problemPath,
-      subject: document.querySelector("select").value,
-      path: document.querySelectorAll("select")[1].value,
-      period: document.querySelectorAll("select")[2].value,
+      subject: document.getElementById("subject_name").value,
+      path: document.getElementById("subject_path").value,
+      period: document.getElementById("selectperiod").value,
       text: problemText,
       year: problemYear,
       ex_input: exampleInput,
@@ -113,7 +112,7 @@ function AdminX() {
       starting_code: startingCode,
       test_case_number: testcaseNumber,
     };
-
+    console.log(problemData)
     // Check if any of the fields is empty
     if (
       problemData.name === "" ||
@@ -129,9 +128,9 @@ function AdminX() {
       problemData.output === "" ||
       problemData.test_case_number === ""
     ) {
-      alert("Please fill in all fields");
-      return;
+      alert("Fill out all fields!")
     } else {
+      alert("Problem added to TEST DB!")
       fetch("http://localhost:8000/add_to_dev", {
         method: "POST",
         headers: {
@@ -150,90 +149,48 @@ function AdminX() {
           // Handle the response data here
         })
         .catch((error) => {
-          console.error("Error during the fetch operation:", error);
+          //console.error("Error during the fetch operation:", error);
         });
     }
   };
 
   const handleEditProblem = () => {
-    // Edit problem logic here
+    window.location.href = "/editproblem";
   };
   let token = Cookies.get("admincookie");
-  // const checkToken = async () => {
-  //   const req = {
-  //     session: token,
-  //   };
-  //   try {
-  //     const response = await fetch("http://localhost:8000/verify_admin", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(req),
-  //     });
+  const checkToken = async () => {
+    if (!token) {
+      //window.location.href = "/admin";
+      return;
+    }
+    const req = {
+      session: token,
+    };
+    try {
+      const response = await fetch("http://localhost:8000/verify_admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req),
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-  //     if (response["status"] !== "success") {
-  //       //window.location.href = "/admin";
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during the fetch operation:", error);
-  //   }
-  // };
-  const [tableData, setTableData] = React.useState([]);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      if (response["status"] !== "success") {
+        //window.location.href = "/admin";
+      }
+    } catch (error) {
+      console.error("Error during the fetch operation:", error);
+    }
+  };
   React.useEffect(() => {
-    //checkToken();
-    //fetchTokens();
+    checkToken();
     fetchSubjects();
     getProblems();
   }, []);
 
-  // const fetchTokens = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/load_tokens");
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     const data = await response.json();
-  //     setTableData(data);
-  //   } catch (error) {
-  //     console.error("There was a problem with the fetch operation:", error);
-  //   }
-  // };
-  // const createToken = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/create_token");
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     fetchTokens();
-  //   } catch (error) {
-  //     console.error("There was a problem with the fetch operation:", error);
-  //   }
-  // };
-  // const deleteToken = async (request) => {
-  //   const token = {
-  //     token: request,
-  //   };
-  //   try {
-  //     const response = await fetch("http://localhost:8000/delete_token", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(token),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-  //     fetchTokens();
-  //   } catch (error) {
-  //     console.error("Error during the fetch operation:", error);
-  //   }
-  // };
   const fetchSubjects = async () => {
     try {
       const response = await fetch("http://localhost:8000/subjects");
@@ -303,17 +260,17 @@ function AdminX() {
         <div className={styles.problemLeft}>
           <h2>Add Problem</h2>
           <div>
-            <input className={styles.adminButton} list="subjects" / >
+            <input className={styles.adminButton} list="subjects" id="subject_name" />
             <datalist className={styles.adminButton} id="subjects">
               <option value="">Pick a subject</option>
               {subjectOptions}
             </datalist>
-            <input className={styles.adminButton} list="subjectPaths" / >
+            <input className={styles.adminButton} list="subjectPaths"  id="subject_path"/>
             <datalist className={styles.adminButton} id="subjectPaths">
               <option value="">Pick a subject path</option>
               {subjectPath}
             </datalist>
-            <select className={styles.adminButton}>
+            <select className={styles.adminButton} id="selectperiod">
               <option value="">Pick a period</option>
               <option value="Колоквиум 1">Прв Кол</option>
               <option value="Колоквиум 2">Втор Кол</option>
@@ -338,7 +295,7 @@ function AdminX() {
             <input
               className={styles.adminInput}
               type="text"
-              placeholder="Year"
+              placeholder="Problem Year"
               value={problemYear}
               onChange={(e) => setProblemYear(e.target.value)}
             />
@@ -414,43 +371,17 @@ function AdminX() {
           </div>
         </div>
       </div>
-
       <div className={styles.adminProblem}>
-          <select className={styles.adminButton} id="problemselector">
-            <option value="">Select a problem to move</option>
-            {problemOptions}
-          </select>
-          <button className={styles.adminButton} onClick={handleMoveMain}>Move to Main DB</button>
-        </div>
-          {/* <div className={styles.adminProblem}>
-        <table>
-          <caption>
-            <button className={styles.adminButton} onClick={createToken}>
-              Create token
-            </button>
-          </caption>
-          <thead>
-            <tr>
-              <th colSpan="3">Active Tokens</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.token}</td>
-                <td>{item.created_at}</td>
-                <td>
-                  <button onClick={() => deleteToken(item.token)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
-        </>
-        );
+        <select className={styles.adminButton} id="problemselector">
+          <option value="">Select a problem to move</option>
+          {problemOptions}
+        </select>
+        <button className={styles.adminButton} onClick={handleMoveMain}>
+          Move to Main DB
+        </button>
+      </div>
+    </>
+  );
 }
 
-        export default AdminX;
+export default AdminX;
