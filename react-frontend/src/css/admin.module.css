@@ -32,5 +32,12 @@ label{
     padding: 1rem;
 }
 .problemRight{
+    display: flex;
+}
+
+.leftButtons{
+    display: flex;
     padding: 1rem;
+    margin-top: 4rem;
+    flex-direction: column;
 }

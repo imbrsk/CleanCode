@@ -1,7 +1,7 @@
 use admin::{Create, Load};
 use rocket::{get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
-use rocket::serde::json::Json;
+use rocket::serde::json::{self, Json};
 use rocket_cors::CorsOptions;
 use serde_json::json;
 use sqlx::MySqlPool;
@@ -11,6 +11,7 @@ use sqlx::MySqlPool;
 mod login_register;
 mod leaderboard;
 mod admin;
+use crate::add_problem::{ChangeProblem, LoadDB, LoadPrblemMain, LoadPrblemTest, MoveToMain};
 use crate::admin::Login;
 use crate::login_register::User;
 use crate::subjects::{GetProblem, Subject};
@@ -39,6 +40,8 @@ use subjects::{LoadProblem, Path, SubjectName, Subjects};
 mod verify;
 use verify::{VerifyEmail, ResetEmail, VerifyCodeEmail};
 
+mod add_problem;
+use add_problem::{AddProblemIntoTest, LoadMainDB, LoadProblemDB, LoadTestDB};
 
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -238,6 +241,53 @@ async fn verify_token(data: Json<admin::VerifyToken>, pool: &State<sqlx::MySqlPo
     let response = data.verify_cookie(&pool).await;
     response
 }
+#[post("/add_to_dev", data = "<data>")]
+async fn add_to_dev(data: Json<AddProblemIntoTest>, pool: &State<sqlx::MySqlPool>){
+    data.add_to_test_database(pool).await;
+}
+#[get("/load_problem_names_dev")]
+async fn load_problem_names_dev(pool: &State<sqlx::MySqlPool>) -> Json<Vec<LoadTestDB>> {
+    let names = LoadTestDB::load_problem_names(pool).await;
+    Json(names)
+}
+#[post("/load_problem_test", data = "<data>")]
+async fn load_problem_test(data: Json<LoadPrblemTest>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let loaded_problem = data.load_problem(pool).await;
+    Json(json!({
+        "problem": loaded_problem.0,
+        "id": loaded_problem.1
+    }))
+}
+#[post("/edit_problem_test", data = "<data>")]
+async fn edit_problem_test(data: Json<ChangeProblem>, pool: &State<sqlx::MySqlPool>){
+    data.change_problem(pool).await;
+}
+#[post("/move_to_main", data = "<data>")]
+async fn move_to_main(data: Json<MoveToMain>, pool: &State<sqlx::MySqlPool>){
+    data.move_to_main(pool).await;
+}
+#[get("/load_main_db")]
+async fn load_main_db(pool: &State<sqlx::MySqlPool>) -> Json<Vec<String>>{
+    let return_v = LoadMainDB::load_problem_names(pool).await;
+    Json(return_v)
+}
+#[post("/load_main_db_problem", data = "<data>")]
+async fn load_main_db_problem(data: Json<LoadPrblemMain>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    let loaded_problem = data.load_problem(pool).await;
+    Json(json!({
+        "problem": loaded_problem.0,
+        "id": loaded_problem.1
+    }))
+}
+#[post("/edit_problem_main", data = "<data>")]
+async fn edit_problem_main(data: Json<ChangeProblem>, pool: &State<sqlx::MySqlPool>){
+    data.change_problem(pool).await;
+}
+#[post("/load_problem_dev", data = "<data>")]
+async fn load_problem_dev(data: Json<LoadDB>, pool: &State<sqlx::MySqlPool>) -> Json<LoadProblemDB> {
+    let loaded_problem = data.get_problem(pool).await;
+    Json(loaded_problem)
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -246,5 +296,8 @@ fn rocket() -> _ {
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
-        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email, subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login, verify_admin, verify_token])
+        .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
+        subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
+        verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
+        load_main_db_problem, edit_problem_main, load_problem_dev])
 }

@@ -65,7 +65,7 @@ CREATE TABLE reset_password (
 --@block
 INSERT INTO reset_password (email, reset_token, created_at) VALUES ("23","34",NOW()) ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), created_at = VALUES(created_at)
 -- @block
-CREATE TABLE subjects (
+CREATE TABLE subjects_dev (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(127),
     problem_path VARCHAR(127),
@@ -78,10 +78,11 @@ CREATE TABLE subjects (
     ex_output VARCHAR(255),
     input TEXT,
     expected TEXT,
-    starting_code TEXT
+    starting_code TEXT,
+    test_case_number INT
 );
 -- @block
-SELECT * FROM subjects
+SELECT * FROM subjects_dev
 -- @block
 CREATE TABLE user_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -147,7 +148,7 @@ VALUES (
 --@block
 SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокфиум 1' AND path = '/strukturno' AND year = 2023
 --@block
-SELECT * FROM solved
+DELETE FROM subjects WHERE id = 9
 --@block
 SELECT code FROM solved WHERE user_id = 5 AND problem_id = 8
 --@block
@@ -209,3 +210,4 @@ CREATE TABLE token_admin_cookies(
 --@block
 INSERT INTO admin_token (token, created_at) VALUES ("bobo", NOW())
 --@block
+SELECT * FROM subjects
