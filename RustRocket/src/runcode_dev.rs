@@ -45,7 +45,7 @@ impl ProblemDataDev{
         }
     }
     async fn get_input_expected(&self, field : String , pool: &State<sqlx::MySqlPool>) -> String{
-        let sent_data = format!("SELECT {} FROM subjects WHERE name = ?", field);
+        let sent_data = format!("SELECT {} FROM subjects_dev WHERE name = ?", field);
         let correct:(String, ) = sqlx::query_as(&sent_data)
             .bind(self.name.clone())    
             .fetch_one(&**pool)
@@ -54,7 +54,7 @@ impl ProblemDataDev{
         correct.0
     }
     async fn get_test_case_num(&self, pool: &State<sqlx::MySqlPool>) -> i8{
-        let sent_data = "SELECT test_case_number FROM subjects WHERE name = ?";
+        let sent_data = "SELECT test_case_number FROM subjects_dev WHERE name = ?";
         let correct:(i8, ) = sqlx::query_as(&sent_data)
             .bind(self.name.clone())    
             .fetch_one(&**pool)
@@ -112,12 +112,17 @@ impl ProblemDataDev{
                         }
                     }
                         drop(payload);
+                    let is_cor = if track_cor == test_cases {
+                        String::from("True")
+                    } else {
+                        String::from("False")
+                    };
                         return Json(json!({
                     "input": input_value.unwrap(),
                     "expected": expected_value.unwrap(),
                     "got": submission_data,
                     "is_cor": cor_data,
-                    "track_cor": track_cor
+                    "track_cor": is_cor
                     })) } 
         };
     }

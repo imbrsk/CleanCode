@@ -137,7 +137,7 @@ function PreviewProblem() {
     const button = document.getElementById("submit-button");
     button.disabled = true;
     try {
-      const response = await fetch("http://localhost:8000/execute", {
+      const response = await fetch("http://localhost:8000/execute_dev", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

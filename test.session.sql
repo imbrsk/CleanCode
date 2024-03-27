@@ -192,7 +192,7 @@ CREATE TABLE solved(
     FOREIGN KEY (problem_id) REFERENCES subjects(id)
 )
 --@block
-SELECT * FROM users
+SELECT * FROM subjects_dev
 --@block
 UPDATE subjects SET test_case_number = 10\
 --@block

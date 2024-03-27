@@ -152,7 +152,12 @@ impl ProblemData{
                             cor_data[temp] = "1".into();
                         }
                     }
-                        if track_cor == 10{
+                    let is_cor = if track_cor == test_cases {
+                        String::from("True")
+                    } else {
+                        String::from("False")
+                    };
+                        if is_cor == "True"{
                             let user_id = self.get_user_id(pool).await;
                             self.save_code(user_id.get("user_id"), pool).await;
                             ProblemData::add_solved(user_id.get("user_id"), pool).await;
@@ -163,7 +168,7 @@ impl ProblemData{
                     "expected": expected_value.unwrap(),
                     "got": submission_data,
                     "is_cor": cor_data,
-                    "track_cor": track_cor
+                    "track_cor": is_cor
                     })) } 
         };
     }
