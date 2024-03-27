@@ -42,7 +42,7 @@ function Home() {
   }, [userCookie, token]);
 
   const subjectItems = subjects.map((subject) => (
-    <Subject key={subject.number} link={subject.path} name={subject.subject} />
+    <Subject key={subject.path} link={subject.path} name={subject.subject} />
   ));
 
   return userCookie ? (
