@@ -192,7 +192,7 @@ CREATE TABLE solved(
     FOREIGN KEY (problem_id) REFERENCES subjects(id)
 )
 --@block
-SELECT input FROM subjects WHERE id = 7 AND path = '/strukturno'
+SELECT * FROM users
 --@block
 UPDATE subjects SET test_case_number = 10\
 --@block

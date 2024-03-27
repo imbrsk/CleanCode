@@ -94,6 +94,15 @@ impl ProblemData{
             .await
             .unwrap();
     }
+    async fn get_test_case_num(&self, pool: &State<sqlx::MySqlPool>) -> i8{
+        let sent_data = "SELECT test_case_number FROM subjects WHERE id = ?";
+        let correct:(i8, ) = sqlx::query_as(&sent_data)
+            .bind(self.problem_id.clone())    
+            .fetch_one(&**pool)
+            .await
+            .unwrap();
+        correct.0
+    }
     pub async fn make_code_req(&self,  pool: &State<sqlx::MySqlPool>)-> Json<serde_json::Value>{
         let mut payload = json!({
             "language_id": self.language.clone(),
@@ -119,7 +128,8 @@ impl ProblemData{
                     let mut track_cor:i8 = 0;
                     let input_value: Result<serde_json::Value, _> = serde_json::from_str(&input);
                     let expected_value: Result<serde_json::Value, _> = serde_json::from_str(&expected);
-                    for i in 0i8..10 {
+                    let test_cases = self.get_test_case_num(pool).await;
+                    for i in 0i8..test_cases {
                         let temp = format!("test{}", i);
                         if let Ok(ref value) = input_value {
                             let test = value.get(&temp);
