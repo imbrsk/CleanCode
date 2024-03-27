@@ -148,7 +148,7 @@ VALUES (
 --@block
 SELECT DISTINCT name, problem_path FROM subjects WHERE period = 'Колкокфиум 1' AND path = '/strukturno' AND year = 2023
 --@block
-SELECT * FROM solved
+DELETE FROM subjects WHERE id = 9
 --@block
 SELECT code FROM solved WHERE user_id = 5 AND problem_id = 8
 --@block
@@ -210,3 +210,4 @@ CREATE TABLE token_admin_cookies(
 --@block
 INSERT INTO admin_token (token, created_at) VALUES ("bobo", NOW())
 --@block
+SELECT * FROM subjects

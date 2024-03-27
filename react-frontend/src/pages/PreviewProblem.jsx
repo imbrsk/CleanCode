@@ -72,10 +72,10 @@ function PreviewProblem() {
 //   }
   useEffect(() => {
     const fetchData = async () => {
-      const reqdata = document.getElementById("selector").value;
+      const reqdata = {"name":document.getElementById("selector").value};
       try {
         const response = await fetch(
-          "http://localhost:8000/load_problem_test",
+          "http://localhost:8000/load_problem_dev",
           {
             method: "POST",
             headers: {

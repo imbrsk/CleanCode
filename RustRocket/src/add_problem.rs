@@ -149,7 +149,7 @@ pub struct MoveToMain{
 
 impl MoveToMain{
     pub async fn move_to_main(&self, pool: &State<sqlx::MySqlPool>){
-        sqlx::query("INSERT INTO subjects (name, problem_path, subject, path, year, period, text, ex_input, ex_output, input, output, starting_code, test_case_numer) SELECT name, problem_path, subject, path, year, period, text, ex_input, ex_output, input, output, starting_code, test_case_numer FROM subjects_dev WHERE id = ?")
+        sqlx::query("INSERT INTO subjects (name, problem_path, subject, path, year, period, text, ex_input, ex_output, input, expected, starting_code, test_case_number) SELECT name, problem_path, subject, path, year, period, text, ex_input, ex_output, input, expected, starting_code, test_case_number FROM subjects_dev WHERE id = ?")
             .bind(&self.id)
             .execute(&**pool)
             .await

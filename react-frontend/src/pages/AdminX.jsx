@@ -8,12 +8,13 @@ function AdminX() {
   const [subjectPath, setSubjectPath] = useState([]);
   const [problemPath, setProblemPath] = useState("");
   const [problemText, setProblemText] = useState("");
-  const [problemOptions, setProblemOptions] = useState([]); 
+  const [problemOptions, setProblemOptions] = useState([]);
   const [problemYear, setProblemYear] = useState("");
   const [testcaseNumber, setTestcaseNumber] = useState("");
   const [exampleInput, setExampleInput] = useState("");
   const [exampleOutput, setExampleOutput] = useState("");
   const [subjectOptions, setSubjectOptions] = useState([]);
+
   const [inputTestCases, setInputTestCases] = useState(
     JSON.stringify(
       {
@@ -32,6 +33,26 @@ function AdminX() {
       2
     )
   );
+  function setInputCases(num) {
+    let inputCases = {};
+    for (let i = 0; i < num; i++) {
+      inputCases["test" + i] = "1";
+    }
+    setInputTestCases(JSON.stringify(inputCases, null, 2));
+  }
+  function setExpectedCase(num) {
+    let expectedCases = {};
+    for (let i = 0; i < num; i++) {
+      expectedCases["test" + i] = "1";
+    }
+    setExpectedTestCases(JSON.stringify(expectedCases, null, 2));
+  }
+  function handleTestCases(num){
+    setTestcaseNumber(num);
+    setInputCases(num);
+    setExpectedCase(num);
+
+  }
   const [expectedTestCases, setExpectedTestCases] = useState(
     JSON.stringify(
       {
@@ -51,7 +72,31 @@ function AdminX() {
     )
   );
   const [startingCode, setStartingCode] = useState("");
-
+  const handleMoveMain = () => {
+    const req = {
+      id: document.querySelector("#problemselector").value,
+    }
+    fetch("http://localhost:8000/move_to_main", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // Handle the response data here
+      })
+      .catch((error) => {
+        console.error("Error during the fetch operation:", error);
+      });
+  };
   const handleAddProblem = () => {
     const problemData = {
       name: problemName,
@@ -64,7 +109,7 @@ function AdminX() {
       ex_input: exampleInput,
       ex_output: exampleOutput,
       input: inputTestCases,
-      output: expectedTestCases,
+      expected: expectedTestCases,
       starting_code: startingCode,
       test_case_number: testcaseNumber,
     };
@@ -249,7 +294,7 @@ function AdminX() {
             Edit a problem
           </button>
           <Link to={"preview"}>
-          <button className={styles.adminButton}>PREVIEW PROBLEMS</button>
+            <button className={styles.adminButton}>PREVIEW PROBLEMS</button>
           </Link>
           <Link to={"tokens"}>
             <button className={styles.adminButton}>TOKENS</button>
@@ -258,14 +303,16 @@ function AdminX() {
         <div className={styles.problemLeft}>
           <h2>Add Problem</h2>
           <div>
-            <select className={styles.adminButton}>
+            <input className={styles.adminButton} list="subjects" / >
+            <datalist className={styles.adminButton} id="subjects">
               <option value="">Pick a subject</option>
               {subjectOptions}
-            </select>
-            <select className={styles.adminButton}>
+            </datalist>
+            <input className={styles.adminButton} list="subjectPaths" / >
+            <datalist className={styles.adminButton} id="subjectPaths">
               <option value="">Pick a subject path</option>
               {subjectPath}
-            </select>
+            </datalist>
             <select className={styles.adminButton}>
               <option value="">Pick a period</option>
               <option value="Колоквиум 1">Прв Кол</option>
@@ -341,7 +388,7 @@ function AdminX() {
                 type="text"
                 placeholder="Number of test cases"
                 value={testcaseNumber}
-                onChange={(e) => setTestcaseNumber(e.target.value)}
+                onChange={(e) => handleTestCases(e.target.value)}
               />
               <h2>Input</h2>
               <textarea
@@ -369,13 +416,13 @@ function AdminX() {
       </div>
 
       <div className={styles.adminProblem}>
-        <select className={styles.adminButton}>
-          <option value="">Select a problem to move</option>
-          {problemOptions}
-        </select>
-        <button className={styles.adminButton}>Move to Main DB</button>
-      </div>
-      {/* <div className={styles.adminProblem}>
+          <select className={styles.adminButton} id="problemselector">
+            <option value="">Select a problem to move</option>
+            {problemOptions}
+          </select>
+          <button className={styles.adminButton} onClick={handleMoveMain}>Move to Main DB</button>
+        </div>
+          {/* <div className={styles.adminProblem}>
         <table>
           <caption>
             <button className={styles.adminButton} onClick={createToken}>
@@ -402,8 +449,8 @@ function AdminX() {
           </tbody>
         </table>
       </div> */}
-    </>
-  );
+        </>
+        );
 }
 
-export default AdminX;
+        export default AdminX;

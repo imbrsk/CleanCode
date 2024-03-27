@@ -43,7 +43,7 @@ pub struct SubjectName{
     prvkol: Vec<Problem>,
     vtorkol: Vec<Problem>,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct Problem{
     ime: String,
     link: String,
@@ -87,7 +87,7 @@ impl Subject{
     }
     pub async fn get_problems(&self, pool: &State<sqlx::MySqlPool>) -> Vec<SubjectName>{
         let years = self.get_dist_year(pool).await;
-        let periods = vec!["Колкокфиум 1", "Колкокфиум 2", "Испит"];
+        let periods = vec!["Колоквиум 1", "Колоквиум 2", "Испит"];
         let mut big_j: Vec<SubjectName> = Vec::new();
         let user_id_sql = self.get_user_id(pool).await;
         let user_id: i32 = user_id_sql.get("user_id");
@@ -114,8 +114,8 @@ impl Subject{
                     };
                     match period {
                         &"Испит" => subjects.ispiti.push(problem),
-                        &"Колкокфиум 1" => subjects.prvkol.push(problem),
-                        &"Колкокфиум 2" => subjects.vtorkol.push(problem),
+                        &"Колоквиум 1" => subjects.prvkol.push(problem),
+                        &"Колоквиум 2" => subjects.vtorkol.push(problem),
                         _ => (),
                     }
                 }
