@@ -28,8 +28,6 @@ export default function App() {
           throw new Error("Network response was not ok");
         }
         let data = await response.json();
-        // Sort subjects by their number
-        data.sort((a, b) => a.number - b.number);
         setSubjects(data);
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);
