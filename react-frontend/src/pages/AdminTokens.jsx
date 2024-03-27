@@ -55,6 +55,26 @@ function AdminTokens() {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
+  const deleteToken = async (token) => {
+    const req = {
+      token: token,
+    };
+    try {
+      const response = await fetch("http://localhost:8000/delete_token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      fetchTokens();
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
   return (
     <div className={styles.adminProblem}>
       <div>
