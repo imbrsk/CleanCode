@@ -20,7 +20,7 @@ const ResultsTable = (props) => {
       is_cor: props.data.is_cor[key],
     }));
     ;
-    if (props.data["track_cor"] == "10") {
+    if (props.data["track_cor"] == 'True') {
       msg = "All tests passed!";
       check = true;
     } else {
