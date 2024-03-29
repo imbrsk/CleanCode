@@ -204,7 +204,7 @@ CREATE TABLE admin_cookies(
 --@block
 CREATE TABLE token_admin_cookies(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    session VARCHAR(127) NOT NULL UNIQUE,
+    session VARCHAR(127) NOT NULL UNIQUE,-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 --@block
