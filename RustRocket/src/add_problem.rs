@@ -4,19 +4,19 @@ use sqlx::{mysql::MySqlRow, Row};
 
 #[derive(Deserialize, Serialize)]
 pub struct AddProblemIntoTest{
-    name: String,
-    problem_path: String,
-    subject: String,
-    path: String,
-    year: String,
-    period: String,
-    text: String,
-    ex_input: String,
-    ex_output: String,
-    input: String,
-    expected: String,
-    starting_code: String,
-    test_case_number: String
+    pub name: String,
+    pub problem_path: String,
+    pub subject: String,
+    pub path: String,
+    pub year: String,
+    pub period: String,
+    pub text: String,
+    pub ex_input: String,
+    pub ex_output: String,
+    pub input: String,
+    pub expected: String,
+    pub starting_code: String,
+    pub test_case_number: String
 }
 impl AddProblemIntoTest{
     pub async fn add_to_test_database(&self, pool: &State<sqlx::MySqlPool>){

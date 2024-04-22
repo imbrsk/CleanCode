@@ -45,6 +45,9 @@ use add_problem::{AddProblemIntoTest, LoadMainDB, LoadProblemDB, LoadTestDB};
 
 mod runcode_dev;
 use runcode_dev::ProblemDataDev;
+
+mod moodle_import;
+use moodle_import::MoodleImport;
 #[rocket::post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _response = match data.login(&pool).await {
@@ -295,6 +298,13 @@ async fn execute_dev(data: Json<ProblemDataDev>, pool: &State<sqlx::MySqlPool>) 
         let temp = data.make_code_req(pool).await;
         temp
 }
+#[post("/moodle", data = "<data>")]
+async fn moodle(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+    MoodleImport::add_problems(data.into_inner(), pool).await;
+    Json(json!({
+        "status": "success"
+    }))
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -306,5 +316,5 @@ fn rocket() -> _ {
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
         subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
-        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev])
+        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle])
 }

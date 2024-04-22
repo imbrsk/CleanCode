@@ -74,15 +74,15 @@ CREATE TABLE subjects_dev (
     year INT,
     period VARCHAR(31),
     text TEXT,
-    ex_input VARCHAR(255),
-    ex_output VARCHAR(255),
+    ex_input TEXT,
+    ex_output TEXT,
     input TEXT,
     expected TEXT,
     starting_code TEXT,
     test_case_number INT
 );
 -- @block
-SELECT * FROM subjects_dev
+DROP TABLE subjects_dev
 -- @block
 CREATE TABLE user_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -208,8 +208,8 @@ CREATE TABLE token_admin_cookies(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 --@block
-DROP TABLE admin_cookies
+SELECT * FROM subjects
 --@block
-INSERT INTO admin_token (token, created_at) VALUES ("bobo", NOW())
+SELECT * FROM subjects_dev
 --@block
-INSERT INTO admin (token, password) VALUES ("stefan", "$2b$10$AT6Kp43yDU3ZfGcAkOOeZOt9RclcWFtsRGIYQRc2j53jROgB9PmX2")
+DELETE FROM subjects_dev
