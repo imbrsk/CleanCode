@@ -1,4 +1,10 @@
-
+.page-container{
+  min-height: 80vh;
+}
+.link{
+  text-decoration: none;
+  color: black;
+}
 .accordion {
   background-color: #282828;
   color: rgb(255, 255, 255);
@@ -12,7 +18,52 @@
   font-size: 28px;
   transition: 0.4s;
 }
-
+.problem-title {
+  background-color: #282828;
+  color: rgb(255, 255, 255);
+  border-radius: 20px 20px 0px 0px;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 28px;
+  transition: 0.4s;
+}
+.problem-style{
+  width: 90%;
+  padding: 0.5rem 18px 0.5rem 18px;
+  border-radius: 0px 15px 0px 0px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 18px;
+  background-color: lightgray;
+  text-decoration: none;
+  color: black; 
+}
+.problem-style:hover{
+  background-color: #25ce90;
+  color: black;
+  cursor: pointer;
+}
+.problems-container{
+  width: 100%;
+  padding: 0.5rem;
+}
+.table-problems{
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 0px 0px 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.problem-sections{
+  display: flex;
+}
 .active{
     border-radius: 15px 15px 0px 0px;
     color: #FF7F50;
@@ -40,7 +91,6 @@
   overflow: hidden;
   transition: 0.2s ease-out;
 }
-
 .problems{
   width: 75%;
 }
