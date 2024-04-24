@@ -1,8 +1,14 @@
+use lettre::transport::smtp::response;
 use reqwest::{self};
+use rocket::tokio;
 use rocket::{serde::json::Json, FromForm, State};
 use serde::Deserialize;
 use serde_json::json;
 use sqlx::Row;
+use futures::stream::FuturesUnordered;
+use futures::stream::StreamExt;
+use std::str;
+use base64::{encode};
 
 enum ProcessCodeResponse{
     Success,
@@ -21,7 +27,7 @@ impl ProblemData{
         let client = reqwest::Client::new();
         match client.post("http://localhost:2358/submissions")
             .json(&payload)
-            .query(&[("base64_encoded", "false"), ("wait", "true"), ("fields", "stdout,status")])
+            .query(&[("base64_encoded", "true"), ("wait", "true"), ("fields", "stdout,status,compile_output")])
             .send()
             .await
         {
@@ -35,15 +41,33 @@ impl ProblemData{
             }
         }
     }
-    async fn check_error(data: serde_json::Value) -> ProcessCodeResponse{
+    async fn check_error(data: serde_json::Value) -> (ProcessCodeResponse, String){
         let response = ProblemData::make_api_req(data).await.unwrap().0;
+        let lines: Vec<String> = response["compile_output"].to_string().split("\\n")
+            .map(|part| part.to_string())
+            .collect();
+        print!("{:?}\n\n", lines);
+        let mut error = String::new();
+
+        for line in lines{
+            let decoded = base64::decode(line.clone());
+            match decoded {
+                Ok(decoded) => {
+                    error.push_str(&String::from_utf8(decoded).unwrap());
+                },
+                Err(e) => {
+                    println!("Error: {:?}", e);
+                }
+            }
+        }
+
         if response["status"]["description"].to_string().trim_matches('"') == String::from("Compilation Error"){
-            return ProcessCodeResponse::CompileError;
+            return (ProcessCodeResponse::CompileError, error);
         }else if response["status"]["description"].to_string().trim_matches('"') == String::from("Runtime Error (NZEC)"){
-            return ProcessCodeResponse::RuntimeError;
+            return (ProcessCodeResponse::RuntimeError,error);
         
         }else{
-            return ProcessCodeResponse::Success;
+            return (ProcessCodeResponse::Success,"".to_string());
         }
     }
     async fn get_input_expected(&self, field : String , pool: &State<sqlx::MySqlPool>) -> String{
@@ -106,14 +130,14 @@ impl ProblemData{
     pub async fn make_code_req(&self,  pool: &State<sqlx::MySqlPool>)-> Json<serde_json::Value>{
         let mut payload = json!({
             "language_id": self.language.clone(),
-            "source_code": self.code.clone(),
-            "stdin": "",
-            "expected_output": ""
+            "source_code": encode(self.code.clone()),
+            "stdin": encode(""),
+            "expected_output": encode("")
         });
-        let _response = match ProblemData::check_error(payload.clone()).await{
+        let _response = match ProblemData::check_error(payload.clone()).await.0{
                 ProcessCodeResponse::CompileError => 
                     return Json(json!({
-                "status": "Compilation Error",
+                "status": ProblemData::check_error(payload.clone()).await.1,
                 })), 
                 ProcessCodeResponse::RuntimeError => 
                     return Json(json!({
@@ -129,21 +153,32 @@ impl ProblemData{
                     let input_value: Result<serde_json::Value, _> = serde_json::from_str(&input);
                     let expected_value: Result<serde_json::Value, _> = serde_json::from_str(&expected);
                     let test_cases = self.get_test_case_num(pool).await;
+                    let mut futures = FuturesUnordered::new();  
                     for i in 0i8..test_cases {
                         let temp = format!("test{}", i);
                         if let Ok(ref value) = input_value {
                             let test = value.get(&temp);
                             if let Some(test_str) = test.as_ref().and_then(|v| v.as_str()) {
-                                payload["stdin"] = test_str.into();
+                                payload["stdin"] = serde_json::Value::String(encode(test_str.as_bytes()));
                             }
                         }   
                         if let Ok(ref value1) = expected_value {
                             let test = value1.get(&temp);
                             if let Some(test_str) = test.as_ref().and_then(|v| v.as_str()) {
-                                payload["expected_output"] = test_str.into();
+                                payload["expected_output"] = serde_json::Value::String(encode(test_str.as_bytes()));
                             }
                         } 
-                        let response = ProblemData::make_api_req(payload.clone()).await.unwrap().0;
+                        let payload_clone = payload.clone();
+                        let future = tokio::spawn(async move {
+                            ProblemData::make_api_req(payload_clone).await.unwrap()
+                        });
+                        futures.push(future);
+                    }
+                    let mut i:i8 =0;
+                    while let Some(res) = futures.next().await {
+                        print!("{:?}", res);
+                        let response: serde_json::Value = res.unwrap().into_inner();
+                        let temp = format!("test{}", i);
                         submission_data[&temp] = response["stdout"].clone();
                         if response["status"]["description"] == "Wrong Answer" {
                             cor_data[temp] = "0".into();
@@ -151,6 +186,7 @@ impl ProblemData{
                             track_cor+=1;
                             cor_data[temp] = "1".into();
                         }
+                        i+=1;
                     }
                     let is_cor = if track_cor == test_cases {
                         String::from("True")
@@ -162,7 +198,6 @@ impl ProblemData{
                             self.save_code(user_id.get("user_id"), pool).await;
                             ProblemData::add_solved(user_id.get("user_id"), pool).await;
                         }
-                        drop(payload);
                         return Json(json!({
                     "input": input_value.unwrap(),
                     "expected": expected_value.unwrap(),

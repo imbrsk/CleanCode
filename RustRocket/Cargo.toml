@@ -17,6 +17,8 @@ uuid = { version = "1.7.0", features = ["v4"] }
 lettre = "0.11.4"
 rand = "0.8.4"
 chrono = "0.4"
+futures = "0.3"
+base64 = "0.22.0"
 [default.databases]
 mysql_db = { url = "mysql://root:bobo2004@localhost:3306/userdata" }
 
