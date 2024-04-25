@@ -11,9 +11,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ResultsTable from "../components/ResultsTable";
 
-
-
-
 function parseText(text) {
   const elements = [];
 
@@ -93,8 +90,24 @@ function CodeTesting() {
         const data = await response.json();
         setName(data["name"]);
         setText(parseText(data["text"]));
-        setExinput(data["ex_input"]);
-        setExoutput(data["ex_expected"]);
+        var lines = data["ex_input"].split("\n");
+        var formattedParagraph = lines.map((line, index) => (
+          <span key={index}>
+            {line}
+            {index !== lines.length - 1 && <br />}{" "}
+            {/* Add <br> tag after each line except the last one */}
+          </span>
+        ));
+        setExinput(formattedParagraph);
+        lines = data["ex_expected"].split("\n");
+        formattedParagraph = lines.map((line, index) => (
+          <span key={index}>
+            {line}
+            {index !== lines.length - 1 && <br />}{" "}
+            {/* Add <br> tag after each line except the last one */}
+          </span>
+        ));
+        setExoutput(formattedParagraph);
         setCode(data["code"]);
       } catch (error) {
         console.error("Error during the fetch operation:", error);
@@ -104,7 +117,7 @@ function CodeTesting() {
   }, []);
   const testCode = async (request) => {
     document.getElementById("ldr").style.display = "block";
-    const button = document.getElementById('submit-button');
+    const button = document.getElementById("submit-button");
     button.disabled = true;
     try {
       const response = await fetch("http://localhost:8000/execute", {
@@ -124,14 +137,23 @@ function CodeTesting() {
       document.getElementById("ldr").style.display = "none";
       button.disabled = false;
       if (data) {
-        setTableData(data);;
+        setTableData(data);
       } else {
-        console.error('Data is undefined or null');
+        console.error("Data is undefined or null");
       }
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
   };
+  // var lines = paragraph.split("\n");
+  // var formattedParagraph = lines.map((line, index) => (
+  //   <span key={index}>
+  //     {line}
+  //     {index !== lines.length - 1 && <br />}{" "}
+  //     {/* Add <br> tag after each line except the last one */}
+  //   </span>
+  // ));
+
   return (
     <>
       <CssBaseline></CssBaseline>
