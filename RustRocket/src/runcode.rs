@@ -1,4 +1,3 @@
-use lettre::transport::smtp::response;
 use reqwest::{self};
 use rocket::tokio;
 use rocket::{serde::json::Json, FromForm, State};
@@ -8,7 +7,7 @@ use sqlx::Row;
 use futures::stream::FuturesUnordered;
 use futures::stream::StreamExt;
 use std::str;
-use base64::{encode};
+use base64::{Engine as _, engine::general_purpose};
 
 enum ProcessCodeResponse{
     Success,
@@ -41,26 +40,27 @@ impl ProblemData{
             }
         }
     }
-    async fn check_error(data: serde_json::Value) -> (ProcessCodeResponse, String){
+    async fn check_error(data: serde_json::Value, is_error: bool) -> (ProcessCodeResponse, String){
         let response = ProblemData::make_api_req(data).await.unwrap().0;
-        let lines: Vec<String> = response["compile_output"].to_string().split("\\n")
-            .map(|part| part.to_string())
-            .collect();
-        print!("{:?}\n\n", lines);
-        let mut error = String::new();
+        let mut error: String = String::new();
+        if is_error{
+            let lines: Vec<String> = response["compile_output"].to_string().split("\\n")
+                .map(|part| part.to_string())
+                .collect();
+            error = String::new();
 
-        for line in lines{
-            let decoded = base64::decode(line.clone());
-            match decoded {
-                Ok(decoded) => {
-                    error.push_str(&String::from_utf8(decoded).unwrap());
-                },
-                Err(e) => {
-                    println!("Error: {:?}", e);
+            for line in lines{
+                let decoded = base64::decode(line.replace("\"","").clone());
+                match decoded {
+                    Ok(decoded) => {
+                        error.push_str(&String::from_utf8(decoded).unwrap());
+                    },
+                    Err(e) => {
+                        println!("Error: {:?}", e);
+                    }
                 }
             }
         }
-
         if response["status"]["description"].to_string().trim_matches('"') == String::from("Compilation Error"){
             return (ProcessCodeResponse::CompileError, error);
         }else if response["status"]["description"].to_string().trim_matches('"') == String::from("Runtime Error (NZEC)"){
@@ -130,14 +130,14 @@ impl ProblemData{
     pub async fn make_code_req(&self,  pool: &State<sqlx::MySqlPool>)-> Json<serde_json::Value>{
         let mut payload = json!({
             "language_id": self.language.clone(),
-            "source_code": encode(self.code.clone()),
-            "stdin": encode(""),
-            "expected_output": encode("")
+            "source_code": general_purpose::STANDARD.encode(self.code.clone()),
+            "stdin": general_purpose::STANDARD.encode(""),
+            "expected_output": general_purpose::STANDARD.encode("")
         });
-        let _response = match ProblemData::check_error(payload.clone()).await.0{
+        let _response = match ProblemData::check_error(payload.clone(), false).await.0{
                 ProcessCodeResponse::CompileError => 
                     return Json(json!({
-                "status": ProblemData::check_error(payload.clone()).await.1,
+                "status": ProblemData::check_error(payload.clone(), true ).await.1,
                 })), 
                 ProcessCodeResponse::RuntimeError => 
                     return Json(json!({
@@ -159,13 +159,13 @@ impl ProblemData{
                         if let Ok(ref value) = input_value {
                             let test = value.get(&temp);
                             if let Some(test_str) = test.as_ref().and_then(|v| v.as_str()) {
-                                payload["stdin"] = serde_json::Value::String(encode(test_str.as_bytes()));
+                                payload["stdin"] = serde_json::Value::String(general_purpose::STANDARD.encode(test_str));
                             }
                         }   
                         if let Ok(ref value1) = expected_value {
                             let test = value1.get(&temp);
                             if let Some(test_str) = test.as_ref().and_then(|v| v.as_str()) {
-                                payload["expected_output"] = serde_json::Value::String(encode(test_str.as_bytes()));
+                                payload["expected_output"] = serde_json::Value::String(general_purpose::STANDARD.encode(test_str));
                             }
                         } 
                         let payload_clone = payload.clone();
@@ -176,10 +176,28 @@ impl ProblemData{
                     }
                     let mut i:i8 =0;
                     while let Some(res) = futures.next().await {
-                        print!("{:?}", res);
                         let response: serde_json::Value = res.unwrap().into_inner();
                         let temp = format!("test{}", i);
-                        submission_data[&temp] = response["stdout"].clone();
+                        let stdout_str = response["stdout"].to_string();
+                        let mut stdout: String = String::new();
+                        let lines: Vec<String> = stdout_str.to_string().split("\\n")
+                            .map(|part| part.to_string())
+                            .collect();
+                        stdout = String::new();
+
+                        for line in lines{
+                            let decoded = base64::decode(line.replace("\"","").clone());
+                            match decoded {
+                                Ok(decoded) => {
+                                    stdout.push_str(&String::from_utf8(decoded).unwrap());
+                                },
+                                Err(e) => {
+                                    println!("Error: {:?}", e);
+                                }
+                            }
+                        }
+                        
+                        submission_data[&temp] = serde_json::Value::String(stdout); 
                         if response["status"]["description"] == "Wrong Answer" {
                             cor_data[temp] = "0".into();
                         } else {
