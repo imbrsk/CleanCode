@@ -48,8 +48,9 @@ function CodeTesting() {
     setLanguage(event.target.value);
   };
 
-  const handleCodeChange = (event) => {
-    setCode(event.target.value);
+  const onChange = (event) => {
+    console.log(event);
+    setCode(event);
   };
 
   const location = useLocation();
@@ -199,7 +200,7 @@ function CodeTesting() {
             language="cpp"
             theme="vs-light"
             value={code}
-            onChange={handleCodeChange}
+            onChange={onChange}
             className="editor"
           />
           <br />
