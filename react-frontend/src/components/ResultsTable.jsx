@@ -5,9 +5,7 @@ const ResultsTable = (props) => {
   let msg;
   let check;
   if (!props.data || !props.data.input) {
-    //console.log(props.data['status']);
     if (props.data['status'] != undefined) {
-      //console.log(msg);
       msg = props.data['status'];
       return <div className="error-msg">{msg}</div>;
     }
@@ -19,7 +17,7 @@ const ResultsTable = (props) => {
       got: props.data.got[key],
       is_cor: props.data.is_cor[key],
     }));
-    ;
+
     if (props.data["track_cor"] == 'True') {
       msg = "All tests passed!";
       check = true;
@@ -47,9 +45,9 @@ const ResultsTable = (props) => {
                     row.is_cor == 1 ? "rgba(0,255,0,0.3)" : "rgba(255,0,0,0.3)",
                 }}
               >
-                <td>{row.input}</td>
-                <td>{row.expected}</td>
-                <td>{row.got}</td>
+                <td>{row.input.split('\n').map((line, index) => <div key={index}>{line}</div>)}</td>
+                <td>{row.expected.split('\n').map((line, index) => <div key={index}>{line}</div>)}</td>
+                <td>{row.got.split('\n').map((line, index) => <div key={index}>{line}</div>)}</td>
               </tr>
             ))}
           </tbody>
