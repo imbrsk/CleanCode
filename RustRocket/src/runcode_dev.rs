@@ -10,7 +10,7 @@ enum ProcessCodeResponse{
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct ProblemDataDev{
-    code: String,
+    pub code: String,
     language: String,
     name: String,
 }

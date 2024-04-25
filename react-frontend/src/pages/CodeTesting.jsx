@@ -145,16 +145,14 @@ function CodeTesting() {
       console.error("Error during the fetch operation:", error);
     }
   };
-  var paragraph =
-    "This is a paragraph.\nIt has multiple lines.\nEach line is separated by '\\n'.";
-  var lines = paragraph.split("\n");
-  var formattedParagraph = lines.map((line, index) => (
-    <span key={index}>
-      {line}
-      {index !== lines.length - 1 && <br />}{" "}
-      {/* Add <br> tag after each line except the last one */}
-    </span>
-  ));
+  // var lines = paragraph.split("\n");
+  // var formattedParagraph = lines.map((line, index) => (
+  //   <span key={index}>
+  //     {line}
+  //     {index !== lines.length - 1 && <br />}{" "}
+  //     {/* Add <br> tag after each line except the last one */}
+  //   </span>
+  // ));
 
   return (
     <>
@@ -169,7 +167,6 @@ function CodeTesting() {
         </div>
         {text}
         <h3>Примери</h3>
-        <p>{formattedParagraph}</p>
         <div className="example">
           <div>
             <p>Влез</p>

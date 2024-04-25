@@ -292,8 +292,13 @@ async fn load_problem_dev(data: Json<LoadDB>, pool: &State<sqlx::MySqlPool>) -> 
 }
 #[post("/execute_dev", data = "<data>")]
 async fn execute_dev(data: Json<ProblemDataDev>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-        let temp = data.make_code_req(pool).await;
-        temp
+    if data.0.code == "" {
+        return Json(json!({
+            "status": "Code is empty"
+        }));
+    }
+    let temp = data.make_code_req(pool).await;
+    temp
 }
 #[launch]
 fn rocket() -> _ {
