@@ -3,6 +3,9 @@
     color: #3EB489;
     padding: 0.5rem;
 }
+.editor{
+    border: 1px solid black;
+}
 .subject-value{
     font-size: 2rem;
     font-weight: bold;

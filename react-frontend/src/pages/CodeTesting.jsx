@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ResultsTable from "../components/ResultsTable";
+import Editor from "@monaco-editor/react";
 
 function parseText(text) {
   const elements = [];
@@ -183,14 +184,24 @@ function CodeTesting() {
               Input Code
             </label>
           </p>
-          <textarea
+          {/* <textarea
             id="code-input"
             name="sendcode"
             rows="30"
             cols="100"
             value={code}
             onChange={handleCodeChange}
-          ></textarea>
+          ></textarea> */}
+          <Editor
+            height="300px"
+            id="code-input"
+            name="sendcode"
+            language="cpp"
+            theme="vs-light"
+            value={code}
+            onChange={handleCodeChange}
+            className="editor"
+          />
           <br />
           <div className="submit-form">
             <select
