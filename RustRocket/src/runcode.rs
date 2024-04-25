@@ -16,7 +16,7 @@ enum ProcessCodeResponse{
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct ProblemData{
-    code: String,
+    pub code: String,
     language: String,
     session: String,
     problem_id: String,
