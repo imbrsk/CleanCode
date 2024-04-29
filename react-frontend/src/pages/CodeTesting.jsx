@@ -91,7 +91,7 @@ function CodeTesting() {
         const data = await response.json();
         setName(data["name"]);
         setText(parseText(data["text"]));
-        var lines = data["ex_input"].split("\n");
+        var lines = data["ex_input"].split("\\n");
         var formattedParagraph = lines.map((line, index) => (
           <span key={index}>
             {line}
@@ -100,7 +100,7 @@ function CodeTesting() {
           </span>
         ));
         setExinput(formattedParagraph);
-        lines = data["ex_expected"].split("\n");
+        lines = data["ex_expected"].split("\\n");
         formattedParagraph = lines.map((line, index) => (
           <span key={index}>
             {line}

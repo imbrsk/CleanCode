@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ResultsTable from "../components/ResultsTable";
+import Editor from "@monaco-editor/react";
 
 function parseText(text) {
   const elements = [];
@@ -63,27 +64,24 @@ function PreviewProblem() {
   };
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
-//   if (!userCookie) {
-//     if (!token) {
-//       window.location.href = "/";
-//     } else {
-//       createSession();
-//     }
-//   }
+  //   if (!userCookie) {
+  //     if (!token) {
+  //       window.location.href = "/";
+  //     } else {
+  //       createSession();
+  //     }
+  //   }
   useEffect(() => {
     const fetchData = async () => {
-      const reqdata = {"name":document.getElementById("selector").value};
+      const reqdata = { name: document.getElementById("selector").value };
       try {
-        const response = await fetch(
-          "http://localhost:8000/load_problem_dev",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(reqdata),
-          }
-        );
+        const response = await fetch("http://localhost:8000/load_problem_dev", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reqdata),
+        });
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -91,8 +89,24 @@ function PreviewProblem() {
         const data = await response.json();
         setName(data["name"]);
         setText(parseText(data["text"]));
-        setExinput(data["ex_input"]);
-        setExoutput(data["ex_expected"]);
+        var lines = data["ex_input"].split("\\n");
+        var formattedParagraph = lines.map((line, index) => (
+          <span key={index}>
+            {line}
+            {index !== lines.length - 1 && <br />}{" "}
+            {/* Add <br> tag after each line except the last one */}
+          </span>
+        ));
+        setExinput(formattedParagraph);
+        lines = data["ex_expected"].split("\\n");
+        formattedParagraph = lines.map((line, index) => (
+          <span key={index}>
+            {line}
+            {index !== lines.length - 1 && <br />}{" "}
+            {/* Add <br> tag after each line except the last one */}
+          </span>
+        ));
+        setExoutput(formattedParagraph);
         setCode(data["code"]);
       } catch (error) {
         console.error("Error during the fetch operation:", error);
@@ -131,7 +145,7 @@ function PreviewProblem() {
     const codeData = {
       name: document.getElementById("selector").value,
       code: code,
-      language: language
+      language: language,
     };
     document.getElementById("ldr").style.display = "block";
     const button = document.getElementById("submit-button");
@@ -200,14 +214,16 @@ function PreviewProblem() {
               Input Code
             </label>
           </p>
-          <textarea
+          <Editor
+            height="300px"
             id="code-input"
             name="sendcode"
-            rows="30"
-            cols="100"
+            language="cpp"
+            theme="vs-light"
             value={code}
             onChange={handleCodeChange}
-          ></textarea>
+            className="editor"
+          />
           <br />
           <div className="submit-form">
             <select
@@ -219,11 +235,7 @@ function PreviewProblem() {
               <option value="54">C++</option>
               <option value="50">C</option>
             </select>
-            <button
-              type="button"
-              id="submit-button"
-              onClick={() => testCode()}
-            >
+            <button type="button" id="submit-button" onClick={() => testCode()}>
               Submit
             </button>
           </div>

@@ -110,6 +110,7 @@ function AdminEdit() {
       alert("Please fill in all fields");
       return;
     } else {
+      alert("Problem saved successfully!");
       fetch("http://localhost:8000/edit_problem_test", {
         method: "POST",
         headers: {
@@ -176,22 +177,20 @@ function AdminEdit() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      handleTestCases(data['problem']['test_case_number'])
-      setProblemName(data["problem"]['name']);
-      setProblemPath(data['problem']['problem_path'])
-      setExampleInput(data['problem']['ex_input'])
-      setExampleOutput(data['problem']['ex_output'])
-      setProblemYear(data['problem']['year']);
-      setProblemText(data['problem']['text']);
-      setSubjectOptions(data['problem']['subject'])
-      setInputTestCases(data['problem']['input']);
-      setExpectedTestCases(data['problem']['expected']);
-      setStartingCode(data['problem']['starting_code']);
-      setSubjectPath(data['problem']['path'])
-      setPeriod(data['problem']['period']);
-      setProblemId(data['id'])
-
-      
+      handleTestCases(data["problem"]["test_case_number"]);
+      setProblemName(data["problem"]["name"]);
+      setProblemPath(data["problem"]["problem_path"]);
+      setExampleInput(data["problem"]["ex_input"]);
+      setExampleOutput(data["problem"]["ex_output"]);
+      setProblemYear(data["problem"]["year"]);
+      setProblemText(data["problem"]["text"]);
+      setSubjectOptions(data["problem"]["subject"]);
+      setInputTestCases(data["problem"]["input"]);
+      setExpectedTestCases(data["problem"]["expected"]);
+      setStartingCode(data["problem"]["starting_code"]);
+      setSubjectPath(data["problem"]["path"]);
+      setPeriod(data["problem"]["period"]);
+      setProblemId(data["id"]);
     } catch (error) {
       console.error("Error during the fetch operation:", error);
     }
@@ -231,7 +230,7 @@ function AdminEdit() {
     <>
       <div className={styles.adminProblem}>
         <select
-          className={styles.adminButton}
+          className={styles.adminInput}
           id="problemselector"
           onChange={(event) => setProblem(event.target.value)}
         >
@@ -244,22 +243,38 @@ function AdminEdit() {
           <button onClick={handleAddProblem} className={styles.adminButton}>
             Save Problem
           </button>
-          <Link to={"preview"}>
+          <Link to={"/adminadmin/preview"}>
             <button className={styles.adminButton}>Preview Problems</button>
+          </Link>
+          <Link to={"/adminadmin"}>
+            <button className={styles.adminButton}>Back to Admin</button>
           </Link>
         </div>
         <div className={styles.problemLeft}>
-          <h2>Edit Problem</h2>
+          <h2 className="center">Edit Problem</h2>
           <div>
-            <input className={styles.adminButton} list="subjects"  value={subjectOptions} onChange={(e) => setSubjectOptions(e.target.value)}/>
+            <input
+              className={styles.adminInput}
+              list="subjects"
+              value={subjectOptions}
+              onChange={(e) => setSubjectOptions(e.target.value)}
+            />
             <datalist className={styles.adminButton} id="subjects">
               <option value={subjectOptions}>{subjectOptions}</option>
             </datalist>
-            <input className={styles.adminButton} list="subjectPaths" value={subjectPath} onChange={(e) => setSubjectPath(e.target.value)}/>
+            <input
+              className={styles.adminInput}
+              list="subjectPaths"
+              value={subjectPath}
+              onChange={(e) => setSubjectPath(e.target.value)}
+            />
             <datalist className={styles.adminButton} id="subjectPaths">
               <option value={subjectPath}>{subjectPath}</option>
             </datalist>
-            <select className={styles.adminButton} onChange={(e) => setPeriod(e.target.value)}>
+            <select
+              className={styles.adminInput}
+              onChange={(e) => setPeriod(e.target.value)}
+            >
               <option value={period}>{period}</option>
             </select>
           </div>
@@ -289,6 +304,7 @@ function AdminEdit() {
           <div>
             <textarea
               placeholder="Problem text"
+              className={styles.adminInput}
               rows={10}
               cols={60}
               value={problemText}
@@ -315,6 +331,7 @@ function AdminEdit() {
           <div>
             <textarea
               placeholder="Starting code"
+              className={styles.adminInput}
               rows={10}
               cols={60}
               value={startingCode}

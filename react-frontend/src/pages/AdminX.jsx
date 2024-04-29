@@ -96,6 +96,39 @@ function AdminX() {
         console.error("Error during the fetch operation:", error);
       });
   };
+  const handleSendXML = () => {
+    var convert = require('xml-js');
+    const req = {
+      file: convert.xml2json(document.getElementById("upfile").files[0], {compact: false, spaces: 4}),
+      params: {
+        subject: document.getElementById("subject_name").value,
+        path: document.getElementById("subject_path").value,
+        year: problemYear,
+        period: document.getElementById("selectperiod").value
+      }
+    };
+    fetch("http://localhost:8000/moodle", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // Handle the response data here
+        alert("File uploaded!");
+      })
+      .catch((error) => {
+        console.error("Error during the fetch operation:", error);
+      });
+  };
   const handleAddProblem = () => {
     const problemData = {
       name: problemName,
@@ -112,7 +145,7 @@ function AdminX() {
       starting_code: startingCode,
       test_case_number: testcaseNumber,
     };
-    console.log(problemData)
+    console.log(problemData);
     // Check if any of the fields is empty
     if (
       problemData.name === "" ||
@@ -128,9 +161,9 @@ function AdminX() {
       problemData.output === "" ||
       problemData.test_case_number === ""
     ) {
-      alert("Fill out all fields!")
+      alert("Fill out all fields!");
     } else {
-      alert("Problem added to TEST DB!")
+      alert("Problem added to TEST DB!");
       fetch("http://localhost:8000/add_to_dev", {
         method: "POST",
         headers: {
@@ -244,33 +277,44 @@ function AdminX() {
     <>
       <div className={styles.adminProblem}>
         <div className={styles.leftButtons}>
-          <button onClick={handleAddProblem} className={styles.adminButton}>
-            Add problem to Test DB
+          <button
+            onClick={handleAddProblem}
+            className={styles.adminSpecialButton}
+          >
+            Add to Test DB
           </button>
           <button onClick={handleEditProblem} className={styles.adminButton}>
             Edit a problem
           </button>
           <Link to={"preview"}>
-            <button className={styles.adminButton}>PREVIEW PROBLEMS</button>
+            <button className={styles.adminButton}>Preview Problems</button>
           </Link>
           <Link to={"tokens"}>
-            <button className={styles.adminButton}>TOKENS</button>
+            <button className={styles.adminButton}>Tokens</button>
           </Link>
         </div>
         <div className={styles.problemLeft}>
-          <h2>Add Problem</h2>
+          <h2 className="center">Add Problem</h2>
           <div>
-            <input className={styles.adminButton} list="subjects" id="subject_name" />
-            <datalist className={styles.adminButton} id="subjects">
+            <input
+              className={styles.adminInput}
+              list="subjects"
+              id="subject_name"
+            />
+            <datalist className={styles.adminInput} id="subjects">
               <option value="">Pick a subject</option>
               {subjectOptions}
             </datalist>
-            <input className={styles.adminButton} list="subjectPaths"  id="subject_path"/>
-            <datalist className={styles.adminButton} id="subjectPaths">
+            <input
+              className={styles.adminInput}
+              list="subjectPaths"
+              id="subject_path"
+            />
+            <datalist className={styles.adminInput} id="subjectPaths">
               <option value="">Pick a subject path</option>
               {subjectPath}
             </datalist>
-            <select className={styles.adminButton} id="selectperiod">
+            <select className={styles.adminInput} id="selectperiod">
               <option value="">Pick a period</option>
               <option value="Колоквиум 1">Прв Кол</option>
               <option value="Колоквиум 2">Втор Кол</option>
@@ -307,6 +351,7 @@ function AdminX() {
               cols={60}
               value={problemText}
               onChange={(e) => setProblemText(e.target.value)}
+              className={styles.adminInput}
             ></textarea>
           </div>
           <div>
@@ -329,12 +374,18 @@ function AdminX() {
           <div>
             <textarea
               placeholder="Starting code"
+              className={styles.adminInput}
               rows={10}
               cols={60}
               value={startingCode}
               onChange={(e) => setStartingCode(e.target.value)}
             ></textarea>
           </div>
+          <div>
+            <h2>Import from moodle</h2>
+            <input type="file" id={styles.upfile} accept="text/xml" />
+          </div>
+          <button className={styles.adminButton} onClick={handleSendXML}>Submit File</button>
         </div>
         <div className={styles.problemLeft}>
           <h2>Test cases</h2>
