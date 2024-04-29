@@ -164,7 +164,7 @@ pub struct GetProblem{
 }
 impl GetProblem{
     async fn get_problem_data(&self, pool: &State<sqlx::MySqlPool>) -> sqlx::mysql::MySqlRow{
-        let problems = sqlx::query("SELECT name, text, ex_input, ex_output FROM subjects WHERE id = ?")
+        let problems = sqlx::query("SELECT name, text, ex_input, ex_output, starting_code FROM subjects WHERE id = ?")
             .bind(self.path.clone())
             .fetch_one(&**pool)
             .await
@@ -195,8 +195,11 @@ impl GetProblem{
         let user_id: i32 = user_id_sql.get("user_id");
         let code: String = match self.check_if_solved(user_id.to_string(),pool).await {
             Ok(code) => code.get("code"),
-            Err(_) => String::from(""),
+            Err(_) =>{ 
+                problem.get("starting_code")
+            },
         };
+
         let return_json = LoadProblem {
             name: name,
             text: text,

@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.9",
     "argon2": "^0.31.2",

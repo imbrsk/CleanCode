@@ -16,7 +16,7 @@ enum ProcessCodeResponse{
 }
 #[derive(Debug, FromForm, Deserialize)]
 pub struct ProblemData{
-    code: String,
+    pub code: String,
     language: String,
     session: String,
     problem_id: String,
@@ -44,16 +44,18 @@ impl ProblemData{
         let response = ProblemData::make_api_req(data).await.unwrap().0;
         let mut error: String = String::new();
         if is_error{
-            let lines: Vec<String> = response["compile_output"].to_string().split("\\n")
+            print!("{}\n", response["compile_output"].to_string().replace("\"", ""));
+            let lines: Vec<String> = response["compile_output"].to_string().replace("\"", "").split("\\n")
                 .map(|part| part.to_string())
                 .collect();
             error = String::new();
 
             for line in lines{
-                let decoded = base64::decode(line.replace("\"","").clone());
+                let decoded = general_purpose::STANDARD.decode(line.clone());
                 match decoded {
                     Ok(decoded) => {
-                        error.push_str(&String::from_utf8(decoded).unwrap());
+                        let decoded_str = String::from_utf8_lossy(&decoded);
+                        error.push_str(&decoded_str);
                     },
                     Err(e) => {
                         println!("Error: {:?}", e);
@@ -183,10 +185,8 @@ impl ProblemData{
                         let lines: Vec<String> = stdout_str.to_string().split("\\n")
                             .map(|part| part.to_string())
                             .collect();
-                        stdout = String::new();
-
                         for line in lines{
-                            let decoded = base64::decode(line.replace("\"","").clone());
+                            let decoded = general_purpose::STANDARD.decode(line.replace("\"","").clone());
                             match decoded {
                                 Ok(decoded) => {
                                     stdout.push_str(&String::from_utf8(decoded).unwrap());

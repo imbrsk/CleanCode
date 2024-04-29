@@ -210,6 +210,6 @@ CREATE TABLE token_admin_cookies(
 --@block
 SELECT * FROM subjects
 --@block
-SELECT * FROM subjects_dev
+SELECT * FROM subjects
 --@block
 DELETE FROM subjects_dev

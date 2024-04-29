@@ -123,6 +123,11 @@ async fn verify_email(data: Json<VerifyEmail>, pool: &State<sqlx::MySqlPool>) ->
 }
 #[post("/execute", data = "<data>")]
 async fn execute(data: Json<ProblemData>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+        if data.0.code == "" {
+            return Json(json!({
+                "status": "Code is empty"
+            }));
+        }
         let temp = data.make_code_req(pool).await;
         temp
 }
