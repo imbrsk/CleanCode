@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "../css/admin.module.css";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
+import xml_js from 'xml-js';
 
 function AdminX() {
   const [problemName, setProblemName] = useState("");
@@ -14,6 +15,9 @@ function AdminX() {
   const [exampleInput, setExampleInput] = useState("");
   const [exampleOutput, setExampleOutput] = useState("");
   const [subjectOptions, setSubjectOptions] = useState([]);
+  const [fileInput, setFileInput] = useState([]);
+  const [fileContent, setFileContent] = useState({});
+
 
   const [inputTestCases, setInputTestCases] = useState(
     JSON.stringify(
@@ -96,39 +100,47 @@ function AdminX() {
         console.error("Error during the fetch operation:", error);
       });
   };
-  const handleSendXML = () => {
-    var convert = require('xml-js');
-    const req = {
-      file: convert.xml2json(document.getElementById("upfile").files[0], {compact: false, spaces: 4}),
-      params: {
-        subject: document.getElementById("subject_name").value,
-        path: document.getElementById("subject_path").value,
-        year: problemYear,
-        period: document.getElementById("selectperiod").value
-      }
-    };
-    fetch("http://localhost:8000/moodle", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(req),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+  const handleSendXML = async () => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileContent = event.target.result;
+      const req = {
+        fileContent: (fileContent),
+        params: {
+          subject: document.getElementById("subject_name").value,
+          path: document.getElementById("subject_path").value,
+          year: problemYear,
+          period: document.getElementById("selectperiod").value
         }
-        return response.json();
+      };
+
+      // Send the request
+      fetch("http://localhost:8000/moodle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req),
       })
-      .then((data) => {
-        console.log(data);
-        // Handle the response data here
-        alert("File uploaded!");
-      })
-      .catch((error) => {
-        console.error("Error during the fetch operation:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // Handle the response data here
+          alert("File uploaded!");
+        })
+        .catch((error) => {
+          console.error("Error during the fetch operation:", error);
+        });
+    };
+
+    reader.readAsText(fileInput); // Read file content as text
   };
+
   const handleAddProblem = () => {
     const problemData = {
       name: problemName,
@@ -383,7 +395,13 @@ function AdminX() {
           </div>
           <div>
             <h2>Import from moodle</h2>
-            <input type="file" id={styles.upfile} accept="text/xml" />
+            <input type="file"
+              id={styles.upfile}
+              accept="text/xml"
+              
+              onChange={(e) => setFileInput(e.target.files[0])}
+
+            />
           </div>
           <button className={styles.adminButton} onClick={handleSendXML}>Submit File</button>
         </div>

@@ -19,6 +19,8 @@ rand = "0.8.4"
 chrono = "0.4"
 futures = "0.3"
 base64 = "0.22.0"
+quickxml_to_serde = { version = "0.6", features = ["json_types"] }
+quick-xml = "0.31.0"
 [default.databases]
 mysql_db = { url = "mysql://root:bobo2004@localhost:3306/userdata" }
 

@@ -21,7 +21,8 @@
     "js-md5": "^0.8.3",
     "md5": "^2.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
