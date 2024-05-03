@@ -27,13 +27,14 @@ impl MoodleImport{
             for test_case in test_cases {
                 let stdin =  &test_case["stdin"]["text"];
                 let expected = &test_case["expected"]["text"];
-                print!("{:?}",expected.to_string().as_str());
+                let stdin_trimmed = &stdin.to_string()[1..stdin.to_string().len()-1];
+                let expected_trimmed = &expected.to_string()[1..expected.to_string().len()-1];
                 if j == 0 {
-                    ex_stdin.push_str(stdin.to_string().as_str());
-                    ex_expected.push_str(expected.to_string().as_str());
+                    ex_stdin.push_str(stdin_trimmed);
+                    ex_expected.push_str(expected_trimmed);
                 }
-                test_cases_stdin.push_str(format!("\"test{}\": \"{}\",", j.to_string(), stdin.to_string()).as_str()); 
-                test_cases_expected.push_str(format!("\"test{}\": \"{}\",", j.to_string(), expected.to_string()).as_str()); 
+                test_cases_stdin.push_str(format!("\"test{}\": \"{}\",", j.to_string(), stdin_trimmed.to_string()).as_str()); 
+                test_cases_expected.push_str(format!("\"test{}\": \"{}\",", j.to_string(), expected_trimmed.to_string()).as_str()); 
                 j+=1; 
             }
             test_cases_stdin.truncate(test_cases_stdin.len() - 1);
@@ -52,7 +53,7 @@ impl MoodleImport{
                 ex_output: ex_expected,
                 input: test_cases_stdin,
                 expected: test_cases_expected,
-                starting_code: problem["answerpreload"].to_string(),
+                starting_code: problem["answerpreload"].to_string()[1..problem["answerpreload"].to_string().len()-1].to_string(),
                 test_case_number: j.to_string()
             };
             problem.add_to_test_database(&pool).await;
