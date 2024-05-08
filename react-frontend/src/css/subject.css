@@ -1,5 +1,6 @@
 .subject{
     display: flex;
+    margin-top: 1rem;
 }
 .subject-text:hover{
     font-size: 2.7rem;

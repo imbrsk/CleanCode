@@ -52,6 +52,7 @@ function PreviewProblem() {
 
   const handleCodeChange = (event) => {
     setCode(event.target.value);
+    console.log(code);
   };
 
   const location = useLocation();
@@ -107,7 +108,7 @@ function PreviewProblem() {
           </span>
         ));
         setExoutput(formattedParagraph);
-        setCode(data["code"]);
+        setCode(data["code"].replace(/\\n/g, "\n"));
       } catch (error) {
         console.error("Error during the fetch operation:", error);
       }

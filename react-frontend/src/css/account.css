@@ -12,6 +12,13 @@
     justify-content: center;
     align-items: center;
     background-color: #3EB489;
+    transition: 0.5s ease;
+    text-decoration: none;
+}
+.account-info:hover{
+    background-color: #FF7F50;
+    cursor: pointer;
+    transition: 0.5s ease;
 }
 .account-user{
     margin-left: 2rem;

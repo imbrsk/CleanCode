@@ -1,6 +1,9 @@
 import '../css/account.css';
 import Cookies from "js-cookie";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Account(props){
     const [userState, setUserState] = useState('');
@@ -39,7 +42,7 @@ function Account(props){
 
     return(
         <div className="account">
-            <div className="account-info">Account</div>
+            <Link to="/profile" className='account-info'>Profile</Link>
             <div className='account-user'>User: <div className='account-userstyle'>{userState}</div></div>
             <div className='account-tasks'>Activity: <div className='account-tasksstyle'>{tasksState} tasks solved</div></div>
         </div>

@@ -16,6 +16,7 @@ import AdminX from "./pages/AdminX";
 import AdminTokens from "./pages/AdminTokens";
 import AdminEdit from "./pages/AdminEdit";
 import PreviewProblem from "./pages/PreviewProblem";
+import Profile from "./pages/Profile";
 
 export default function App() {
   const [subjects, setSubjects] = useState([]);
@@ -63,6 +64,7 @@ export default function App() {
         <Route path="home" element={<Home />} />
         <Route path="problems" element={<Problems />} />
         <Route path="admin" element={<AdminLogin />} />
+        <Route path="profile" element={<Profile/>} />
         <Route path="modpage" element={<AdminT />} />
         <Route path="adminadmin" element={<AdminX />} />
         <Route path="editproblem" element={<AdminEdit />} />
