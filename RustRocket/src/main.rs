@@ -47,6 +47,9 @@ use runcode_dev::ProblemDataDev;
 mod moodle_import;
 use moodle_import::MoodleImport;
 
+mod profile_page;
+use profile_page::{ProfilePage, ProfileData};
+
 #[post("/verify_session_cookie", data = "<data>")]
 async fn verify_session_cookie(data: Json<VerifySession>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     VerifySession::verify_session_cookie(&data, pool).await
@@ -319,10 +322,11 @@ async fn moodle(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) ->
         "status": "success"
     }))
 }
-/*#[post("/solved_user", data = "<data>")]
-async fn solved_user(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
-    
-}*/
+#[post("/solved_user", data = "<data>")]
+async fn solved_user(data: Json<ProfilePage>, pool: &State<sqlx::MySqlPool>) -> Json<ProfileData>{
+    let user_data = data.get_user_data(pool).await;
+    user_data
+}
 
 #[launch]
 fn rocket() -> _ {
@@ -335,5 +339,5 @@ fn rocket() -> _ {
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
         subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
-        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie])
+        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie, solved_user])
 }
