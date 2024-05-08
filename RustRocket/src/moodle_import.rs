@@ -1,7 +1,5 @@
-use rocket::{figment::providers, State};
-use serde::{Deserialize, Serialize};
-use sqlx::{mysql::MySqlRow, Row};
-use quickxml_to_serde::{xml_string_to_json, Config, NullValue}; 
+use rocket::State;
+use quickxml_to_serde::{xml_string_to_json, Config}; 
 mod add_problem;
 use crate::AddProblemIntoTest;
 
@@ -39,8 +37,8 @@ impl MoodleImport{
             }
             test_cases_stdin.truncate(test_cases_stdin.len() - 1);
             test_cases_expected.truncate(test_cases_expected.len() - 1);
-            test_cases_stdin.push_str("}");
-            test_cases_expected.push_str("}");
+            test_cases_stdin.push('}');
+            test_cases_expected.push('}');
             let problem = AddProblemIntoTest{
                 name: name.to_string(),
                 problem_path: format!("/{}", name.replace(" ", "_")).to_string(),

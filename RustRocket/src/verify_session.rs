@@ -1,6 +1,7 @@
-use rocket::{FromForm, State};
+use rocket::{serde::json::{self, Json}, FromForm, State};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use serde_json::json;
 
 #[derive(Debug, FromForm, Deserialize, Serialize, Clone)]
 pub struct Token{
@@ -31,5 +32,25 @@ impl Token{
         session
     }
 }
-
-
+#[derive(Deserialize)]
+pub struct VerifySession{
+    session: String
+}
+impl VerifySession{
+    async fn is_session_valid(token: String, pool: &State<sqlx::MySqlPool>) -> bool {
+        let is_valid = sqlx::query("SELECT user_id FROM sessions WHERE session_id = ?")
+            .bind(token)
+            .fetch_one(&**pool)
+            .await;
+        match is_valid{
+            Ok(_) => true,
+            Err(_) => false
+        }
+    }
+    pub async fn verify_session_cookie(&self, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+        match VerifySession::is_session_valid(self.session.clone(), pool).await{
+            true => Json(json!({"status": "valid"})),
+            false => Json(json!({"status": "invalid"}))
+        }
+    }
+}

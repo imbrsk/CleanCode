@@ -206,12 +206,12 @@ impl ProblemData{
                         }
                         i+=1;
                     }
-                    let is_cor = if track_cor == test_cases {
-                        String::from("True")
+                    let is_cor: bool = if track_cor == test_cases {
+                        true
                     } else {
-                        String::from("False")
+                        false
                     };
-                        if is_cor == "True"{
+                        if is_cor{
                             let user_id = self.get_user_id(pool).await;
                             self.save_code(user_id.get("user_id"), pool).await;
                             ProblemData::add_solved(user_id.get("user_id"), pool).await;

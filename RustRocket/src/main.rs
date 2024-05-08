@@ -6,8 +6,6 @@ use rocket_cors::CorsOptions;
 use serde_json::json;
 use sqlx::MySqlPool;
 
-
-
 mod login_register;
 mod leaderboard;
 mod admin;
@@ -25,7 +23,7 @@ mod create_session;
 use crate::create_session::LoginData;
 
 mod verify_session;
-use crate::verify_session::Token;
+use crate::verify_session::{Token, VerifySession};
 
 mod get_username;
 use crate::get_username::Session;
@@ -48,7 +46,13 @@ use runcode_dev::ProblemDataDev;
 
 mod moodle_import;
 use moodle_import::MoodleImport;
-#[rocket::post("/login", data = "<data>")]
+
+#[post("/verify_session_cookie", data = "<data>")]
+async fn verify_session_cookie(data: Json<VerifySession>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
+    VerifySession::verify_session_cookie(&data, pool).await
+}
+
+#[post("/login", data = "<data>")]
 async fn login(data: Json<User>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
     let _response = match data.login(&pool).await {
         AccountStatusLogin::Logged =>{
@@ -315,6 +319,11 @@ async fn moodle(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) ->
         "status": "success"
     }))
 }
+/*#[post("/solved_user", data = "<data>")]
+async fn solved_user(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+    
+}*/
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -326,5 +335,5 @@ fn rocket() -> _ {
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
         subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
-        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle])
+        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie])
 }
