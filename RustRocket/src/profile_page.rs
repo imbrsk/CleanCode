@@ -88,7 +88,7 @@ impl ProfilePage{
 #[derive(Deserialize)]
 pub struct ChangeUsername{
     session: String,
-    username: String,
+    pub username: String,
 }
 impl ChangeUsername{
     async fn set_new_username(&self, user_id: i32, pool: &State<sqlx::MySqlPool>)-> Result<sqlx::mysql::MySqlQueryResult, sqlx::Error>{

@@ -1,5 +1,5 @@
 use admin::{Create, Load};
-use rocket::{get, launch, post, routes, State};
+use rocket::{data, get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
 use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
@@ -332,6 +332,12 @@ async fn load_profile_page(data: Json<ProfilePage>, pool: &State<sqlx::MySqlPool
 }
 #[post("/change_username", data = "<data>")]
 async fn change_username(data: Json<ChangeUsername>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+    if data.username == "" {
+        return Json(json!({
+            "status": "error",
+            "response": "Username can't be empty"
+        }));
+    }
     data.change_username_func(pool).await
 }
 #[launch]
