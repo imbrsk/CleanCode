@@ -38,7 +38,7 @@ const ResultsTable = (props) => {
       <>
         <div className="table-container" style={{
           backgroundColor:
-            props.data["track_cor"] === 'True' ? "rgba(0,255,0,0.3)" : "rgba(255,0,0,0.3)",
+            props.data["track_cor"] == true ? "rgba(0,255,0,0.3)" : "rgba(255,0,0,0.3)",
         }}>
           <table className="table">
             <thead>
