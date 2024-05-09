@@ -110,7 +110,7 @@ function CodeTesting() {
           </span>
         ));
         setExoutput(formattedParagraph);
-        setCode(data["code"].replace(/\\n/g, "\n"));
+        setCode(data["code"].replace(/\\n/g, "\n").replace(/\\t/g, "    "));
       } catch (error) {
         console.error("Error during the fetch operation:", error);
       }

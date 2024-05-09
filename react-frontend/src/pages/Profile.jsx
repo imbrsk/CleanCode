@@ -8,14 +8,16 @@ import Subject from "../components/subject";
 import { createSession } from "../components/MakeSession";
 import Cookies from "js-cookie";
 import "../css/profile.css";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
+import Popup from "reactjs-popup";
+import Editor from "@monaco-editor/react";
 
 function Profile() {
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [tasks, setTasks] = React.useState("");
+  const [tasks, setTasks] = React.useState([]);
 
   React.useEffect(() => {
     if (!userCookie) {
@@ -27,14 +29,18 @@ function Profile() {
     }
 
     const fetchSubjects = async () => {
+      const req = {
+        session: userCookie,
+      }
+      console.log(req);
       try {
-        const response = await fetch("https://api.example.com/profile", {
+        const response = await fetch("https://api.example.com/load_profile_page", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             // Add any other headers as needed
           },
-          body: userCookie,
+          body: JSON.stringify(req),
           // Replace {} with the actual data you want to send in the request body
         });
         if (response.ok) {
@@ -49,6 +55,7 @@ function Profile() {
         console.error(error);
       }
     };
+    fetchSubjects();
   }, [userCookie, token]);
 
   const subjects = [
@@ -85,10 +92,57 @@ function Profile() {
       code: '// Online C++ compiler to run C++ program online\n#include <iostream>\n\nint main(){\n    // Write C++ code here\n    std::cout << "1";\n\n    return 0;\n}',
     },
   ];
-  const subjectItems = subjects.map((subject) => (
-    <Link to={subject.path} key={subject.path}>
-      {subject.name} - {subject.year}
-    </Link>
+  const subjectItems = tasks.map((subject) => (
+    // <Link to={subject.path} key={subject.path} className="acc-solved">
+    //
+    // </Link>
+    <Popup
+      trigger={
+        <button className="acc-solved">
+          <div className="bracket-acc">[</div>
+          <div className="subject-text-acc">
+            {subject.name} - {subject.year} - {subject.subject}
+          </div>
+          <div className="bracket-acc">]</div>
+        </button>
+      }
+      modal
+      nested
+      key={subject.path}
+    >
+      {(close) => (
+        <div className="modal">
+          <div className="content">
+            <Editor
+              height="300px"
+              id="code-input"
+              name="sendcode"
+              language="cpp"
+              theme="vs-light"
+              value={subject.code.replace(/\\n/g, "\n").replace(/\\t/g, "    ")}
+              className="editor"
+              options={{
+                inlineSuggest: true,
+                fontSize: "16px",
+                formatOnType: true,
+                autoClosingBrackets: true,
+                autoIndent: true,
+                formatOnPaste: true,
+                minimap: { scale: 15 },
+              }}
+            />
+          </div>
+          <div className="popup-bottom">
+            <button onClick={() => close()} className="popup-close">
+              Close
+            </button>
+            <Link to={subject.path} className="popup-link">
+              Go to problem
+            </Link>
+          </div>
+        </div>
+      )}
+    </Popup>
   ));
 
   return userCookie ? (
@@ -96,10 +150,27 @@ function Profile() {
       <CssBaseline />
       <NavbarSign value="Sign Out" link="/" />
       <Container maxWidth="lg" className="container-home">
-        <div className="acc-username">Name: {name}</div>
-        <div className="acc-email">Email: {email}</div>
-        <br></br>
-        <div className="solved-container"> {subjectItems}</div>
+        <div id="acc-page">
+          <div>
+            <div className="image-container">
+              <img src="..\src\assets\avatar.png" alt="" height="200px" />
+            </div>
+            <div className="acc-username">My Profile</div>
+            <input
+              type="text"
+              className="username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input type="text" className="username" value={email} />
+            <br />
+            <button className="acc-save">Save Changes</button>
+          </div>
+          <div className="solved-container">
+            <div className="sol-header">Solved Problems</div>
+            {subjectItems}
+          </div>
+        </div>
       </Container>
       <Footer />
     </React.Fragment>
