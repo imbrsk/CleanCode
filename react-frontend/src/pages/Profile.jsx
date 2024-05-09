@@ -18,6 +18,8 @@ function Profile() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [tasks, setTasks] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const [changedFlag, setChangedFlag] = React.useState(false);
 
   React.useEffect(() => {
     if (!userCookie) {
@@ -31,18 +33,21 @@ function Profile() {
     const fetchSubjects = async () => {
       const req = {
         session: userCookie,
-      }
+      };
       console.log(req);
       try {
-        const response = await fetch("http://localhost:8000/load_profile_page", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Add any other headers as needed
-          },
-          body: JSON.stringify(req),
-          // Replace {} with the actual data you want to send in the request body
-        });
+        const response = await fetch(
+          "http://localhost:8000/load_profile_page",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              // Add any other headers as needed
+            },
+            body: JSON.stringify(req),
+            // Replace {} with the actual data you want to send in the request body
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setName(data["username"]);
@@ -58,11 +63,11 @@ function Profile() {
     fetchSubjects();
   }, [userCookie, token]);
 
-  const saveProfile = async () =>  {
+  const saveProfile = async () => {
     const req = {
       session: userCookie,
       username: name,
-    }
+    };
     console.log(req);
     try {
       const response = await fetch("http://localhost:8000/change_username", {
@@ -76,13 +81,20 @@ function Profile() {
       });
       if (response.ok) {
         const data = await response.json();
+        if (data["status"] === "success") {
+          setMessage(data["response"]);
+          setChangedFlag(true);
+        } else {
+          setMessage(data["response"]);
+          setChangedFlag(false);
+        }
       } else {
         throw new Error("Failed to fetch subjects");
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   const subjects = [
     {
       path: "/strukturno/test1?id=11",
@@ -126,7 +138,7 @@ function Profile() {
         <button className="acc-solved">
           <div className="bracket-acc">[</div>
           <div className="subject-text-acc">
-            {subject.name} - {subject.year} <br/> {subject.subject}
+            {subject.name} - {subject.year} <br /> {subject.subject}
           </div>
           <div className="bracket-acc">]</div>
         </button>
@@ -187,11 +199,14 @@ function Profile() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <br/>
-            <input type="text" className="username" value={email} />
-            <div style={{color: 'red'}}>*Cannot change email</div>
+            <div style={{ color: changedFlag ? "green" : "red" }}>{message}</div>
             <br />
-            <button className="acc-save" onClick={saveProfile()}>Save Changes</button>
+            <input type="text" className="username" value={email} />
+            <div style={{ color: "red" }}>*Cannot change email</div>
+            <br />
+            <button className="acc-save" onClick={saveProfile}>
+              Save Changes
+            </button>
           </div>
           <div className="solved-container">
             <div className="sol-header">Solved Problems</div>
