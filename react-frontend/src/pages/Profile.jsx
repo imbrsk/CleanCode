@@ -58,6 +58,30 @@ function Profile() {
     fetchSubjects();
   }, [userCookie, token]);
 
+  const saveProfile = async () =>  {
+    const req = {
+      session: name,
+    }
+    console.log(req);
+    try {
+      const response = await fetch("http://localhost:8000/change_username", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any other headers as needed
+        },
+        body: JSON.stringify(req),
+        // Replace {} with the actual data you want to send in the request body
+      });
+      if (response.ok) {
+        const data = await response.json();
+      } else {
+        throw new Error("Failed to fetch subjects");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const subjects = [
     {
       path: "/strukturno/test1?id=11",
@@ -114,7 +138,7 @@ function Profile() {
         <div className="modal">
           <div className="content">
             <Editor
-              height="300px"
+              height="600px"
               id="code-input"
               name="sendcode"
               language="cpp"
@@ -164,8 +188,9 @@ function Profile() {
             />
             <br/>
             <input type="text" className="username" value={email} />
+            <div style={{color: 'red'}}>*Cannot change email</div>
             <br />
-            <button className="acc-save">Save Changes</button>
+            <button className="acc-save" onClick={saveProfile()}>Save Changes</button>
           </div>
           <div className="solved-container">
             <div className="sol-header">Solved Problems</div>
