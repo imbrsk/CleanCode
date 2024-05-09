@@ -75,7 +75,7 @@ export default function App() {
           <Route
             key={subject.subject}
             path={subject.path}
-            element={<Problems />}
+            element={<Problems name={subject.subject}/>}
           />
         ))}
         {problems.map((problem, index) => (
