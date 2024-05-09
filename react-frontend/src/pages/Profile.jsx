@@ -101,7 +101,7 @@ function Profile() {
         <button className="acc-solved">
           <div className="bracket-acc">[</div>
           <div className="subject-text-acc">
-            {subject.name} - {subject.year} - {subject.subject}
+            {subject.name} - {subject.year} <br/> {subject.subject}
           </div>
           <div className="bracket-acc">]</div>
         </button>
@@ -151,7 +151,7 @@ function Profile() {
       <NavbarSign value="Sign Out" link="/" />
       <Container maxWidth="lg" className="container-home">
         <div id="acc-page">
-          <div>
+          <div className="acc-container">
             <div className="image-container">
               <img src="..\src\assets\avatar.png" alt="" height="200px" />
             </div>
@@ -162,6 +162,7 @@ function Profile() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            <br/>
             <input type="text" className="username" value={email} />
             <br />
             <button className="acc-save">Save Changes</button>

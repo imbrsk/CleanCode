@@ -31,7 +31,7 @@
 }
 #acc-page {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .acc-save {
   font-family: Karla, Helvetica, sans-serif;
@@ -47,6 +47,11 @@
   align-items: center;
   margin-top: 20px;
   text-decoration: none;
+}
+.acc-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .acc-save:hover {
   background-color: #ff7f50;
@@ -73,6 +78,7 @@
 .image-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-top: 1rem;
 }
 .popup-close {
