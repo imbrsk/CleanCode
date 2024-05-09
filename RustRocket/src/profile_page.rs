@@ -103,8 +103,8 @@ impl ChangeUsername{
         let user_id = ProfilePage::get_user_id(self.session.clone(),pool).await;
         let response = ChangeUsername::set_new_username(self, user_id, pool).await;
         match response {
-            Ok(_) => return Json(json!({"status": "Username changed successfully"})),
-            Err(_) => return Json(json!({"status": "Username in use"})),
+            Ok(_) => return Json(json!({"status": "sucsess", "response": "Username changed successfully"})),
+            Err(_) => return Json(json!({"status": "error", "response": "Username is taken"})),
         }
     }
 }
