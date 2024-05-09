@@ -212,4 +212,4 @@ SELECT * FROM subjects
 --@block
 SELECT * FROM solved
 --@block
-SELECT * FROM sessions
+SELECT * FROM users

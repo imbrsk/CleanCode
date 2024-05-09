@@ -1,6 +1,7 @@
-use rocket::{serde::json::Json, State};
+use rocket::{serde::json::{self, Json}, State};
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
+use serde_json::json;
 #[derive(Deserialize)]
 pub struct ProfilePage{
     session: String
@@ -82,5 +83,28 @@ impl ProfilePage{
             });
         }
         return Json(data);
+    }
+}
+#[derive(Deserialize)]
+pub struct ChangeUsername{
+    session: String,
+    username: String,
+}
+impl ChangeUsername{
+    async fn set_new_username(&self, user_id: i32, pool: &State<sqlx::MySqlPool>)-> Result<sqlx::mysql::MySqlQueryResult, sqlx::Error>{
+        let response= sqlx::query("UPDATE users SET username = ? WHERE user_id = ?")
+            .bind(self.username.clone())
+            .bind(user_id)
+            .execute(&**pool)
+            .await;
+        response
+    }
+    pub async fn change_username_func(&self, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+        let user_id = ProfilePage::get_user_id(self.session.clone(),pool).await;
+        let response = ChangeUsername::set_new_username(self, user_id, pool).await;
+        match response {
+            Ok(_) => return Json(json!({"status": "Username changed successfully"})),
+            Err(_) => return Json(json!({"status": "Username in use"})),
+        }
     }
 }

@@ -108,7 +108,7 @@ function PreviewProblem() {
           </span>
         ));
         setExoutput(formattedParagraph);
-        setCode(data["code"].replace(/\\n/g, "\n").replace(/\\t/g, "    "));
+        setCode(data["code"].replace(/\\n/g, "\n").replace(/\\t/g, "    ").replace(/\\/g, ""));
       } catch (error) {
         console.error("Error during the fetch operation:", error);
       }

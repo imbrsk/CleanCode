@@ -48,7 +48,7 @@ mod moodle_import;
 use moodle_import::MoodleImport;
 
 mod profile_page;
-use profile_page::{ProfilePage, ProfileData};
+use profile_page::{ProfilePage, ProfileData, ChangeUsername};
 
 #[post("/verify_session_cookie", data = "<data>")]
 async fn verify_session_cookie(data: Json<VerifySession>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -130,20 +130,20 @@ async fn verify_email(data: Json<VerifyEmail>, pool: &State<sqlx::MySqlPool>) ->
 }
 #[post("/execute", data = "<data>")]
 async fn execute(data: Json<ProblemData>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-        if data.0.code == "" {
-            return Json(json!({
-                "status": "Code is empty"
-            }));
-        }
-        let temp = data.make_code_req(pool).await;
-        temp
+    if data.0.code.trim().is_empty() {
+        return Json(json!({
+            "status": "Code is empty"
+        }));
+    }
+    let temp = data.make_code_req(pool).await;
+    temp
 }
 #[post("/session", data = "<data>")]
 async fn session(data: Json<Token>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
-        let session = data.create_session(pool).await;
-        Json(json!({
+    let session = data.create_session(pool).await;
+    Json(json!({
         "session": session
-        }))
+    }))
 }
 #[post("/getuser", data = "<data>")]
 async fn getuser(data: Json<Session>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value> {
@@ -322,12 +322,15 @@ async fn moodle(data: Json<serde_json::Value>, pool: &State<sqlx::MySqlPool>) ->
         "status": "success"
     }))
 }
-#[post("/solved_user", data = "<data>")]
-async fn solved_user(data: Json<ProfilePage>, pool: &State<sqlx::MySqlPool>) -> Json<ProfileData>{
+#[post("/load_profile_page", data = "<data>")]
+async fn load_profile_page(data: Json<ProfilePage>, pool: &State<sqlx::MySqlPool>) -> Json<ProfileData>{
     let user_data = data.get_user_data(pool).await;
     user_data
 }
-
+#[post("/change_username", data = "<data>")]
+async fn change_username(data: Json<ChangeUsername>, pool: &State<sqlx::MySqlPool>) -> Json<serde_json::Value>{
+    data.change_username_func(pool).await
+}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -339,5 +342,5 @@ fn rocket() -> _ {
         .mount("/", routes![login, register, execute, session, getuser, check_email, reset, verify_code, subject, verify_email,
         subject_problem, get_routs, load_problem, leaderboard_get, login_admin, load_tokens, create_token, delete_token, token_login,
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
-        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie, solved_user])
+        load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie, load_profile_page, change_username])
 }
