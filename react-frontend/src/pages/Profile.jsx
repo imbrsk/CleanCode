@@ -60,7 +60,8 @@ function Profile() {
 
   const saveProfile = async () =>  {
     const req = {
-      session: name,
+      session: userCookie,
+      username: name,
     }
     console.log(req);
     try {
