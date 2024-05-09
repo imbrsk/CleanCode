@@ -32,7 +32,7 @@ impl Subjects{
 #[derive(Debug, FromForm, Deserialize, Serialize)]
 pub struct Subject{
     name: String,
-    session: String,
+    pub session: Option<String>,
 }
 #[derive(Serialize)]
 pub struct SubjectName{

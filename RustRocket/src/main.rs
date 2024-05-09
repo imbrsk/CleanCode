@@ -197,6 +197,9 @@ async fn subject(pool: &State<sqlx::MySqlPool>) -> Json<Vec<Subjects>> {
 }
 #[post("/subject_problem", data = "<data>")]
 async fn subject_problem(data: Json<Subject>, pool: &State<sqlx::MySqlPool>) -> Json<Vec<SubjectName>>{
+    if data.session.is_none() {
+        return Json(vec![]);
+    }
     let return_t = data.get_problems(pool).await;
     Json(return_t)
 }

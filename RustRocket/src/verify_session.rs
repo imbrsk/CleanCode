@@ -1,4 +1,4 @@
-use rocket::{serde::json::{self, Json}, FromForm, State};
+use rocket::{serde::json::Json, FromForm, State};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use serde_json::json;
