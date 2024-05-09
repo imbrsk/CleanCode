@@ -16,7 +16,7 @@ import SecondTerm from "../components/SecondTerm";
 import Exams from "../components/Exams";
 import { useEffect } from "react";
 
-function Problems() {
+function Problems(props) {
   const userCookie = Cookies.get("session");
   const token = Cookies.get("token");
   const [activeIndex, setActiveIndex] = useState(null);
@@ -70,7 +70,7 @@ function Problems() {
         <Account></Account>
         <div className="subject">
           <div className="bracket">[</div>
-          <div className="subject-value">Структурно Програмирање</div>
+          <div className="subject-value">{props.name}</div>
           <div className="bracket">]</div>
         </div>
         <div className="problem-sections">

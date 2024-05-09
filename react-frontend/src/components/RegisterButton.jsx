@@ -31,7 +31,9 @@ function RegisterButton(props) {
   };
   const isValidEmail = (email) => {
     // Regular expression for email validation
+    console.log(email);
     const emailRegex = /^[a-z]+\.[a-z]+@students\.finki\.ukim\.mk$/;
+    console.log(emailRegex.test(email));
     return emailRegex.test(email);
   };
   const checkInfo = () => {
@@ -42,7 +44,7 @@ function RegisterButton(props) {
       check = "Enter a username.";
       props.passcheck(check);
     } else if (!isValidEmail(props.email)) {
-      check = "Please enter a valid school email address.";
+      check = "Please enter a valid finki school email address.";
       props.passcheck(check);
       flag = false;
     } else if (password == "" || password2 == "") {
