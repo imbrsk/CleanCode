@@ -34,7 +34,7 @@ function Profile() {
       }
       console.log(req);
       try {
-        const response = await fetch("https://api.example.com/load_profile_page", {
+        const response = await fetch("http://localhost:8000/load_profile_page", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
