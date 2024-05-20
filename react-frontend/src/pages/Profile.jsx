@@ -4,7 +4,7 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Account from "../components/Account";
-import Subject from "../components/subject";
+import Subject from "../components/Subject";
 import { createSession } from "../components/MakeSession";
 import Cookies from "js-cookie";
 import "../css/profile.css";

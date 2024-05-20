@@ -1,10 +1,11 @@
 use admin::{Create, Load};
-use rocket::{data, get, launch, post, routes, State};
+use rocket::{ get, launch, post, routes, State};
 use rocket::fairing::AdHoc;
 use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
 use serde_json::json;
 use sqlx::MySqlPool;
+use std::env;
 
 mod login_register;
 mod leaderboard;
@@ -342,9 +343,10 @@ async fn change_username(data: Json<ChangeUsername>, pool: &State<sqlx::MySqlPoo
 }
 #[launch]
 fn rocket() -> _ {
+    print!("Server started\n\n");
     rocket::build()
         .attach(AdHoc::on_ignite("MySQL DB", |rocket| async {
-            let pool = MySqlPool::connect("mysql://root:bobo2004@localhost:3306/userdata").await.unwrap();
+            let pool = MySqlPool::connect(env::var("DATABASE_URL").unwrap().as_str()).await.unwrap();
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))
@@ -353,3 +355,4 @@ fn rocket() -> _ {
         verify_admin, verify_token, add_to_dev, load_problem_names_dev, load_problem_test, edit_problem_test, move_to_main, load_main_db,
         load_main_db_problem, edit_problem_main, load_problem_dev, execute_dev, moodle, verify_session_cookie, load_profile_page, change_username])
 }
+//let pool = MySqlPool::connect("mysql://root:bobo2004@host.docker.internal:3306/userdata").await.unwrap();

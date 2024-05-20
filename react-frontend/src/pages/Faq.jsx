@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import AskedQuestions from "../components/askedQuestions";
+import AskedQuestions from "../components/AskedQuestions";
 import Leaderboard from "../components/Leaderboard";
 import '../css/app.css'
 import Siteupdates from "../components/Siteupdates";

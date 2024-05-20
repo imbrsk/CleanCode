@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
-    "reactjs-popup": "^2.0.6",
-    "xml-js": "^1.6.11"
-  }
-}

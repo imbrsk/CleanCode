@@ -65,7 +65,7 @@ CREATE TABLE reset_password (
 --@block
 INSERT INTO reset_password (email, reset_token, created_at) VALUES ("23","34",NOW()) ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), created_at = VALUES(created_at)
 -- @block
-CREATE TABLE subjects_dev (
+CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(127),
     problem_path VARCHAR(127),

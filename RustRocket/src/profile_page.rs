@@ -1,4 +1,4 @@
-use rocket::{serde::json::{self, Json}, State};
+use rocket::{serde::json::Json, State};
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use serde_json::json;

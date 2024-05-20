@@ -4,7 +4,7 @@ import "../css/problems.css";
 import NavbarSign from "../components/NavbarSign";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
-import Subject from "../components/subject";
+import Subject from "../components/Subject";
 import Account from "../components/Account";
 import Accordion from "../components/Accordion";
 import FirstTerm from "../components/FirstTerm";

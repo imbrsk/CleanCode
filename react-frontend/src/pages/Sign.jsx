@@ -1,7 +1,7 @@
 import NavbarSign from "../components/NavbarSign";
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import Inputfield from "../components/inputfield";
+import Inputfield from "../components/Inputfield";
 import "../css/signin.css";
 import { Checkbox } from "@mui/material";
 import SignButton from "../components/SignButton";

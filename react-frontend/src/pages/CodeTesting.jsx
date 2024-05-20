@@ -1,6 +1,6 @@
 import NavbarSign from "../components/NavbarSign";
 import Account from "../components/Account";
-import Subject from "../components/subject";
+import Subject from "../components/Subject";
 import { CssBaseline } from "@mui/material";
 import { Container } from "@mui/material";
 import { createSession } from "../components/MakeSession";
