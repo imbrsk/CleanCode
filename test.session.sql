@@ -212,4 +212,4 @@ SELECT * FROM subjects
 --@block
 SELECT * FROM solved
 --@block
-SELECT * FROM users
+DELETE FROM subjects_dev;

@@ -343,10 +343,10 @@ async fn change_username(data: Json<ChangeUsername>, pool: &State<sqlx::MySqlPoo
 }
 #[launch]
 fn rocket() -> _ {
-    print!("Server started\n\n");
+   // print!("{}", env::var("DATABASE_URL").unwrap().as_str());
     rocket::build()
         .attach(AdHoc::on_ignite("MySQL DB", |rocket| async {
-            let pool = MySqlPool::connect(env::var("DATABASE_URL").unwrap().as_str()).await.unwrap();
+            let pool = MySqlPool::connect("mysql://root:bobo2004@localhost:3306/userdata").await.unwrap();
             rocket.manage(pool)
         }))
         .attach(CorsOptions::default().to_cors().expect("Failed to create CORS configuration"))

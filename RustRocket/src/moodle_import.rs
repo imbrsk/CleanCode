@@ -24,8 +24,8 @@ impl MoodleImport{
             for test_case in test_cases {
                 let stdin =  &test_case["stdin"]["text"];
                 let expected = &test_case["expected"]["text"];
-                let stdin_trimmed = &stdin.to_string()[1..stdin.to_string().len()-1];
-                let expected_trimmed = &expected.to_string()[1..expected.to_string().len()-1];
+                let stdin_trimmed = &stdin.to_string()[0..stdin.to_string().len()-1];
+                let expected_trimmed = &expected.to_string()[0..expected.to_string().len()-1];
                 if j == 0 {
                     ex_stdin.push_str(stdin_trimmed);
                     ex_expected.push_str(expected_trimmed);

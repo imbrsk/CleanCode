@@ -4,7 +4,7 @@ services:
 
   rust-app:
     build:
-      context: ./RustRocket
+      context: RustRocket
       dockerfile: Dockerfile
     volumes:
       - .:/usr/src/app
@@ -17,13 +17,12 @@ services:
 
   react-app:
     build:
-      context: ./react-frontend
+      context: react-frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./react-app:/node_modules
-      - /react-frontend/node_modules
+      - ../react-frontend/src:/code/src:ro
 
   mysql:
     image: mysql:5.7
