@@ -1,0 +1,35 @@
+.footer-container{
+    margin-top: 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-image: linear-gradient(to right, #111111, #292929);
+}
+.footer-tabs{
+    display: flex;
+    margin-right: 200px;
+}
+.footer-tabs > *:hover{
+    color: #FF7F50;
+    cursor: pointer;
+}
+
+.footer-copyright{
+    margin-left: 200px;
+}
+.footer-help{
+    padding: 10px;
+}
+.footer-about{
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+.footer-terms{
+    padding: 10px;
+}
+.footer-privacy{
+    padding: 10px;
+}

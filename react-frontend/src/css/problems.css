@@ -1,0 +1,147 @@
+.page-container{
+  min-height: 80vh;
+}
+.link{
+  text-decoration: none;
+  color: black;
+}
+.accordion {
+  background-color: #282828;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 28px;
+  transition: 0.4s;
+}
+.problem-title {
+  background-color: #282828;
+  color: rgb(255, 255, 255);
+  border-radius: 20px 20px 0px 0px;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 28px;
+  transition: 0.4s;
+}
+.problem-style{
+  width: 90%;
+  padding: 0.5rem 18px 0.5rem 18px;
+  border-radius: 0px 15px 0px 0px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 18px;
+  background-color: lightgray;
+  text-decoration: none;
+  color: black; 
+}
+.problem-style:hover{
+  background-color: #25ce90;
+  color: black;
+  cursor: pointer;
+}
+.problems-container{
+  width: 100%;
+  padding: 0.5rem;
+}
+.table-problems{
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 0px 0px 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.problem-sections{
+  display: flex;
+}
+.active{
+    border-radius: 15px 15px 0px 0px;
+    color: #FF7F50;
+}
+.accordion:hover {
+  color: #FF7F50;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: #ffffff;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: rgb(255, 255, 255);
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.2s ease-out;
+}
+.problems{
+  width: 75%;
+}
+.problems > * {
+  padding: 0.5rem;
+}
+
+
+.year {
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 0rem;
+  color: #ff7f50;
+}
+
+.problem-years{
+    display: flex;
+}
+
+.bracket-year{
+  font-size: 2rem;
+  color: #3EB489;
+  margin-bottom: 0.3rem;
+  padding: 0.5rem;
+}
+
+.expanded-problems{
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  background-color: lightgray;
+  color: black;
+  border-radius: 10px;
+  font-size: 22px;
+  transition: 0.2s ease;
+  
+}
+
+.expanded-problems:hover{
+  color: black;
+  cursor: pointer;
+  background-color: #25ce90;
+}
+
+#problems-text{
+  text-decoration: none;
+  color: black;
+}
+
+#problem-link{
+  text-decoration: none;
+  color: black;
+}

@@ -1,0 +1,93 @@
+.sign_in-container{
+    height: 80vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-field{
+    padding: 20px;
+    width: 400px;
+    margin-bottom: 15px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    filter: drop-shadow(2px 2px 2px #5e5e5ec0);
+    transition: .5s ease;
+}
+input,
+input::placeholder {
+    font: 1.25rem/3 sans-serif;
+    color: black;
+}
+
+.input-field:focus {
+    border-color: #FF7F50; /* Change border color */
+    box-shadow: 0 0 15px #FF7F50; /* Add a shadow */
+    outline: #FF7F50; /* Remove default outline */
+    filter: drop-shadow(0px 0px 0px #414141);
+}
+.sign_in-form{
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-field:focus::placeholder {
+    color: transparent;
+}
+
+.sign-remember{
+    display: flex;
+    align-items: center;
+}
+.sign-assist{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+.sign-forgot{
+    color: black;
+    transition: 0.5s ease;
+}
+.sign-forgot:hover{
+    font-size: large;
+    color: #FF7F50;
+    cursor: pointer;
+}
+.horz-line{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0.2rem;
+    background-color: #2F2F2F;
+    width: 5rem;
+}
+.sign-connect{
+    margin-top: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.sign-google{
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.google{
+    opacity: 1;
+    transition: 0.5s ease;
+}
+.google:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.check-msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    color: tomato;
+}

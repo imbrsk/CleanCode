@@ -1,0 +1,62 @@
+.table {
+  font-size: medium;
+  padding: 1rem;
+  background-color: white;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #2125291d
+}
+
+.table-container {
+  margin-top: 3rem;
+  padding: 0.5rem;
+  border: 20px solid #fbe8c4;
+  border-radius: 10px;
+}
+
+th {
+  text-align: start;
+  width: 10rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid black;
+  width: auto;
+  padding: 0.5rem;
+}
+
+td {
+  text-align: start;
+  vertical-align: top;
+}
+
+.error-msg {
+  color: black;
+  background-color: rgba(255, 104, 104, 0.519);
+  padding: 1rem;
+  border: 20px solid #fbe8c4;
+  border-radius: 10px;
+  font-size: medium;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.passed-msg {
+  color: green;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.failed-msg {
+  color: red;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}

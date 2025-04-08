@@ -1,7 +1,6 @@
-.env
 
-/RustRocket/target/
-/RustRocket/cargo.log
+target
+cargo.log
 # Ignore npm logs
 npm-debug.log*
 
@@ -35,7 +34,7 @@ node_modules/
 yarn.lock
 
 # Ignore npm lockfile
-package-lock.json
+# package-lock.json
 
 # Ignore coverage directory
 coverage/

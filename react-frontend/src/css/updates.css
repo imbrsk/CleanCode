@@ -1,0 +1,37 @@
+.updates-title {
+  width: 240px;
+  margin-top: 50px;
+  margin-left: 65px;
+  margin-right: 0;
+  font-size: 20px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 50px;
+  background-color: #111111;
+  color: rgb(255, 255, 255);
+  transition: 0.5s ease;
+}
+
+.updatecard-title{
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 300px;
+}
+.updatecard-vertline{
+    margin-top: 30px;
+    border-left: 2px solid gray;
+    height: 60px;
+}
+.updatecard-text{
+    padding: 10px;
+    margin-left: 40px;
+    font-size: 22px;
+}
+.updatecard-container{
+    margin-left: 85px;
+    margin-top: 20px;
+    display: flex;
+}

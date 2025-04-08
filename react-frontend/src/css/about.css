@@ -1,0 +1,79 @@
+.mission, .vision, .values{
+    display: flex;
+    justify-content: space-between;
+    text-align: justify;
+    margin-top: 2rem;
+    align-items: center;
+}
+.mission p, .vision p{
+    text-indent: 2rem;
+}
+
+.mission img, .vision img, .values img{
+   width: 20rem;
+   margin: 2rem;
+}
+
+.values li{
+    margin-bottom: 1rem;
+}
+
+.founders{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.stefan, .boris{
+    text-align: center;
+}
+
+.stefan img, .boris img{
+    width: 50%;
+    border: 5px solid #ff7f50; 
+    border-radius: 100%;
+}
+
+.founders span{
+    display: block;
+    font-size: 2rem;
+    color: black;
+    transition: 1s ease;
+}
+.founders span:hover{
+    color: #ff7f50;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+
+/* Partners*/
+
+.partners{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.partners span{
+    display: block;
+    font-size: 2rem;
+    color: black;
+    transition: 1s ease;
+}
+.partners span:hover{
+    color: #ff7f50;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+.finki{
+    text-align: center;
+    width: 50%;
+}
+
+.finki img{
+    /* border: 3px solid #ff7f50;  */
+    border: 3px solid black; 
+    border-radius: 5%;
+}

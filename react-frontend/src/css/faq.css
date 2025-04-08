@@ -1,0 +1,29 @@
+.faq-question{
+    background-color: #282828;
+    /* border-radius: 1rem; */
+    color: white;
+    border-top-left-radius: 1rem ;
+    border-top-right-radius: 1rem ;
+    margin-bottom: 0;
+}
+
+.faq-answer{
+    border: 3px solid #3EB489;
+    background-color: #3EB489;
+    padding: 1rem;
+    color: white;
+    /* border-radius: 0.5rem; */
+    border-bottom-left-radius: 1rem ;
+    border-bottom-right-radius: 1rem ;
+    margin-top: 0;
+}
+
+/* .test{
+    float: right;
+} */
+
+/* .faq-item{
+    border: 3px solid black;
+    margin: 0;
+    padding: 0; 
+} */

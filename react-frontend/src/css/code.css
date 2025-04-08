@@ -1,0 +1,96 @@
+.bracket{
+    font-size: 3rem;
+    color: #3EB489;
+    padding: 0.5rem;
+}
+.editor{
+    border: 1px solid black;
+}
+.subject-value{
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    transition: 0.3s ease;
+    color: black;
+}
+
+.code-text{
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+
+}
+h3{
+    padding: 0.5rem 1rem;
+}
+p{
+    font-size: 1.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.example{
+    display: flex;
+}
+
+.example > *{
+    margin-right: 5rem;
+    font-weight: bold;
+}
+
+.input-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+.input-label{
+    font-weight: bold;
+}
+
+.submit-form{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#lang{
+    padding: 0.5rem;
+    font-weight: bold;
+    font-size: medium;
+    border: 2px solid black;
+    border-radius: 2rem;
+}
+#submit-button{
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: 2rem;
+    transition: 0.5s ease;
+
+}
+#submit-button:hover{
+    cursor: pointer;
+    background-color: #282828;
+    color: white;
+    transition: 0.5s ease;
+}
+
+.loader {
+    display: none;
+    width: 120px;
+    height: 20px;
+    background: 
+      linear-gradient(#25b09b 0 0) left -40px top 0/40px 20px,
+      linear-gradient(#ddd 0 0) center/100% 50%; 
+    background-repeat: no-repeat;
+    animation: l5 1s infinite linear;
+  }
+  @keyframes l5 {
+    100% {background-position: right -40px top 0,center}
+  }

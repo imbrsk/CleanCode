@@ -1,0 +1,83 @@
+.adminform {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#upfile{
+  color: white;
+}
+body {
+  background-color: #282828;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+.adminInput {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: medium;
+  background-color: #282828;
+  color: white;
+  border-radius: 20px;
+}
+.adminInput::placeholder {
+  color: white;
+}
+.adminButton {
+  font-size: medium;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  background-color: #282828;
+  color: white;
+  border-radius: 20px;
+}
+.adminButton:hover {
+  background-color: #ff7f50;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+label {
+  font-size: large;
+}
+
+.adminProblem {
+  display: flex;
+  justify-content: center;
+}
+.problemLeft {
+  padding: 1rem;
+}
+.problemRight {
+  display: flex;
+}
+
+.leftButtons {
+  display: flex;
+  padding: 1rem;
+  margin-top: 4rem;
+  flex-direction: column;
+  border: 1px solid white;
+}
+
+.center {
+  width: auto;
+  text-align: center;
+}
+.adminSpecialButton {
+  font-size: medium;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  background-color: #282828;
+  color: white;
+  border-radius: 20px;
+}
+.adminSpecialButton:hover{
+    background-color: #3EB489;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
