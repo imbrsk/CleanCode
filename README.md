@@ -1,9 +1,13 @@
 # CleanCode
 
+[![Published at CIIT 2024](https://img.shields.io/badge/Published%20at-CIIT%202024-blue.svg)](https://ciit.finki.ukim.mk/)
+
 **Developed by Stefan Saveski and Boris Gjorgjievski**
 
 CleanCode is a web platform built for **Faculty of Computer Science** students to practice and improve their coding skills.  
 It offers a complete environment for solving problems, submitting code, and tracking progress — all through a beautiful, fully functional web application.
+
+✅ CleanCode was published as a **student paper** and presented at the **International Conference on Informatics and Information Technologies (CIIT)** in **April 2024**.
 
 ## 🌟 Key Features
 
